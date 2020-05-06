@@ -45,12 +45,14 @@ class App extends Component {
             <Router>
                 <IntlProvider locale={Config.current_locale} messages={Messages[Config.current_locale]}>
                 <div id="wrapper" className={this.state.theme}>
+                    <Header changeTheme={this.changeTheme} />
                     <Switch>
-                        <Route exact path={Config.base_url}><Header changeTheme={this.changeTheme} /><Home /><Footer /></Route>
-                        <Route path={`${Config.base_url}/search/:keyword`}><Header changeTheme={this.changeTheme} /><Search /><Footer /></Route>
-                        <Route path={`${Config.base_url}/watch`}><Header changeTheme={this.changeTheme} /><Watch /><Footer /></Route>
-                        <Route><Header changeTheme={this.changeTheme} /><NotFound /><Footer /></Route>
+                        <Route exact path={Config.base_url} component={Home} />
+                        <Route path={`${Config.base_url}/search/:keyword`} component={Search} />
+                        <Route path={`${Config.base_url}/watch`} component={Watch} />
+                        <Route component={NotFound} />
                     </Switch>
+                    <Footer />
                 </div>
                 </IntlProvider>
             </Router>
