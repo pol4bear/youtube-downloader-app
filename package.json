@@ -15,7 +15,7 @@
     "bootstrap": "^4.4.1",
     "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
-    "jquery": "3.4.1",
+    "jquery": "3.5.0",
     "mdbreact": "^4.26.0",
     "node-sass": "^4.14.0",
     "popper.js": "^1.16.1",
