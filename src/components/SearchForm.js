@@ -31,17 +31,12 @@ class SearchForm extends Component {
         e.preventDefault();
         let result = this.regex_youtube_url.exec(this.state.q);
 
-        let locale_path = '';
-
-        if (this.intl.locale != Config.default_locale) {
-            locale_path = '/intl/' + this.intl.locale;
-        }
         
         if (result == null) {
-            this.props.history.push(Config.base_url + locale_path + "/search/" + this.state.q);
+            this.props.history.push(Config.base_url + "/search/" + this.state.q);
         }
         else {
-            this.props.history.push(Config.base_url + locale_path + "/watch?v=" + result.groups.id);
+            this.props.history.push(Config.base_url + "/watch?v=" + result.groups.id);
         }
     }
 
