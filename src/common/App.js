@@ -50,6 +50,7 @@ class App extends Component {
                         <Route exact path={Config.base_url} component={Home} />
                         <Route path={`${Config.base_url}/search/:keyword`} component={Search} />
                         <Route path={`${Config.base_url}/watch`} component={Watch} />
+                        <Route path={`${Config.base_url}/watch/:id`} component={Watch} />
                         <Route component={NotFound} />
                     </Switch>
                     <Footer />
