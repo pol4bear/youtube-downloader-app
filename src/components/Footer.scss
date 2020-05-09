@@ -4,16 +4,16 @@
     footer {
         @extend .bg-light;
         @extend .text-dark;
-    }
+   }
     footer a {
         @extend .text-dark;
-    }
+   }
 }
 #wrapper.theme-dark {
     footer {
         @extend .bg-dark;
-    }
+   }
     footer a {
         @extend .text-white;
-    }
+   }
 }

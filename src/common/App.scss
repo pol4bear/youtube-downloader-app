@@ -12,11 +12,11 @@
 
     h1, h2, h3, h4, h5, h6, p {
         @extend .text-dark;
-    }
+   }
 }
 #wrapper.theme-dark {
     @extend .bg-dark;
     h1, h2, h3, h4, h5, h6, p {
         @extend .text-white;
-    }
+   }
 }
