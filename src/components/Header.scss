@@ -1,0 +1,15 @@
+@import 'bootstrap';
+
+#wrapper.theme-light {
+    .navbar {
+        @extend .bg-light;
+        @extend .navbar-light;
+    }
+}
+
+#wrapper.theme-dark {
+    .navbar {
+        @extend .bg-dark;
+        @extend .navbar-dark;
+    }
+}

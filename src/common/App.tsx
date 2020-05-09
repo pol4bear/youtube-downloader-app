@@ -3,7 +3,7 @@ import {useSelector} from 'react-redux';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {IntlProvider} from 'react-intl';
 import {Home, Search, Watch, NotFound} from '../pages';
-import {Navbar, Footer} from '../components';
+import {Header, Footer} from '../components';
 import Messages from '../locale/Messages';
 import Config from './Config';
 import {RootState} from '../stores';
@@ -17,7 +17,7 @@ const App:React.FC = () => {
         <Router>
             <IntlProvider locale={Config.current_locale} messages={Messages[Config.current_locale]}>
             <div id="wrapper" className={theme}>
-                <Navbar />
+                <Header />
                 <Switch>
                     <Route exact path={Config.base_url} component={Home} />
                     <Route path={`${Config.base_url}/search/:keyword`} component={Search} />

@@ -16,6 +16,7 @@
     "@types/react-redux": "^7.1.8",
     "@types/react-router": "^5.1.7",
     "@types/react-router-dom": "^5.1.5",
+    "@types/styled-components": "^5.1.0",
     "antd": "^4.2.0",
     "babel-plugin-import": "^1.13.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -30,6 +31,7 @@
     "query-string": "^6.12.1",
     "react": "^16.13.1",
     "react-app-rewired": "^2.1.6",
+    "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.0.0",
     "react-intl": "^4.5.1",
@@ -40,16 +42,16 @@
     "styled-components": "^5.1.0",
     "toml": "^3.0.0",
     "typescript": "^3.8.3"
- },
+  },
   "scripts": {
     "start": "cross-env NODE_PATH=src react-app-rewired start",
     "build": "cross-env NODE_PATH=src react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject"
- },
+  },
   "eslintConfig": {
     "extends": "react-app"
- },
+  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -61,5 +63,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
- }
+  }
 }
