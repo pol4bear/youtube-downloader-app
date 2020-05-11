@@ -1,13 +1,11 @@
 import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom';
-import {Button} from 'react-bootstrap';
 import styled from 'styled-components';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSearch} from '@fortawesome/free-solid-svg-icons'
 import {faYoutube} from '@fortawesome/free-brands-svg-icons';
 import {useIntl} from 'react-intl';
 import Config from '../common/Config';
-import './SearchForm.scss';
 
 const SearchForm:React.FC = () => {
     const regex_youtube_url:RegExp = /^(?:https?:\/\/)?(?:www\.)?youtu(\.be|be\.(?:com|co\.[a-zA-Z]{2}))\/watch\/?\?(?:.+(?:=.+)?&)*v=(?<id>\w+)(?:&.+(?:=.+)?)*&?\/?$/;
@@ -42,7 +40,7 @@ const SearchForm:React.FC = () => {
             <FormGroup className="field" onSubmit={handleSubmit}>
                 <FormField type="input" name="q" placeholder={placeholder} required autoComplete="off" value={q} onChange={handleChange} />
                 <FormLabel htmlFor="q">{placeholder}</FormLabel>
-                <Button className="mt-3" type="submit" block><FontAwesomeIcon icon={faSearch} /></Button>
+                <button className="mt-3 btn btn-primary btn-block" type="submit"><FontAwesomeIcon icon={faSearch} /></button>
             </FormGroup>
         </div>
     );
@@ -74,6 +72,7 @@ const FormField = styled.input`
     padding: 7px 0;
     background: transparent;
     transition: border-color 0.2s;
+    color: ${props => props.theme.font_color};
 
     &::placeholder {
         color: transparent;
