@@ -1,11 +1,15 @@
 import styled from 'styled-components';
+import {Layout} from 'antd';
 
-export const Main = styled.main`
+const {Content} = Layout;
+
+export const Main = styled(Content)`
     flex: 1;
     &.align-center {
         text-align: center;
         display: flex;
         flex-direction: column;
+        align-items: center;
         justify-content: center;
     }
 `;

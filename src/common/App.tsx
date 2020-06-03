@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch, useRouteMatch} from 'react-router-dom';
 import {IntlProvider} from 'react-intl';
 import styled, {ThemeProvider} from 'styled-components';
 import {Layout} from 'antd';
-import {Home, Search, Watch, NotFound} from '../pages';
+import {Home, Search, Watch, Intl, NotFound} from '../pages';
 import {AppHeader, AppFooter} from '../components';
-import Messages from '../locale/getMessages';
+import {getLocaleInfo, LocaleInfo} from '../locale';
 import config from './Config';
-import {themes} from '../themes';
+import {getTheme} from '../themes';
 import {Theme} from '../themes';
 
 const App:React.FC = () => {
@@ -20,18 +20,26 @@ const App:React.FC = () => {
         initial_theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
     const [currentTheme, setCurrentTheme] = useState<Theme>(initial_theme);
-    
+
+    let suppo
+    const initial_locale = getLocaleInfo(config.current_locale);
+    const [currentLocale, setCurrentLocale] = useState<LocaleInfo>(initial_locale);
 
     const changeTheme = () => {
-        const opposite_theme = currentTheme == 'light' ? 'dark' : 'light';
+        const opposite_theme = currentTheme === 'light' ? 'dark' : 'light';
         setCurrentTheme(opposite_theme);
         localStorage.setItem('theme', opposite_theme);
     }
 
+    const changeLocale = (input:string) => {
+        if (currentLocale.locale !== input)
+            setCurrentLocale(getLocaleInfo(input));
+    }
+
     return (
         <Router>
-            <IntlProvider locale={config.current_locale} messages={Messages(config.current_locale)}>
-                <ThemeProvider theme={themes[currentTheme]}>
+            <IntlProvider locale={currentLocale.locale} messages={currentLocale.messages}>
+                <ThemeProvider theme={getTheme(currentTheme)}>
                     <Wrapper className="layout">
                         <AppHeader changeTheme={changeTheme} />
                         <Switch>
@@ -39,6 +47,7 @@ const App:React.FC = () => {
                             <Route path={`${config.base_url}/search/:keyword`} component={Search} />
                             <Route path={`${config.base_url}/watch`} component={Watch} />
                             <Route path={`${config.base_url}/watch/:id`} component={Watch} />
+                            <Route path={`${config.base_url}/intl/:lang`} component={() => <Intl changeLocale={changeLocale} />} />
                             <Route component={NotFound} />
                         </Switch>
                         <AppFooter />

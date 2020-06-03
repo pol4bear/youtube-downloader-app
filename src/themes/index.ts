@@ -5,4 +5,4 @@ export type ThemeState = {
 
 export {default as light} from './light';
 export {default as dark} from './dark';
-export {default as themes} from './themes';
+export {default as getTheme} from './getTheme';

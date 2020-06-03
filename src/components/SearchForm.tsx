@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
+import {Button} from 'antd';
+import {SearchOutlined} from '@ant-design/icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faSearch} from '@fortawesome/free-solid-svg-icons'
 import {faYoutube} from '@fortawesome/free-brands-svg-icons';
 import {useIntl} from 'react-intl';
 import Config from '../common/Config';
@@ -20,8 +21,6 @@ const SearchForm:React.FC = () => {
         event.preventDefault();
         const result:RegExpExecArray|null = regex_youtube_url.exec(q);
 
-        
-
         if (result !== null) {
             const id = result.groups && result.groups.id;
             history.push(Config.base_url + "/watch?v=" + id);
@@ -35,14 +34,14 @@ const SearchForm:React.FC = () => {
     const placeholder = intl.formatMessage({id: "searchform-placeholder"});
     
     return (
-        <div>
-            <h4><FontAwesomeIcon icon={faYoutube} />{message}</h4>
+        <>
+            <h2><FontAwesomeIcon icon={faYoutube} />{message}</h2>
             <FormGroup className="field" onSubmit={handleSubmit}>
                 <FormField type="input" name="q" placeholder={placeholder} required autoComplete="off" value={q} onChange={handleChange} />
                 <FormLabel htmlFor="q">{placeholder}</FormLabel>
-                <button className="mt-3 btn btn-primary btn-block" type="submit"><FontAwesomeIcon icon={faSearch} /></button>
+                <FormButton htmlType="submit" block={true} icon={<SearchOutlined />}></FormButton>
             </FormGroup>
-        </div>
+        </>
     );
 }
 
@@ -50,7 +49,8 @@ const FormGroup = styled.form`
     position: relative;
     padding: 15px 0 0;
     margin-top: 10px;
-    width: 100%;
+    width: 95%;
+    max-width: 1500px;
 `;
 
 const FormLabel = styled.label`
@@ -102,6 +102,19 @@ const FormField = styled.input`
     }
 
     &:required,&:invalid {box-shadow:none;}
+`;
+
+const FormButton = styled(Button)`
+    height: 40px;
+    margin-top: 15px;
+    background-color: ${props => props.theme.font_color};
+    color: ${props => props.theme.background};
+
+    &:hover {
+        background-color: ${props => props.theme.font_color};
+        color: #1abc9c;
+        border: none;
+    }
 `;
 
 export default SearchForm;
