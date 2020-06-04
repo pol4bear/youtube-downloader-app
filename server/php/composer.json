@@ -1,7 +1,9 @@
 {
+  "config": {
+    "vendor-dir": "src/vendor"
+  },
   "require": {
     "yosymfony/toml": "^1.0",
-    "google/apiclient": "^2.4",
-    "webonyx/graphql-php": "^0.13.8"
+    "google/apiclient": "^2.4"
   }
 }
