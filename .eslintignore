@@ -1,0 +1,8 @@
+# Folders
+node_modules
+public
+.github
+.vscode
+
+# Configuration files
+*config*.js
