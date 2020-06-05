@@ -2,16 +2,48 @@
     require_once 'vendor/autoload.php';
     use Yosymfony\Toml\Toml;
 
-    $config = Toml::ParseFile('.config.toml');
+    $config = Toml::ParseFile(__DIR__.'/config.toml');
+    initializeConfig();
+    $url = $config['url'];
 
-    function getToken() {
+    function initializeConfig() {
         global $config;
-        return $config['token'] | null;
+
+        $defaults = array(
+            'token' => null,
+            'region_code' => 'KR',
+            'quality' => 'best',
+            'url' => 'https://youtube.com/watch?v='
+        );
+
+        $keys = array_keys($defaults);
+
+        foreach ($keys as $key)
+            if (isset($config[$key]))
+                $config[$key] = $defaults[$key];
     }
 
-    function getMaxResults() {
-        global $config;
-        return $config['max_results'] | 10;
+    function getError(int $code) {
+        $responseCode = 500;
+        $error = array('code' => $code);
+        switch($code) {
+            case 1:
+                $responseCode = 400;
+                $error['message'] = "Bad request.";
+                break;
+            case 2:
+                $responseCode = 503;
+                $error['message'] = "YouTube search is not available because of some reason.";
+                break;
+            case 3:
+                $responseCode = 404;
+                $error['message'] = "Requested item(s) not found";
+                break;
+            default:
+                return null;
+        }
+
+        return array($responseCode, makeResult(false, $error));
     }
 
     function getIpInfo($ip = NULL, $purpose = "location", $deep_detect = TRUE) {

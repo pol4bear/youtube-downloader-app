@@ -1,17 +1,18 @@
-# How to deploy
+# YouTube Data API v3
 
-1. Give execute permission to deploy.sh. `chmod +x deploy.sh`
-2. Run deploy.sh.
+For detail information check [here](https://developers.google.com/youtube/v3/docs/videos/list).
 
-# About deploy.sh
+# Dependencies
 
-## Usage
+- [composer](https://getcomposer.org/): A Dependency Manager for PHP
 
-```
-./deploy.sh [Document root] [Sub directory]
-```
+# Usage
 
-## Description
+1. Install dependencies using [composer](https://getcomposer.org/). `composer install`
+2. Give execute permission to deploy.sh. `chmod +x deploy.sh`
+3. Run deploy.sh. `./deploy.sh [Document root] [Sub directory]`
+
+## About deploy.sh
 
 > **How it works**
 >

@@ -1,4 +1,0 @@
-# Google YouTube Data API v3 token. You can get it from https://console.cloud.google.com/apis/credentials.
-token = "Token"
-# Default result count per request. Valid value is 0 to 50.
-max_results = '10'
