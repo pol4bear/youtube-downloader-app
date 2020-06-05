@@ -13,4 +13,4 @@ You need to run backend server for search and YouTube.
 
 Backend server is developed in Node.js and PHP run whatever you want.
 
-Backend server is in [here](tree/master/backend).
+Backend server is in [here](tree/master/server).
