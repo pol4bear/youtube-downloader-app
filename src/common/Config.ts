@@ -1,15 +1,19 @@
 export type Config = {
-    base_url: string,
-    current_locale: string, 
-    default_locale: string|undefined,
-    locales: string|undefined
+  baseUrl: string;
+  currentLocale: string;
+  defaultLocale: string;
+  locales: string[];
 };
 
-const config:Config = {
-    base_url: process.env.PUBLIC_URL,
-    current_locale: navigator.language,
-    default_locale: process.env.REACT_APP_DEFAULT_LOCALE,
-    locales: process.env.REACT_APP_LOCALES
-} 
+const config: Config = {
+  baseUrl: process.env.PUBLIC_URL ? process.env.PUBLIC_URL : '',
+  currentLocale: navigator.language,
+  defaultLocale: process.env.REACT_APP_DEFAULT_LOCALE
+    ? process.env.REACT_APP_DEFAULT_LOCALE
+    : 'en',
+  locales: process.env.REACT_APP_LOCALES
+    ? process.env.REACT_APP_LOCALES.split(',')
+    : ['en', 'ko'],
+};
 
 export default config;

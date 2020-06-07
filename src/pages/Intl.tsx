@@ -1,48 +1,52 @@
 import React from 'react';
-import {Switch, Route, withRouter} from 'react-router-dom';
-import {useIntl} from 'react-intl';
-import {Home, Search, Watch, NotFound} from '../pages';
+import { Switch, Route, useRouteMatch } from 'react-router-dom';
+import { useIntl } from 'react-intl';
+import { Home, Search, Watch, NotFound } from '.';
 import config from '../common/Config';
 
-const Intl:React.FC<any> = (props) => {
-    const supported_locale = config.locales && config.locales.split(',');
-    const intl = useIntl();
-    const lang = props.match.params.lang;
-    let supported:boolean = false;
+interface IntlProp {
+  changeLocale?: (input: string) => void;
+}
 
-    if (lang === intl.locale) {
+interface MatchParams {
+  lang: string;
+}
+
+const Intl: React.FC<IntlProp> = (props) => {
+  const intl = useIntl();
+  const match = useRouteMatch<MatchParams>();
+  const { lang } = match.params;
+  let supported = false;
+
+  if (lang === intl.locale) {
+    supported = true;
+  } else if (config.locales) {
+    config.locales.every((locale: string): boolean => {
+      if (lang === locale) {
         supported = true;
-    }
-    else if (supported_locale){
-        for (let locale of supported_locale) {
-            if (lang === locale) {
-                supported = true;
-                break;
-            }
-        }
-    }
+        return false;
+      }
+      return true;
+    });
+  }
 
-    if (supported) {
-        if (lang !== intl.locale && props.changeLocale)
-            props.changeLocale(lang);
+  if (supported) {
+    if (lang !== intl.locale && props.changeLocale) props.changeLocale(lang);
 
-        return (
-            <>
-                <Switch>
-                    <Route exact path={`${props.match.url}`} component={Home} />
-                    <Route path={`${props.match.url}/search/:keyword`} component={Search} />
-                    <Route path={`${props.match.url}/watch`} component={Watch} />
-                    <Route path={`${props.match.url}/watch/:id`} component={Watch} />
-                    <Route component={NotFound} />
-                </Switch>
-            </>
-        );
-    }
-    else {
-        return (
-            <NotFound />
-        );
-    }
+    return (
+      <>
+        <Switch>
+          <Route exact path={`${match.url}`} component={Home} />
+          <Route path={`${match.url}/search/:keyword`} component={Search} />
+          <Route path={`${match.url}/watch`} component={Watch} />
+          <Route path={`${match.url}/watch/:id`} component={Watch} />
+          <Route component={NotFound} />
+        </Switch>
+      </>
+    );
+  }
+
+  return <NotFound />;
 };
 
-export default withRouter(Intl);
+export default Intl;
