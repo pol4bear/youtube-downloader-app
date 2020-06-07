@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
-import { Main } from '../components';
+import { Main } from '../Layout';
 
 const Watch: React.FC = () => {
   return (

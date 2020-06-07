@@ -7,7 +7,7 @@ $maxResults = isset($_GET['cnt']) ? $_GET['cnt'] : (isset($_POST['cnt']) ? $_POS
 $pageToken = isset($_GET['token']) ? $_GET['token'] : (isset($_POST['token']) ? $_POST['token'] : null);
 if ($query == null) badRequest();
 
-header('Content-Type: application/json; charset=UTF-8');
+addApiHeader();
 $result = getVideoList($query, $maxResults, $pageToken);
 http_response_code($result[0]);
 echo $result[1];

@@ -3,6 +3,7 @@ export type Config = {
   currentLocale: string;
   defaultLocale: string;
   locales: string[];
+  serverUrl: string;
 };
 
 const config: Config = {
@@ -14,6 +15,9 @@ const config: Config = {
   locales: process.env.REACT_APP_LOCALES
     ? process.env.REACT_APP_LOCALES.split(',')
     : ['en', 'ko'],
+  serverUrl: process.env.REACT_APP_SERVER_URL
+    ? process.env.REACT_APP_SERVER_URL
+    : '/',
 };
 
 export default config;

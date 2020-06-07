@@ -1,8 +1,8 @@
 import React from 'react';
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { useIntl } from 'react-intl';
-import { Home, Search, Watch, NotFound } from '.';
-import config from '../common/Config';
+import { Home, Search, Watch, NotFound } from './index';
+import config from '../../common/Config';
 
 interface IntlProp {
   changeLocale?: (input: string) => void;

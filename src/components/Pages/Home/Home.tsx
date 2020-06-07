@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useIntl } from 'react-intl';
-import { Main } from '../../components';
+import { Main } from '../../Layout';
 import SearchForm from './SearchForm';
 
 const Home: React.FC = () => {

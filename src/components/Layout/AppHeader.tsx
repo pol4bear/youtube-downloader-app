@@ -6,8 +6,8 @@ import { Layout, Menu } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { faAdjust } from '@fortawesome/free-solid-svg-icons';
-import { getLocaleName } from '../locale';
-import config from '../common/Config';
+import { getLocaleName } from '../../locale';
+import config from '../../common/Config';
 
 const { Header } = Layout;
 const { SubMenu } = Menu;

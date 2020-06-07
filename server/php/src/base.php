@@ -47,6 +47,11 @@
         return array($responseCode, makeResult(false, $error));
     }
 
+    function addApiHeader() {
+        header('Content-Type: application/json; charset=UTF-8');
+        header("Access-Control-Allow-Origin: *");
+    }
+
     function getIpInfo($ip = NULL, $purpose = "location", $deep_detect = TRUE) {
         $output = NULL;
         if (filter_var($ip, FILTER_VALIDATE_IP) === FALSE) {
