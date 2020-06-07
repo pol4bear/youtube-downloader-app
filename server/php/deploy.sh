@@ -17,7 +17,7 @@ then
 fi
 
 before_dir=$(realpath $1/..)
-if cp -r src $before_dir;
+if \cp -r src $before_dir;
 then
   echo "src moved to $before_dir/src"
 else
@@ -39,7 +39,7 @@ then
   fi
 fi
 
-if cp public/* $deploy_path;
+if \cp public/* $deploy_path;
 then
   echo "Files in public directory moved to $deploy_path"
 else
