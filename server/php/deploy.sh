@@ -15,7 +15,7 @@ then
   exit 1
 fi
 
-base_dir=$(dirname $0)
+base_dir=$(dirname `readlink -f "$0"`)
 before_dir=$(realpath $1/..)
 if \cp -r $base_dir/src $before_dir > /dev/null 2>&1;
 then
