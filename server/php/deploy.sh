@@ -1,18 +1,28 @@
 #!/bin/bash
+
+function permission_error {
+  echo "Check your permission for $1"
+  exit 1
+}
+
 if [ "$#" -ne 1 ] && [ "$#" -ne 2 ]
 then
   echo "Usage: $0 [Document root] [Sub directory]"
   exit 1
 fi
-echo $1
 if [ ! -d "$1" ]
 then
   echo "Document root not exists"
   exit 1
 fi
 
-cp -r src $1/..
-echo "src moved to $1/.."
+before_dir=$(realpath $1/..)
+if cp -r src $before_dir;
+then
+  echo "src moved to $before_dir/src"
+else
+  permission_error $before_dir
+fi
 
 deploy_path=$1
 if [ "$#" -eq 2 ]
@@ -20,13 +30,21 @@ then
   deploy_path+="/$2"
   if [ ! -d $deploy_path ]
   then
-    mkdir -p $deploy_path
-    echo "Sub directory $deploy_path created"
+    if mkdir -p $deploy_path;
+    then
+      echo "Sub directory $deploy_path created"
+    else
+      permission_error $deploy_path
+    fi
   fi
 fi
 
-cp public/* $deploy_path
-echo "Files in public directory moved to $deploy_path"
+if cp public/* $deploy_path;
+then
+  echo "Files in public directory moved to $deploy_path"
+else
+  permission_error $deploy_path
+fi
 
 if [ "$#" -eq 2 ]
 then
