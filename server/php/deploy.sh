@@ -9,15 +9,15 @@ if [ "$#" -ne 1 ] && [ "$#" -ne 2 ]
 then
   echo "Usage: $0 [Document root] [Sub directory]"
   exit 1
-fi
-if [ ! -d "$1" ]
+elif [ ! -d "$1" ]
 then
   echo "Document root not exists"
   exit 1
 fi
 
+base_dir=$(dirname $0)
 before_dir=$(realpath $1/..)
-if \cp -r src $before_dir;
+if \cp -r $base_dir/src $before_dir > /dev/null 2>&1;
 then
   echo "src moved to $before_dir/src"
 else
@@ -30,7 +30,7 @@ then
   deploy_path+="/$2"
   if [ ! -d $deploy_path ]
   then
-    if mkdir -p $deploy_path;
+    if mkdir -p $deploy_path > /dev/null 2>&1;
     then
       echo "Sub directory $deploy_path created"
     else
@@ -39,7 +39,7 @@ then
   fi
 fi
 
-if \cp public/* $deploy_path;
+if \cp $base_dir/public/* $deploy_path > /dev/null 2>&1;
 then
   echo "Files in public directory moved to $deploy_path"
 else
