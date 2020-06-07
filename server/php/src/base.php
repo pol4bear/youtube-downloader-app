@@ -11,6 +11,7 @@
 
         $defaults = array(
             'token' => null,
+            'max_results' => 10,
             'region_code' => 'KR',
             'quality' => 'best',
             'url' => 'https://youtube.com/watch?v='
