@@ -14,3 +14,9 @@ You need to run backend server for search and YouTube.
 Backend server is developed in Node.js and PHP run whatever you want.
 
 Backend server is in [here](server).
+
+# FAQ
+
+## How can I deploy the app on other directory?
+
+You can change "homepage" value in package.json to deploy on other directory
