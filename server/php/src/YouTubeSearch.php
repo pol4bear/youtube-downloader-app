@@ -86,7 +86,6 @@
             ));
 
             $video = $searchResponse['items'][0];
-
             if (!isset($video)) throw new InvalidArgumentException();
             $videoSnippet = $video['snippet'];
             $result = array(
@@ -96,7 +95,8 @@
                 'description' => $videoSnippet['description'],
                 'publishedAt' => $videoSnippet['publishedAt'],
                 'tags' => $videoSnippet['tags'],
-                'title' => $videoSnippet['title']
+                'title' => $videoSnippet['title'],
+                'quality' => getVideoQuality($videoId)
             );
 
             return array(200, makeResult(true, $result));
@@ -122,15 +122,14 @@
         if ($return != 0) return null;
         $output = array_values($output);
         $result = array();
-        foreach (range(3, count($output) - 1) as $index) {
-            preg_match_all("/^(?<formatCode>[0-9]+)\s+(?<extension>[^\s]+)\s+(?<resolution>audio only|[[0-9]+x[0-9]+)\s+(?<note>.*)$/", $output[$index], $match);
-#            echo json_encode($match, JSON_PRETTY_PRINT);
-            array_push($result, array(
-                'formatCode' => $match['formatCode'][0],
-                'extension' => $match['extension'][0],
-                'resolution' => $match['resolution'][0],
-                'note' => $match['note'][0]
-            ));
+        foreach ($output as $quality) {
+            if (preg_match_all("/^(?<formatCode>[0-9]+)\s+(?<extension>[^\s]+)\s+(?<resolution>audio only|[[0-9]+x[0-9]+)\s+(?<note>.*)$/", $quality, $match))
+                array_push($result, array(
+                    'formatCode' => $match['formatCode'][0],
+                    'extension' => $match['extension'][0],
+                    'resolution' => $match['resolution'][0],
+                    'note' => $match['note'][0]
+                ));
         }
         return $result;
     }
