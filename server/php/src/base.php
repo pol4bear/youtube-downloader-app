@@ -19,7 +19,7 @@
         $keys = array_keys($defaults);
 
         foreach ($keys as $key)
-            if (isset($config[$key]))
+            if (!isset($config[$key]))
                 $config[$key] = $defaults[$key];
     }
 
