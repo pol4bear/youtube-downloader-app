@@ -48,27 +48,15 @@ const App: React.FC = () => {
             <Switch>
               <Route exact path={config.baseUrl} component={Home} />
               <Route
-                path={`${config.baseUrl}/search/:keyword`}
+                path={`${config.baseUrl}/search/:query`}
                 component={Search}
               />
-              <Route path={`${config.baseUrl}/watch`} component={Watch} />
+              <Route path={`${config.baseUrl}/search`} component={Search} />
               <Route path={`${config.baseUrl}/watch/:id`} component={Watch} />
+              <Route path={`${config.baseUrl}/watch`} component={Watch} />
               <Route
-                exact
                 path={`${config.baseUrl}/intl/:lang`}
                 component={() => <Intl changeLocale={changeLocale} />}
-              />
-              <Route
-                path={`${config.baseUrl}/intl/:lang/search/:keyword`}
-                component={Search}
-              />
-              <Route
-                path={`${config.baseUrl}/intl/:lang/watch`}
-                component={Watch}
-              />
-              <Route
-                path={`${config.baseUrl}/intl/:lang/watch/:id`}
-                component={Watch}
               />
               <Route component={NotFound} />
             </Switch>

@@ -37,9 +37,10 @@ const Intl: React.FC<IntlProp> = (props) => {
       <>
         <Switch>
           <Route exact path={`${match.url}`} component={Home} />
-          <Route path={`${match.url}/search/:keyword`} component={Search} />
-          <Route path={`${match.url}/watch`} component={Watch} />
+          <Route path={`${match.url}/search/:query`} component={Search} />
+          <Route path={`${match.url}/search`} component={Search} />
           <Route path={`${match.url}/watch/:id`} component={Watch} />
+          <Route path={`${match.url}/watch`} component={Watch} />
           <Route component={NotFound} />
         </Switch>
       </>
