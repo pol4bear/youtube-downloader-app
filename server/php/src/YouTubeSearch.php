@@ -96,7 +96,7 @@
                 'publishedAt' => $videoSnippet['publishedAt'],
                 'tags' => $videoSnippet['tags'],
                 'title' => $videoSnippet['title'],
-                'quality' => getVideoQuality($videoId)
+                'qualities' => getVideoQuality($videoId)
             );
 
             return array(200, makeResult(true, $result));
