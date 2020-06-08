@@ -61,7 +61,7 @@ const Watch: React.FC = () => {
               const result = e.response.data.result as FailResult;
               setError(result.code);
             } else setError(-1);
-          } else setError(-1);
+          }
           setLoading(false);
         });
     }
