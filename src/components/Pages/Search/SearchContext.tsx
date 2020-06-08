@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import { SearchItem, ServerResponse } from '../Types';
+import { SearchItem, SearchSuccessResult, ServerResponse } from '../Types';
 import requestData from '../../../utils/requestData';
 import { Dictionary } from '../../../common/Types';
 
@@ -35,7 +35,7 @@ function searchReducer(state: SearchState, action: SearchAction): SearchState {
     case START:
       return { ...state, loading: true };
     case LOADED: {
-      const { result } = action.response;
+      const result = action.response.result as SearchSuccessResult;
       const newData: SearchItem[] = result.items ? result.items : [];
       const token =
         result.nextPageToken !== undefined ? result.nextPageToken : null;
