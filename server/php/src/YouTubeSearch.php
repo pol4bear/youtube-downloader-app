@@ -139,9 +139,7 @@
     function validateVideoQuality(string $videoId, string $quality) {
         $validQualities = array_column(getVideoQuality($videoId), 'formatCode');
         if ($validQualities == null) return false;
-        if (in_array($quality, $validQualities))
-            return true;
-        return false;
+        return in_array($quality, $validQualities);
     }
 
     function makeResult(bool $success, $result) {
