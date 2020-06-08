@@ -3,13 +3,13 @@ import { Helmet } from 'react-helmet';
 import { faStickyNote } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { Main } from '../Layout';
+import CenterAligner from './CenterAligner';
 
 const NotFound: React.FC = () => {
   const intl = useIntl();
 
   return (
-    <Main className="align-center">
+    <CenterAligner>
       <Helmet>
         <title>{intl.messages.notfoundTitle}</title>
       </Helmet>
@@ -17,7 +17,7 @@ const NotFound: React.FC = () => {
         <FontAwesomeIcon icon={faStickyNote} />{' '}
         <FormattedMessage id="notfoundMessage" />
       </h1>
-    </Main>
+    </CenterAligner>
   );
 };
 

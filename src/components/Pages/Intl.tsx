@@ -1,8 +1,10 @@
 import React from 'react';
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { useIntl } from 'react-intl';
-import { Home, Search, Watch, NotFound } from './index';
+import { Home, Search, Watch } from './index';
+import NotFound from '../Layout/NotFound';
 import config from '../../common/Config';
+import { Main } from '../Layout';
 
 interface IntlProp {
   changeLocale?: (input: string) => void;
@@ -41,7 +43,13 @@ const Intl: React.FC<IntlProp> = (props) => {
           <Route path={`${match.url}/search`} component={Search} />
           <Route path={`${match.url}/watch/:id`} component={Watch} />
           <Route path={`${match.url}/watch`} component={Watch} />
-          <Route component={NotFound} />
+          <Route
+            component={() => (
+              <Main>
+                <NotFound />
+              </Main>
+            )}
+          />
         </Switch>
       </>
     );

@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import { useIntl } from 'react-intl';
 import { Col, Row, Skeleton } from 'antd';
 import { Main } from '../../Layout';
-import { NotFound } from '../index';
+import NotFound from '../../Layout/NotFound';
 import SearchItemCard from './SearchItemCard';
 import SearchContext, { SearchProvider } from './SearchContext';
 
@@ -58,28 +58,32 @@ const Search: React.FC = () => {
     };
   }, [element]);
 
-  return query ? (
+  return (
     <Main>
-      <Helmet>
-        <title>
-          {
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            `${intl.messages.search} - ${query}`
-          }
-        </title>
-      </Helmet>
-      <Row justify="center">
-        <Col xs={24} sm={24} md={24} lg={16}>
-          {data.map((item) => (
-            <SearchItemCard data={item} />
-          ))}
-          {loading && <Skeleton active />}
-          {!loading && more && <span ref={setElement} />}
-        </Col>
-      </Row>
+      {query ? (
+        <>
+          <Helmet>
+            <title>
+              {
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                `${intl.messages.search} - ${query}`
+              }
+            </title>
+          </Helmet>
+          <Row justify="center">
+            <Col xs={24} sm={24} md={24} lg={16}>
+              {data.map((item) => (
+                <SearchItemCard data={item} />
+              ))}
+              {loading && <Skeleton active />}
+              {!loading && more && <span ref={setElement} />}
+            </Col>
+          </Row>
+        </>
+      ) : (
+        <NotFound />
+      )}
     </Main>
-  ) : (
-    <NotFound />
   );
 };
 

@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import styled, { ThemeProvider } from 'styled-components';
 import { Layout } from 'antd';
-import { Home, Search, Watch, Intl, NotFound } from '../components/Pages';
-import { AppHeader, AppFooter } from '../components/Layout';
+import { Home, Search, Watch, Intl } from '../components/Pages';
+import NotFound from '../components/Layout/NotFound';
+import { AppHeader, AppFooter, Main } from '../components/Layout';
 import { getLocaleInfo, LocaleInfo } from '../locale';
 import config from './Config';
 import { getTheme, Theme } from '../themes';
@@ -58,7 +59,13 @@ const App: React.FC = () => {
                 path={`${config.baseUrl}/intl/:lang`}
                 component={() => <Intl changeLocale={changeLocale} />}
               />
-              <Route component={NotFound} />
+              <Route
+                component={() => (
+                  <Main>
+                    <NotFound />
+                  </Main>
+                )}
+              />
             </Switch>
             <AppFooter />
           </Wrapper>
