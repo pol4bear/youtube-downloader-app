@@ -8,7 +8,7 @@ import {
   faComment,
 } from '@fortawesome/free-solid-svg-icons';
 import { useHistory } from 'react-router';
-import { SearchItem } from './Types';
+import { SearchItem } from '../Types';
 
 interface SearchItemCardProps {
   data: SearchItem;
@@ -18,6 +18,9 @@ const SearchItemCard: React.FC<SearchItemCardProps> = (props) => {
   /* eslint-disable react/no-danger */
   const { data } = props;
   const history = useHistory();
+  const statistics = data.statistics
+    ? data.statistics
+    : { viewCount: 0, likeCount: 0, dislikeCount: 0, commentCount: 0 };
   return (
     <Card
       style={{ backgroundColor: 'transparent', borderColor: 'transparent' }}
@@ -43,7 +46,7 @@ const SearchItemCard: React.FC<SearchItemCardProps> = (props) => {
                 <FontAwesomeIcon icon={faPlay} />{' '}
                 <span
                   dangerouslySetInnerHTML={{
-                    __html: `${data.statistics.viewCount}`,
+                    __html: `${statistics.viewCount}`,
                   }}
                 />
               </p>
@@ -53,7 +56,7 @@ const SearchItemCard: React.FC<SearchItemCardProps> = (props) => {
                 <FontAwesomeIcon icon={faComment} />{' '}
                 <span
                   dangerouslySetInnerHTML={{
-                    __html: `${data.statistics.commentCount}`,
+                    __html: `${statistics.commentCount}`,
                   }}
                 />
               </p>
@@ -63,7 +66,7 @@ const SearchItemCard: React.FC<SearchItemCardProps> = (props) => {
                 <FontAwesomeIcon icon={faThumbsUp} />{' '}
                 <span
                   dangerouslySetInnerHTML={{
-                    __html: `${data.statistics.likeCount}`,
+                    __html: `${statistics.likeCount}`,
                   }}
                 />
               </p>
@@ -73,7 +76,7 @@ const SearchItemCard: React.FC<SearchItemCardProps> = (props) => {
                 <FontAwesomeIcon icon={faThumbsDown} />{' '}
                 <span
                   dangerouslySetInnerHTML={{
-                    __html: `${data.statistics.dislikeCount}`,
+                    __html: `${statistics.dislikeCount}`,
                   }}
                 />
               </p>

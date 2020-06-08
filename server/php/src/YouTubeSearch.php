@@ -96,6 +96,8 @@
                 'publishedAt' => $videoSnippet['publishedAt'],
                 'tags' => $videoSnippet['tags'],
                 'title' => $videoSnippet['title'],
+                'thumbnails' => $videoSnippet['thumbnails'],
+                'statistics' => $video['statistics'],
                 'qualities' => getVideoQuality($videoId)
             );
 

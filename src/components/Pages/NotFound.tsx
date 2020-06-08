@@ -11,11 +11,11 @@ const NotFound: React.FC = () => {
   return (
     <Main className="align-center">
       <Helmet>
-        <title>{intl.messages.title}</title>
+        <title>{intl.messages.notfoundTitle}</title>
       </Helmet>
       <h1>
         <FontAwesomeIcon icon={faStickyNote} />{' '}
-        <FormattedMessage id="notfound-message" />
+        <FormattedMessage id="notfoundMessage" />
       </h1>
     </Main>
   );

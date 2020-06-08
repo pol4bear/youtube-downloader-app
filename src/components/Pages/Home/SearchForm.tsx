@@ -28,8 +28,8 @@ const SearchForm: React.FC = () => {
     }
   };
 
-  const message = intl.formatMessage({ id: 'searchform-message' });
-  const placeholder = intl.formatMessage({ id: 'searchform-placeholder' });
+  const message = intl.formatMessage({ id: 'searchFormMessage' });
+  const placeholder = intl.formatMessage({ id: 'searchFormPlaceholder' });
 
   return (
     <>

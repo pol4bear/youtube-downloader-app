@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import { SearchItem, SearchResponse } from './Types';
+import { SearchItem, SearchResponse } from '../Types';
 import requestData from '../../../utils/requestData';
 import { Dictionary } from '../../../common/Types';
 

@@ -2,8 +2,10 @@
   "title": "유튜브 다운로더",
   "home": "홈",
   "search": "검색",
-  "searchform-message": "유튜브 영상 이름이나 주소 입력",
-  "searchform-placeholder": "검색",
-  "notfound-title": "페이지를 찾을 수 없습니다",
-  "notfound-message": "페이지를 찾을 수 없습니다"
+  "searchFormMessage": "유튜브 영상 이름이나 주소 입력",
+  "searchFormPlaceholder": "검색",
+  "notfoundTitle": "페이지를 찾을 수 없습니다",
+  "notfoundMessage": "페이지를 찾을 수 없습니다",
+  "loading": "로딩 중...",
+  "failedToLoad": "로딩 실패"
 }
