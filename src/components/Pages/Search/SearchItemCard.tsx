@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Col, Row } from 'antd';
+import { Card, Col, Row, Statistic } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faPlay,
@@ -8,6 +8,7 @@ import {
   faComment,
 } from '@fortawesome/free-solid-svg-icons';
 import { useHistory } from 'react-router';
+import { useIntl } from 'react-intl';
 import { SearchItem } from '../Types';
 
 interface SearchItemCardProps {
@@ -16,6 +17,7 @@ interface SearchItemCardProps {
 
 const SearchItemCard: React.FC<SearchItemCardProps> = (props) => {
   /* eslint-disable react/no-danger */
+  const intl = useIntl();
   const { data } = props;
   const history = useHistory();
   const statistics = data.statistics
@@ -42,44 +44,32 @@ const SearchItemCard: React.FC<SearchItemCardProps> = (props) => {
               <p dangerouslySetInnerHTML={{ __html: data.description }} />
             </Col>
             <Col xs={12} sm={12} md={6} lg={6}>
-              <p>
-                <FontAwesomeIcon icon={faPlay} />{' '}
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: `${statistics.viewCount}`,
-                  }}
-                />
-              </p>
+              <Statistic
+                title={intl.messages.viewCount as string}
+                value={statistics.viewCount}
+                prefix={<FontAwesomeIcon icon={faPlay} />}
+              />
             </Col>
             <Col xs={12} sm={12} md={6} lg={6}>
-              <p>
-                <FontAwesomeIcon icon={faComment} />{' '}
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: `${statistics.commentCount}`,
-                  }}
-                />
-              </p>
+              <Statistic
+                title={intl.messages.commentCount as string}
+                value={statistics.commentCount}
+                prefix={<FontAwesomeIcon icon={faComment} />}
+              />
             </Col>
             <Col xs={12} sm={12} md={6} lg={6}>
-              <p>
-                <FontAwesomeIcon icon={faThumbsUp} />{' '}
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: `${statistics.likeCount}`,
-                  }}
-                />
-              </p>
+              <Statistic
+                title={intl.messages.likeCount as string}
+                value={statistics.likeCount}
+                prefix={<FontAwesomeIcon icon={faThumbsUp} />}
+              />
             </Col>
             <Col xs={12} sm={12} md={6} lg={6}>
-              <p>
-                <FontAwesomeIcon icon={faThumbsDown} />{' '}
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: `${statistics.dislikeCount}`,
-                  }}
-                />
-              </p>
+              <Statistic
+                title={intl.messages.dislikeCount as string}
+                value={statistics.dislikeCount}
+                prefix={<FontAwesomeIcon icon={faThumbsDown} />}
+              />
             </Col>
           </Row>
         </Col>
