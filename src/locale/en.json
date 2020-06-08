@@ -7,5 +7,10 @@
   "pageNotfound": "Page not found",
   "serviceNotAvailable": "Service not available",
   "loading": "Loading",
-  "failedToLoad": "Failed to load"
+  "failedToLoad": "Failed to load",
+  "viewCount": "Views",
+  "likeCount": "Likes",
+  "dislikeCount": "Dislikes",
+  "commentCount": "Comments",
+  "download": "Download"
 }
