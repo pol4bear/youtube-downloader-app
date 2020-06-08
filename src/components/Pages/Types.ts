@@ -46,7 +46,7 @@ export interface Quality {
 
 export interface VideoSuccessResult extends SearchItem {
   tags: string[];
-  qualities: Quality[];
+  qualities: Quality[] | null;
 }
 
 export interface FailResult {

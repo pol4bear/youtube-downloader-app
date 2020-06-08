@@ -52,7 +52,10 @@ const Watch: React.FC = () => {
         .then((response) => {
           const result = response.data.result as VideoSuccessResult;
           setData(result);
-          setQuality(result.qualities[result.qualities.length - 1].formatCode);
+          if (result.qualities)
+            setQuality(
+              result.qualities[result.qualities.length - 1].formatCode
+            );
           setLoading(false);
         })
         .catch((e: AxiosError<ServerResponse>) => {
@@ -74,7 +77,7 @@ const Watch: React.FC = () => {
       </Main>
     );
   }
-  if (error !== 0 || data === null)
+  if (error !== 0 || data === null || data.qualities === null)
     return (
       <Main>
         <ErrorElement error={error} />
