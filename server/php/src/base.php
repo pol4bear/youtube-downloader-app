@@ -34,7 +34,7 @@
                 break;
             case 2:
                 $responseCode = 503;
-                $error['message'] = "YouTube search is not available because of some reason.";
+                $error['message'] = "Daily API request limit try again later.";
                 break;
             case 3:
                 $responseCode = 404;
