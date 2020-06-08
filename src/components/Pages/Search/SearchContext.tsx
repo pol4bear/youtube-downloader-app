@@ -11,13 +11,18 @@ import { Dictionary } from '../../../common/Types';
 
 const START = 'START' as const;
 const LOADED = 'LOADED' as const;
+const STOP = 'STOP' as const;
 
 export const start = () => ({ type: START });
 export const loaded = (response: ServerResponse) => ({
   type: LOADED,
   response,
 });
-type SearchAction = ReturnType<typeof start> | ReturnType<typeof loaded>;
+export const stop = (error: number) => ({ type: STOP, error });
+type SearchAction =
+  | ReturnType<typeof start>
+  | ReturnType<typeof loaded>
+  | ReturnType<typeof stop>;
 
 interface SearchState {
   loading: boolean;
@@ -53,6 +58,8 @@ function searchReducer(state: SearchState, action: SearchAction): SearchState {
         more: token !== null,
       };
     }
+    case STOP:
+      return { ...state, loading: false, error: action.error };
     default:
       throw new Error('Unknown action');
   }
@@ -82,10 +89,14 @@ export const SearchProvider = (props: SearchProviderProps) => {
         dispatch(loaded(response.data));
       })
       .catch((e: AxiosError<ServerResponse>) => {
+        let error = -1;
         if (e.response) {
-          const result = e.response.data.result as FailResult;
-          searchState.error = result.code;
-        } else searchState.error = -1;
+          if (e.response.data.success) {
+            const result = e.response.data.result as FailResult;
+            error = result.code;
+          }
+        }
+        dispatch(stop(error));
       });
   };
   searchState.load = load;

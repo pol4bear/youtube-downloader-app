@@ -19,12 +19,16 @@ const SearchForm: React.FC = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const result: RegExpExecArray | null = regexYoutubeUrl.exec(q);
+    const slash =
+      history.location.pathname[history.location.pathname.length - 1] === '/'
+        ? ''
+        : '/';
 
     if (result !== null) {
       const id: string = result.groups ? result.groups.id : '';
-      history.push(`${history.location.pathname}/watch?v=${id}`);
+      history.push(`${history.location.pathname}${slash}watch?v=${id}`);
     } else {
-      history.push(`${history.location.pathname}/search/${q}`);
+      history.push(`${history.location.pathname}${slash}search/${q}`);
     }
   };
 

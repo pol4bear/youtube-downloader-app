@@ -57,8 +57,10 @@ const Watch: React.FC = () => {
         })
         .catch((e: AxiosError<ServerResponse>) => {
           if (e.response) {
-            const result = e.response.data.result as FailResult;
-            setError(result.code);
+            if (e.response.data.success) {
+              const result = e.response.data.result as FailResult;
+              setError(result.code);
+            } else setError(-1);
           } else setError(-1);
           setLoading(false);
         });

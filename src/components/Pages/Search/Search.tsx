@@ -66,13 +66,13 @@ const Search: React.FC = () => {
         <NotFound />
       </Main>
     );
-  if (loading && data.length < 1) return <LoadWrapper />;
   if (error !== 0)
     return (
       <Main>
         <ErrorElement error={error} />
       </Main>
     );
+  if (loading && data.length < 1) return <LoadWrapper />;
   return (
     <Main>
       <Helmet>
