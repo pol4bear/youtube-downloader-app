@@ -4,8 +4,8 @@
   "search": "Search",
   "searchFormMessage": "Search YouTube or insert URL",
   "searchFormPlaceholder": "Search",
-  "notfoundTitle": "Page not found",
-  "notfoundMessage": "Page not found",
+  "pageNotfound": "Page not found",
+  "serviceNotAvailable": "Service not available",
   "loading": "Loading",
   "failedToLoad": "Failed to load"
 }
