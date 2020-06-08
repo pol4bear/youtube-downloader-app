@@ -105,7 +105,7 @@ export interface FailResult {
 
 export type Result = SearchSuccessResult | VideoSuccessResult | FailResult;
 
-export interface SearchResponse {
+export interface ServerResponse {
   success: boolean;
   result: Result;
 }

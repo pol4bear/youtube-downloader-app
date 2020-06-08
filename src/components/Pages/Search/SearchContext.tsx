@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import { SearchItem, SearchResponse } from '../Types';
+import { SearchItem, ServerResponse } from '../Types';
 import requestData from '../../../utils/requestData';
 import { Dictionary } from '../../../common/Types';
 
@@ -7,7 +7,7 @@ const START = 'START' as const;
 const LOADED = 'LOADED' as const;
 
 export const start = () => ({ type: START });
-export const loaded = (response: SearchResponse) => ({
+export const loaded = (response: ServerResponse) => ({
   type: LOADED,
   response,
 });
@@ -71,7 +71,7 @@ export const SearchProvider = (props: SearchProviderProps) => {
     };
     if (searchState.token !== null) params.token = searchState.token;
 
-    requestData<SearchResponse>('search.php', params)
+    requestData<ServerResponse>('search.php', params)
       .then((response) => {
         dispatch(loaded(response.data));
       })
