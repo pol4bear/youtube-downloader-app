@@ -3,11 +3,11 @@ import { Helmet } from 'react-helmet';
 import { useIntl } from 'react-intl';
 import { useLocation, useRouteMatch } from 'react-router';
 import { AxiosError } from 'axios';
-import { Main } from '../../Layout';
-import { VideoSuccessResult, ServerResponse, FailResult } from '../Types';
-import requestData from '../../../utils/requestData';
-import LoadWrapper from '../../Layout/LoadWrapper';
-import NotFound from '../../Layout/NotFound';
+import { Main } from '../Layout';
+import { VideoSuccessResult, ServerResponse, FailResult } from './Types';
+import requestData from '../../utils/requestData';
+import LoadWrapper from '../Layout/LoadWrapper';
+import NotFound from '../Layout/NotFound';
 
 interface MatchParams {
   lang?: string;
