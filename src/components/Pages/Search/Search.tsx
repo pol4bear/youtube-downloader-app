@@ -8,6 +8,8 @@ import { Main } from '../../Layout';
 import NotFound from '../../Layout/NotFound';
 import SearchItemCard from './SearchItemCard';
 import SearchContext, { SearchProvider } from './SearchContext';
+import ErrorElement from '../../Layout/ErrorElement';
+import LoadWrapper from '../../Layout/LoadWrapper';
 
 interface MatchParams {
   lang?: string;
@@ -22,7 +24,7 @@ const Search: React.FC = () => {
   const query: string | null = match.params.query
     ? match.params.query
     : urlParams.get('q');
-  const { data, loading, more, load } = React.useContext(SearchContext);
+  const { data, loading, more, error, load } = React.useContext(SearchContext);
   const loader = React.useRef(load);
   const observer = React.useRef(
     /* eslint-disable no-unused-expressions */
@@ -58,31 +60,38 @@ const Search: React.FC = () => {
     };
   }, [element]);
 
+  if (!query)
+    return (
+      <Main>
+        <NotFound />
+      </Main>
+    );
+  if (loading && data.length < 1) return <LoadWrapper />;
+  if (error !== 0)
+    return (
+      <Main>
+        <ErrorElement error={error} />
+      </Main>
+    );
   return (
     <Main>
-      {query ? (
-        <>
-          <Helmet>
-            <title>
-              {
-                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                `${intl.messages.search} - ${query}`
-              }
-            </title>
-          </Helmet>
-          <Row justify="center">
-            <Col xs={24} sm={24} md={24} lg={16}>
-              {data.map((item) => (
-                <SearchItemCard data={item} />
-              ))}
-              {loading && <Skeleton active />}
-              {!loading && more && <span ref={setElement} />}
-            </Col>
-          </Row>
-        </>
-      ) : (
-        <NotFound />
-      )}
+      <Helmet>
+        <title>
+          {
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            `${intl.messages.search} - ${query}`
+          }
+        </title>
+      </Helmet>
+      <Row justify="center">
+        <Col xs={24} sm={24} md={24} lg={16}>
+          {data.map((item) => (
+            <SearchItemCard data={item} />
+          ))}
+          {loading && <Skeleton active />}
+          {!loading && more && <span ref={setElement} />}
+        </Col>
+      </Row>
     </Main>
   );
 };

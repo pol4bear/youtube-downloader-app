@@ -1,5 +1,11 @@
 import React, { useReducer } from 'react';
-import { SearchItem, SearchSuccessResult, ServerResponse } from '../Types';
+import { AxiosError } from 'axios';
+import {
+  FailResult,
+  SearchItem,
+  SearchSuccessResult,
+  ServerResponse,
+} from '../Types';
 import requestData from '../../../utils/requestData';
 import { Dictionary } from '../../../common/Types';
 
@@ -16,7 +22,7 @@ type SearchAction = ReturnType<typeof start> | ReturnType<typeof loaded>;
 interface SearchState {
   loading: boolean;
   more: boolean;
-  error: boolean;
+  error: number;
   data: SearchItem[];
   token: string | null;
   load: ((query: string | null) => void) | undefined;
@@ -24,7 +30,7 @@ interface SearchState {
 const initialState: SearchState = {
   loading: false,
   more: true,
-  error: false,
+  error: 0,
   data: [],
   token: null,
   load: undefined,
@@ -75,9 +81,11 @@ export const SearchProvider = (props: SearchProviderProps) => {
       .then((response) => {
         dispatch(loaded(response.data));
       })
-      .catch((error) => {
-        console.log(error);
-        searchState.error = true;
+      .catch((e: AxiosError<ServerResponse>) => {
+        if (e.response) {
+          const result = e.response.data.result as FailResult;
+          searchState.error = result.code;
+        } else searchState.error = -1;
       });
   };
   searchState.load = load;

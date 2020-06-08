@@ -16,9 +16,8 @@ import { Main } from '../Layout';
 import { VideoSuccessResult, ServerResponse, FailResult } from './Types';
 import requestData from '../../utils/requestData';
 import LoadWrapper from '../Layout/LoadWrapper';
-import NotFound from '../Layout/NotFound';
-import NotAvailable from '../Layout/NotAvailable';
 import config from '../../common/Config';
+import ErrorElement from '../Layout/ErrorElement';
 
 interface MatchParams {
   lang?: string;
@@ -40,19 +39,6 @@ const Watch: React.FC = () => {
   const [error, setError] = useState<number>(0);
   const [data, setData] = useState<VideoSuccessResult | null>(null);
   const [quality, setQuality] = useState<string>('');
-
-  const getErrorElement = () => {
-    switch (error) {
-      case 3:
-        return <NotFound />;
-      case 2:
-        return <NotAvailable />;
-      case -1:
-        return <NotAvailable />;
-      default:
-        return <NotAvailable />;
-    }
-  };
 
   const onQualityChange = (value: string) => {
     setQuality(value);
@@ -86,7 +72,12 @@ const Watch: React.FC = () => {
       </Main>
     );
   }
-  if (error !== 0 || data === null) return <Main>{getErrorElement()}</Main>;
+  if (error !== 0 || data === null)
+    return (
+      <Main>
+        <ErrorElement error={error} />
+      </Main>
+    );
 
   const statistics = data.statistics
     ? data.statistics
