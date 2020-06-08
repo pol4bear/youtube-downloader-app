@@ -70,9 +70,7 @@ const App: React.FC = () => {
 
 const Wrapper = styled(Layout)`
   background-color: ${(props) => props.theme.contentBackground};
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  min-height: 100vh;
   width: 100%;
 
   h1,

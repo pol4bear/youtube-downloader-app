@@ -3,17 +3,20 @@ import { Helmet } from 'react-helmet';
 import { useIntl } from 'react-intl';
 import { Main } from '../../Layout';
 import SearchForm from './SearchForm';
+import CenterAligner from '../../Layout/CenterAligner';
 
 const Home: React.FC = () => {
   const intl = useIntl();
   const title = intl.formatMessage({ id: 'title' });
 
   return (
-    <Main className="align-center">
+    <Main>
       <Helmet>
         <title>{title}</title>
       </Helmet>
-      <SearchForm />
+      <CenterAligner>
+        <SearchForm />
+      </CenterAligner>
     </Main>
   );
 };

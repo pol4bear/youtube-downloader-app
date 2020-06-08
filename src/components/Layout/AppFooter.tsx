@@ -13,7 +13,11 @@ const AppFooter: React.FC = () => {
       <p>
         <FontAwesomeIcon icon={faCopyright} fixedWidth />
         2020 Pol4bear |{' '}
-        <a href="https://github.com/pol4bear/youtube-downloader-app">
+        <a
+          href="https://github.com/pol4bear/youtube-downloader-app"
+          rel="noreferrer"
+          target="_blank"
+        >
           <FontAwesomeIcon icon={faGithub} />
           GitHub
         </a>

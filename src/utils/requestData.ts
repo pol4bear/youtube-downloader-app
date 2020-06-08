@@ -1,7 +1,6 @@
-import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
-import { cacheAdapterEnhancer } from 'axios-extensions';
-import history from './history';
+import axios, { AxiosResponse } from 'axios';
 import config from '../common/Config';
+import { Dictionary } from '../common/Types';
 
 const instance = axios.create({
   baseURL: config.serverUrl,
@@ -9,27 +8,17 @@ const instance = axios.create({
     'Content-Type': 'application/x-www-form-urlencoded',
   },
   timeout: 1000 * 60,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  adapter: cacheAdapterEnhancer(axios.defaults.adapter!, {
-    enabledByDefault: false,
-  }),
-});
-
-const historyPopCache = (): AxiosRequestConfig => ({
-  forceUpdate: history.action === 'PUSH',
-  cache: true,
 });
 
 const requestData = async <DataType = never>(
   path: string,
-  callback: (response: AxiosResponse<DataType>) => void
-): Promise<void> => {
-  const response: AxiosResponse<DataType> = await instance.get(
-    path,
-    historyPopCache()
-  );
+  params?: Dictionary<string>
+) => {
+  const response: AxiosResponse<DataType> = await instance.get(path, {
+    params,
+  });
 
-  callback(response);
+  return response;
 };
 
 export default requestData;

@@ -27,15 +27,33 @@ export interface SearchItem {
   statistics: Statistics;
 }
 
-export interface SearchResult {
-  success: boolean;
-  result: {
-    nextPageToken: string | null;
-    prevPageToken: string | null;
-    pageInfo: {
-      resultsPerPage: number;
-      totalResults: number;
-    };
-    items: [SearchItem];
+export interface SearchSuccessResult {
+  nextPageToken: string | null;
+  prevPageToken: string | null;
+  pageInfo: {
+    resultsPerPage: number;
+    totalResults: number;
   };
+  items: [SearchItem];
+  code?: undefined;
+  message?: undefined;
+}
+
+export interface SearchFailResult {
+  code: number;
+  message: string;
+  nextPageToken?: undefined;
+  prevPageToken?: undefined;
+  pageInfo?: {
+    resultsPerPage?: undefined;
+    totalResults?: undefined;
+  };
+  items?: undefined;
+}
+
+export type SearchResult = SearchSuccessResult | SearchFailResult;
+
+export interface SearchResponse {
+  success: boolean;
+  result: SearchResult;
 }
