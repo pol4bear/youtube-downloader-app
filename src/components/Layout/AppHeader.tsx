@@ -60,10 +60,10 @@ const AppHeader: React.FC<AppHeaderProp> = (props) => {
         <SubMenu title={getLocaleName(intl.locale).name}>
           {getLocaleLinks()}
         </SubMenu>
-        <Menu.Item key="theme">
-          <button type="button" onClick={changeTheme}>
+        <Menu.Item key="theme" onClick={changeTheme}>
+          <span>
             <FontAwesomeIcon icon={faAdjust} rotation={180} fixedWidth />
-          </button>
+          </span>
         </Menu.Item>
       </TopMenu>
     </MyHeader>
