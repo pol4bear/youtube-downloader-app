@@ -26,11 +26,11 @@ export const getLocaleInfo = (locale: string | undefined): LocaleInfo => {
   let localeCode = locale;
   if (localeCode !== undefined) localeCode = localeCode.substr(0, 2);
 
-  switch (locale) {
+  switch (localeCode) {
     case 'ko':
-      return { locale, messages: ko };
+      return { locale: localeCode, messages: ko };
     case 'en':
-      return { locale, messages: en };
+      return { locale: localeCode, messages: en };
     default:
       return getLocaleInfo(config.defaultLocale);
   }
