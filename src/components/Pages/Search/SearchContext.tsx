@@ -8,6 +8,7 @@ import {
 } from '../Types';
 import requestData from '../../../utils/requestData';
 import { Dictionary } from '../../../common/Types';
+import config from '../../../common/Config';
 
 const START = 'START' as const;
 const LOADED = 'LOADED' as const;
@@ -84,7 +85,7 @@ export const SearchProvider = (props: SearchProviderProps) => {
     };
     if (searchState.token !== null) params.token = searchState.token;
 
-    requestData<ServerResponse>('search.php', params)
+    requestData<ServerResponse>(`search${config.serverSuffix}`, params)
       .then((response) => {
         dispatch(loaded(response.data));
       })

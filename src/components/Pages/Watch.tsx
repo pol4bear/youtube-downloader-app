@@ -48,7 +48,7 @@ const Watch: React.FC = () => {
     if (id === null) setLoading(false);
     else if (!requested) {
       setRequested(true);
-      requestData<ServerResponse>('video.php', { v: id })
+      requestData<ServerResponse>(`video${config.serverSuffix}`, { v: id })
         .then((response) => {
           const result = response.data.result as VideoSuccessResult;
           setData(result);

@@ -4,6 +4,7 @@ export type Config = {
   defaultLocale: string;
   locales: string[];
   serverUrl: string;
+  serverSuffix: string;
 };
 
 const config: Config = {
@@ -18,6 +19,9 @@ const config: Config = {
   serverUrl: process.env.REACT_APP_SERVER_URL
     ? process.env.REACT_APP_SERVER_URL
     : '/',
+  serverSuffix: process.env.REACT_APP_SERVER_SUFFIX
+    ? process.env.REACT_APP_SERVER_SUFFIX
+    : '',
 };
 
 export default config;
