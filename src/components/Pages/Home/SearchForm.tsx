@@ -37,10 +37,10 @@ const SearchForm: React.FC = () => {
 
   return (
     <>
-      <h2>
+      <h3>
         <FontAwesomeIcon icon={faYoutube} />
         {message}
-      </h2>
+      </h3>
       <FormGroup className="field" onSubmit={handleSubmit}>
         <FormField
           type="input"

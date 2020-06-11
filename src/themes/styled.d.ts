@@ -5,5 +5,6 @@ declare module 'styled-components' {
     background: string;
     contentBackground: string;
     fontColor: string;
+    menuHover: string;
   }
 }

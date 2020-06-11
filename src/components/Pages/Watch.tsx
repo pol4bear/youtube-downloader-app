@@ -101,14 +101,14 @@ const Watch: React.FC = () => {
             }}
           >
             <Row gutter={[16, 24]}>
-              <Col xs={12} sm={12} md={8} lg={6}>
+              <Col xs={24} sm={24} md={24} lg={8}>
                 <img
                   alt="Thumbnail"
                   src={data.thumbnails.high.url}
                   width="100%"
                 />
               </Col>
-              <Col xs={12} sm={12} md={16} lg={18}>
+              <Col xs={24} sm={24} md={24} lg={16}>
                 <Row>
                   <Col span={24}>
                     <h1 dangerouslySetInnerHTML={{ __html: data.title }} />
@@ -119,28 +119,28 @@ const Watch: React.FC = () => {
                       dangerouslySetInnerHTML={{ __html: data.description }}
                     />
                   </Col>
-                  <Col xs={12} sm={12} md={6} lg={6}>
+                  <Col span={12}>
                     <Statistic
                       title={intl.messages.viewCount as string}
                       value={statistics.viewCount}
                       prefix={<FontAwesomeIcon icon={faPlay} />}
                     />
                   </Col>
-                  <Col xs={12} sm={12} md={6} lg={6}>
+                  <Col span={12}>
                     <Statistic
                       title={intl.messages.commentCount as string}
                       value={statistics.commentCount}
                       prefix={<FontAwesomeIcon icon={faComment} />}
                     />
                   </Col>
-                  <Col xs={12} sm={12} md={6} lg={6}>
+                  <Col span={12}>
                     <Statistic
                       title={intl.messages.likeCount as string}
                       value={statistics.likeCount}
                       prefix={<FontAwesomeIcon icon={faThumbsUp} />}
                     />
                   </Col>
-                  <Col xs={12} sm={12} md={6} lg={6}>
+                  <Col span={12}>
                     <Statistic
                       title={intl.messages.dislikeCount as string}
                       value={statistics.dislikeCount}
