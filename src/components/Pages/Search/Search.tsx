@@ -24,7 +24,9 @@ const Search: React.FC = () => {
   const query: string | null = match.params.query
     ? match.params.query
     : urlParams.get('q');
-  const { data, loading, more, error, load } = React.useContext(SearchContext);
+  const { data, loading, more, error, setQuery, load } = React.useContext(
+    SearchContext
+  );
   const loader = React.useRef(load);
   const observer = React.useRef(
     /* eslint-disable no-unused-expressions */
@@ -32,7 +34,7 @@ const Search: React.FC = () => {
       (entries) => {
         const first = entries[0];
         if (first.isIntersecting) {
-          loader.current && loader.current(query);
+          loader.current && loader.current();
         }
       },
       { threshold: 1 }
@@ -40,6 +42,8 @@ const Search: React.FC = () => {
     /* eslint-enable no-unused-expressions */
   );
   const [element, setElement] = useState<Element | null>(null);
+
+  if (setQuery) setQuery(query);
 
   useEffect(() => {
     loader.current = load;

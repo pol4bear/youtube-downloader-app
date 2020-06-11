@@ -31,7 +31,8 @@ interface SearchState {
   error: number;
   data: SearchItem[];
   token: string | null;
-  load: ((query: string | null) => void) | undefined;
+  setQuery: ((query: string | null) => void) | undefined;
+  load: (() => void) | undefined;
 }
 const initialState: SearchState = {
   loading: false,
@@ -39,6 +40,7 @@ const initialState: SearchState = {
   error: 0,
   data: [],
   token: null,
+  setQuery: undefined,
   load: undefined,
 };
 
@@ -76,8 +78,14 @@ export const SearchProvider = (props: SearchProviderProps) => {
   const { children } = props;
   let q: string | null = null;
 
-  const load = (query: string | null) => {
-    if (q == null) q = query;
+  const setQuery = (query: string | null) => {
+    q = query;
+  };
+  searchState.setQuery = setQuery;
+
+  const load = () => {
+    if (!q) return;
+
     dispatch(start());
 
     const params: Dictionary<string> = {
