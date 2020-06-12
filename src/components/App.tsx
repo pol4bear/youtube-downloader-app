@@ -3,11 +3,10 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import styled, { ThemeProvider } from 'styled-components';
 import { Layout } from 'antd';
-import { Home, Search, Watch, Intl } from '../components/Pages';
-import NotFound from '../components/Layout/NotFound';
-import { AppHeader, AppFooter, Main } from '../components/Layout';
+import { Home, Search, Watch, Intl } from './Pages';
+import { AppHeader, AppFooter, Main, NotFound } from './Layout';
 import { getLocaleInfo, LocaleInfo } from '../locale';
-import config from './Config';
+import config from '../common/Config';
 import { getTheme, Theme } from '../themes';
 
 const App: React.FC = () => {
@@ -23,16 +22,24 @@ const App: React.FC = () => {
         : 'light';
   }
   const [currentTheme, setCurrentTheme] = useState<Theme>(initialTheme);
-
   const initialLocale = getLocaleInfo(config.currentLocale);
+
   const [currentLocale, setCurrentLocale] = useState<LocaleInfo>(initialLocale);
 
+  /**
+   * Switch theme light/dark.
+   */
   const changeTheme = () => {
     const oppositeTheme = currentTheme === 'light' ? 'dark' : 'light';
     setCurrentTheme(oppositeTheme);
     localStorage.setItem('theme', oppositeTheme);
   };
 
+  /**
+   * Change locale
+   *
+   * @param input
+   */
   const changeLocale = (input: string) => {
     if (currentLocale.locale !== input) setCurrentLocale(getLocaleInfo(input));
   };

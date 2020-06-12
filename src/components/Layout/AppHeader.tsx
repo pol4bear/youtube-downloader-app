@@ -19,20 +19,36 @@ type AppHeaderProp = {
 const AppHeader: React.FC<AppHeaderProp> = (props) => {
   const intl = useIntl();
   const location = useLocation();
+
   const subDir: string[] = location.pathname.split(config.baseUrl);
+  /**
+   * Path of index page.
+   */
   const home =
     config.baseUrl +
     (subDir.length >= 2 && subDir[1].startsWith('/intl')
       ? `/intl/${intl.locale}`
       : '');
+
+  /**
+   * Mobile menu visible state and setter.
+   */
   const [visible, setVisible] = useState<boolean>(false);
 
+  /**
+   * Execute props.changeTheme if it exists.
+   */
   const changeTheme = () => {
     if (props.changeTheme) props.changeTheme();
   };
+
+  /**
+   * Get change locale links.
+   */
   const getLocaleLinks = () => {
     const localeLinks: JSX.Element[] = [];
 
+    // Loop config.locales and add to localeLinks if is not current locale.
     config.locales.forEach((locale: string) => {
       if (locale !== intl.locale)
         localeLinks.push(
@@ -47,10 +63,16 @@ const AppHeader: React.FC<AppHeaderProp> = (props) => {
     return localeLinks;
   };
 
+  /**
+   * Show mobile menu.
+   */
   const showDrawer = () => {
     setVisible(true);
   };
 
+  /**
+   * Close mobile menu.
+   */
   const onClose = () => {
     setVisible(false);
   };
@@ -137,14 +159,15 @@ const Logo = styled.div`
   &:hover > a {
     color: ${(props) => props.theme.menuHover} !important;
   }
-  
+
   @media (max-width: 767px) {
     left: 20px;
-    
+
     & > a {
-    letter-spacing: 2px;
+      letter-spacing: 2px;
+    }
   }
-}`;
+`;
 
 const PcMenu = styled(Menu)`
   background-color: transparent !important;

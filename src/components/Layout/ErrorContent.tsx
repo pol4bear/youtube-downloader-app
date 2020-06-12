@@ -2,11 +2,11 @@ import React from 'react';
 import NotFound from './NotFound';
 import NotAvailable from './NotAvailable';
 
-interface ErrorElementProps {
+interface ErrorContentProps {
   error: number;
 }
 
-const ErrorElement: React.FC<ErrorElementProps> = ({ error }) => {
+const ErrorContent: React.FC<ErrorContentProps> = ({ error }) => {
   switch (error) {
     case 3:
       return <NotFound />;
@@ -15,4 +15,4 @@ const ErrorElement: React.FC<ErrorElementProps> = ({ error }) => {
   }
 };
 
-export default ErrorElement;
+export default ErrorContent;

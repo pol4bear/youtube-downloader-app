@@ -4,12 +4,9 @@ import 'intersection-observer';
 import { Helmet } from 'react-helmet';
 import { useIntl } from 'react-intl';
 import { Col, Row, Skeleton } from 'antd';
-import { Main } from '../../Layout';
-import NotFound from '../../Layout/NotFound';
+import { Main, NotFound, ErrorContent, LoadWrapper } from '../../Layout';
 import SearchItemCard from './SearchItemCard';
-import SearchContext, { SearchProvider } from './SearchContext';
-import ErrorElement from '../../Layout/ErrorElement';
-import LoadWrapper from '../../Layout/LoadWrapper';
+import SearchContext, { SearchProvider } from '../../../contexts/SearchContext';
 
 interface MatchParams {
   lang?: string;
@@ -73,7 +70,7 @@ const Search: React.FC = () => {
   if (error !== 0)
     return (
       <Main>
-        <ErrorElement error={error} />
+        <ErrorContent error={error} />
       </Main>
     );
   if (loading && data.length < 1) return <LoadWrapper />;

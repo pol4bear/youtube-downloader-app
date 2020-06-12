@@ -12,12 +12,14 @@ import {
   faThumbsUp,
 } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
-import { Main } from '../Layout';
-import { VideoSuccessResult, ServerResponse, FailResult } from './Types';
+import { Main, ErrorContent, LoadWrapper } from '../Layout';
+import {
+  VideoSuccessResult,
+  ServerResponse,
+  FailResult,
+} from '../../types/ResponseTypes';
 import requestData from '../../utils/requestData';
-import LoadWrapper from '../Layout/LoadWrapper';
 import config from '../../common/Config';
-import ErrorElement from '../Layout/ErrorElement';
 
 interface MatchParams {
   lang?: string;
@@ -30,22 +32,54 @@ const Watch: React.FC = () => {
   const intl = useIntl();
   const match = useRouteMatch<MatchParams>();
   const location = useLocation();
+
+  /**
+   * URL parameters.
+   */
   const urlParams = new URLSearchParams(location.search);
+
+  /**
+   * Video id.
+   */
   const id: string | null = match.params.id
     ? match.params.id
     : urlParams.get('v');
+
+  /**
+   * Make loading wrapper visible.
+   */
   const [loading, setLoading] = useState<boolean>(true);
+  /**
+   * Check if request started.
+   */
   const [requested, setRequested] = useState<boolean>(false);
+  /**
+   * Check if error was throned while request.
+   */
   const [error, setError] = useState<number>(0);
+  /**
+   * Response data.
+   */
   const [data, setData] = useState<VideoSuccessResult | null>(null);
+  /**
+   * Video quality to download.
+   */
   const [quality, setQuality] = useState<string>('');
 
+  /**
+   * Handle quality select change.
+   *
+   * @param value
+   */
   const onQualityChange = (value: string) => {
     setQuality(value);
   };
 
+  // If is loading return loading wrapper.
   if (loading) {
+    // If id not set stop loading.
     if (id === null) setLoading(false);
+    // If is request not started start request.
     else if (!requested) {
       setRequested(true);
       requestData<ServerResponse>(`video${config.serverSuffix}`, { v: id })
@@ -77,10 +111,11 @@ const Watch: React.FC = () => {
       </Main>
     );
   }
+  // If error throned while request return error content
   if (error !== 0 || data === null || data.qualities === null)
     return (
       <Main>
-        <ErrorElement error={error} />
+        <ErrorContent error={error} />
       </Main>
     );
 

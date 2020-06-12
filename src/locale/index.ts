@@ -22,6 +22,14 @@ export type LocaleName = {
   code: string;
   name: string | null;
 };
+
+/**
+ * Get locale info by locale code
+ * Return locale info of locale code locale info of default locale otherwise.
+ *
+ * @param locale
+ * @return LocaleInfo object
+ */
 export const getLocaleInfo = (locale: string | undefined): LocaleInfo => {
   let localeCode = locale;
   if (localeCode !== undefined) localeCode = localeCode.substr(0, 2);
@@ -36,6 +44,13 @@ export const getLocaleInfo = (locale: string | undefined): LocaleInfo => {
   }
 };
 
+/**
+ * Get locale name by locale code
+ * Return locale name of locale code locale name with null otherwise.
+ *
+ * @param locale
+ * @return LocaleName object
+ */
 export const getLocaleName = (locale: string): LocaleName => {
   let localeCode = locale;
   if (localeCode !== undefined) localeCode = localeCode.substr(0, 2);

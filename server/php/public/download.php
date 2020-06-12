@@ -2,14 +2,39 @@
 require_once '../src/base.php';
 require_once '../src/YouTubeSearch.php';
 
-$videoId = isset($_GET['v']) ? $_GET['v'] : (isset($_POST['v']) ? $_POST['v'] : null);
-$quality = isset($_GET['quality']) ? $_GET['quality'] : (isset($_POST['quality']) ? $_POST['quality'] : getConfig('quality'));
+/**
+ * Video id to download.
+ * The download won't start without video id.
+ */
+$videoId = isset($_GET['v'])
+  ? $_GET['v']
+  : (isset($_POST['v'])
+    ? $_POST['v']
+    : null);
+/**
+ * Video quality format code to download.
+ * It has to be a format code of "youtube-dl -F [URL]".
+ * The default is best quality.
+ */
+$quality = isset($_GET['quality'])
+  ? $_GET['quality']
+  : (isset($_POST['quality'])
+    ? $_POST['quality']
+    : getConfig('quality'));
 
-if ($videoId == null) badRequest();
-else if (!validateVideoQuality($videoId, $quality)) badRequest();
-else if (($fileName = getFileName($videoId, $quality)) == null) badRequest();
+// Response error if video id or quality is not valid.
+if ($videoId == null) {
+  badRequest();
+} elseif (!validateVideoQuality($videoId, $quality)) {
+  badRequest();
+} elseif (($fileName = getFileName($videoId, $quality)) == null) {
+  badRequest();
+}
 
-header("Content-Disposition: attachment; filename=\"".$fileName."\"" );
-header("Content-Type: application/octet-stream");
-$url = "https://youtube.com/watch?v=".$videoId;
+// Make client detect transferred data as file.
+header("Content-Disposition: attachment; filename=\"" . $fileName . "\"");
+header('Content-Type: application/octet-stream');
+
+// Transfer video data downloaded via youtube-dl to client.
+$url = 'https://youtube.com/watch?v=' . $videoId;
 passthru("youtube-dl -f \"$quality\" -o - \"$url\"");

@@ -5,10 +5,10 @@ import {
   SearchItem,
   SearchSuccessResult,
   ServerResponse,
-} from '../Types';
-import requestData from '../../../utils/requestData';
-import { Dictionary } from '../../../common/Types';
-import config from '../../../common/Config';
+} from '../types/ResponseTypes';
+import requestData from '../utils/requestData';
+import Dictionary from '../types/Dictionary';
+import config from '../common/Config';
 
 const START = 'START' as const;
 const LOADED = 'LOADED' as const;

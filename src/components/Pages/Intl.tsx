@@ -1,10 +1,9 @@
 import React from 'react';
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { useIntl } from 'react-intl';
-import { Home, Search, Watch } from './index';
-import NotFound from '../Layout/NotFound';
 import config from '../../common/Config';
-import { Main } from '../Layout';
+import { Home, Search, Watch } from './index';
+import { Main, NotFound } from '../Layout';
 
 interface IntlProp {
   changeLocale?: (input: string) => void;
@@ -20,15 +19,15 @@ const Intl: React.FC<IntlProp> = (props) => {
   const { lang } = match.params;
   let supported = false;
 
+  // Check if locale is supported.
   if (lang === intl.locale) {
     supported = true;
   } else if (config.locales) {
-    config.locales.every((locale: string): boolean => {
+    supported = config.locales.some((locale: string): boolean => {
       if (lang === locale) {
-        supported = true;
-        return false;
+        return true;
       }
-      return true;
+      return false;
     });
   }
 

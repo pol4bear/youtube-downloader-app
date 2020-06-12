@@ -8,38 +8,63 @@ import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { useIntl } from 'react-intl';
 
 const SearchForm: React.FC = () => {
-  const regexYoutubeUrl = /^(?:https?:\/\/)?(?:www\.)?youtu(\.be|be\.(?:com|co\.[a-zA-Z]{2}))\/watch\/?\?(?:.+(?:=.+)?&)*v=(?<id>\w+)(?:&.+(?:=.+)?)*&?\/?$/;
   const intl = useIntl();
-  const [q, setQ] = useState('');
   const history = useHistory();
 
+  /**
+   * Regex to detect YouTube URL.
+   */
+  const regexYoutubeUrl = /^(?:https?:\/\/)?(?:www\.)?youtu(\.be|be\.(?:com|co\.[a-zA-Z]{2}))\/watch\/?\?(?:.+(?:=.+)?&)*v=(?<id>\w+)(?:&.+(?:=.+)?)*&?\/?$/;
+
+  /**
+   * Value of search input.
+   */
+  const [q, setQ] = useState('');
+
+  /**
+   * Handle search input change.
+   *
+   * @param event
+   */
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQ(event.target.value);
   };
+
+  /**
+   * Handle form submit.
+   *
+   * @param event
+   */
   const handleSubmit = (event: React.FormEvent) => {
+    // Cancel original form submit.
     event.preventDefault();
+
+    // Check if search query is YouTube URL.
     const result: RegExpExecArray | null = regexYoutubeUrl.exec(q);
+
+    // Add '/' before search/watch if pathname not end with '/'
     const slash =
       history.location.pathname[history.location.pathname.length - 1] === '/'
         ? ''
         : '/';
 
     if (result !== null) {
+      // Go to watch page if query is YouTube URL.
       const id: string = result.groups ? result.groups.id : '';
       history.push(`${history.location.pathname}${slash}watch?v=${id}`);
     } else {
+      // Go to search page otherwise.
       history.push(`${history.location.pathname}${slash}search/${q}`);
     }
   };
 
-  const message = intl.formatMessage({ id: 'searchFormMessage' });
   const placeholder = intl.formatMessage({ id: 'searchFormPlaceholder' });
 
   return (
     <>
       <h3>
         <FontAwesomeIcon icon={faYoutube} />
-        {message}
+        {intl.messages.searchFormMessage}
       </h3>
       <FormGroup className="field" onSubmit={handleSubmit}>
         <FormField

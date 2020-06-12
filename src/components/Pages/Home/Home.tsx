@@ -1,9 +1,8 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { useIntl } from 'react-intl';
-import { Main } from '../../Layout';
+import { Main, CenterAligner } from '../../Layout';
 import SearchForm from './SearchForm';
-import CenterAligner from '../../Layout/CenterAligner';
 
 const Home: React.FC = () => {
   const intl = useIntl();
