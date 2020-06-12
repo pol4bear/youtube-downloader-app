@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "private": true,
   "lint-staged": {
-    "*.{yaml,html,json,md}": [
+    "*.{yaml,html,json,md,php}": [
       "prettier --write"
     ],
     "*.{css,less,scss,sass}": [
