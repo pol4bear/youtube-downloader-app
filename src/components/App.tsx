@@ -93,7 +93,8 @@ const Wrapper = styled(Layout)`
   h4,
   h5,
   h6,
-  p {
+  p,
+  div {
     color: ${(props) => props.theme.fontColor};
   }
 `;
