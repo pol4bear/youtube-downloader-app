@@ -8,7 +8,7 @@ import {
 } from '../types/ResponseTypes';
 import requestData from '../utils/requestData';
 import Dictionary from '../types/Dictionary';
-import config from '../common/Config';
+import config from '../common/config';
 
 const START = 'START' as const;
 const LOADED = 'LOADED' as const;

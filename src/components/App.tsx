@@ -5,8 +5,8 @@ import styled, { ThemeProvider } from 'styled-components';
 import { Layout } from 'antd';
 import { Home, Search, Watch, Intl } from './Pages';
 import { AppHeader, AppFooter, Main, NotFound } from './Layout';
-import { getLocaleInfo, LocaleInfo } from '../locale';
-import config from '../common/Config';
+import { getLocaleInfo, LocaleInfo } from '../locales';
+import config from '../common/config';
 import { getTheme, Theme } from '../themes';
 
 const App: React.FC = () => {

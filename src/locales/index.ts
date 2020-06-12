@@ -1,4 +1,4 @@
-import config from '../common/Config';
+import config from '../common/config';
 import locales from './locales.json';
 import koLang from './ko.json';
 import enLang from './en.json';

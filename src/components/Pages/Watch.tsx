@@ -19,7 +19,7 @@ import {
   FailResult,
 } from '../../types/ResponseTypes';
 import requestData from '../../utils/requestData';
-import config from '../../common/Config';
+import config from '../../common/config';
 
 interface MatchParams {
   lang?: string;

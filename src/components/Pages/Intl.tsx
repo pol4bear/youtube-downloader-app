@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { useIntl } from 'react-intl';
-import config from '../../common/Config';
+import config from '../../common/config';
 import { Home, Search, Watch } from './index';
 import { Main, NotFound } from '../Layout';
 

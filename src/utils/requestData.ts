@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import config from '../common/Config';
+import config from '../common/config';
 import Dictionary from '../types/Dictionary';
 
 const instance = axios.create({
