@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import styled, { DefaultTheme, ThemeProvider } from 'styled-components';
 import { Layout } from 'antd';
+import history from '../utils/history';
 import { Home, Search, Watch, Intl } from './Pages';
 import { AppHeader, AppFooter, Main, NotFound } from './Layout';
 import { getLocaleInfo, LocaleInfo } from '../locales';
@@ -45,7 +46,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <Router>
+    <Router history={history}>
       <IntlProvider
         locale={currentLocale.locale}
         messages={currentLocale.messages}
