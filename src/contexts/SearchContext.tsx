@@ -1,11 +1,6 @@
 import React, { useReducer } from 'react';
 import { AxiosError } from 'axios';
-import {
-  FailResult,
-  SearchItem,
-  SearchSuccessResult,
-  ServerResponse,
-} from '../types/ResponseTypes';
+import { FailResult, SearchItem, VideoList, ServerResponse } from '../types';
 import requestData from '../utils/requestData';
 import Dictionary from '../types/Dictionary';
 import config from '../common/config';
@@ -49,7 +44,7 @@ function searchReducer(state: SearchState, action: SearchAction): SearchState {
     case START:
       return { ...state, loading: true };
     case LOADED: {
-      const result = action.response.result as SearchSuccessResult;
+      const result = action.response.result as VideoList;
       const newData: SearchItem[] = result.items ? result.items : [];
       const token =
         result.nextPageToken !== undefined ? result.nextPageToken : null;

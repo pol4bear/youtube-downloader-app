@@ -13,11 +13,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import { Main, ErrorContent, LoadWrapper } from '../Layout';
-import {
-  VideoSuccessResult,
-  ServerResponse,
-  FailResult,
-} from '../../types/ResponseTypes';
+import { VideoInfo, ServerResponse, FailResult } from '../../types';
 import requestData from '../../utils/requestData';
 import config from '../../common/config';
 
@@ -60,7 +56,7 @@ const Watch: React.FC = () => {
   /**
    * Response data.
    */
-  const [data, setData] = useState<VideoSuccessResult | null>(null);
+  const [data, setData] = useState<VideoInfo | null>(null);
   /**
    * Video quality to download.
    */
@@ -84,7 +80,7 @@ const Watch: React.FC = () => {
       setRequested(true);
       requestData<ServerResponse>(`video${config.serverSuffix}`, { v: id })
         .then((response) => {
-          const result = response.data.result as VideoSuccessResult;
+          const result = response.data.result as VideoInfo;
           setData(result);
           if (result.qualities)
             setQuality(

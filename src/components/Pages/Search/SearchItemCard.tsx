@@ -9,7 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useHistory } from 'react-router';
 import { useIntl } from 'react-intl';
-import { SearchItem } from '../../../types/ResponseTypes';
+import { SearchItem } from '../../../types';
 
 interface SearchItemCardProps {
   data: SearchItem;
