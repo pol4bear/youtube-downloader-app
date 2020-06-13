@@ -1,7 +1,6 @@
 import { DefaultTheme } from 'styled-components';
 import light from './light';
 import dark from './dark';
-import { Theme } from '.';
 
 /**
  * Get theme info by theme name.
@@ -9,7 +8,7 @@ import { Theme } from '.';
  * @param theme
  * @return theme info
  */
-const getTheme = (theme: Theme): DefaultTheme => {
+const getTheme = (theme: string | null): DefaultTheme => {
   switch (theme) {
     case 'light':
       return light;

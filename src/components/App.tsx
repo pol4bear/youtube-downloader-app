@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
-import styled, { ThemeProvider } from 'styled-components';
+import styled, { DefaultTheme, ThemeProvider } from 'styled-components';
 import { Layout } from 'antd';
 import { Home, Search, Watch, Intl } from './Pages';
 import { AppHeader, AppFooter, Main, NotFound } from './Layout';
 import { getLocaleInfo, LocaleInfo } from '../locales';
 import config from '../common/config';
-import { getTheme, Theme } from '../themes';
+import { getOppositeTheme, getTheme } from '../themes';
 
 const App: React.FC = () => {
-  let initialTheme: Theme;
+  let initialTheme: DefaultTheme;
   const savedTheme = localStorage.getItem('theme');
-  if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
-    initialTheme = savedTheme;
+  if (savedTheme === 'light' || savedTheme === 'dark') {
+    initialTheme = getTheme(savedTheme);
   } else {
-    initialTheme =
-      window.matchMedia &&
+    initialTheme = getTheme(
       window.matchMedia('(prefers-color-scheme: dark)').matches
         ? 'dark'
-        : 'light';
+        : 'light'
+    );
   }
-  const [currentTheme, setCurrentTheme] = useState<Theme>(initialTheme);
+  const [currentTheme, setCurrentTheme] = useState<DefaultTheme>(initialTheme);
   const initialLocale = getLocaleInfo(config.currentLocale);
 
   const [currentLocale, setCurrentLocale] = useState<LocaleInfo>(initialLocale);
@@ -30,9 +30,9 @@ const App: React.FC = () => {
    * Switch theme light/dark.
    */
   const changeTheme = () => {
-    const oppositeTheme = currentTheme === 'light' ? 'dark' : 'light';
+    const oppositeTheme = getOppositeTheme(currentTheme);
     setCurrentTheme(oppositeTheme);
-    localStorage.setItem('theme', oppositeTheme);
+    localStorage.setItem('theme', oppositeTheme.name);
   };
 
   /**
@@ -50,7 +50,7 @@ const App: React.FC = () => {
         locale={currentLocale.locale}
         messages={currentLocale.messages}
       >
-        <ThemeProvider theme={getTheme(currentTheme)}>
+        <ThemeProvider theme={currentTheme}>
           <Wrapper className="layout">
             <AppHeader changeTheme={changeTheme} />
             <Switch>

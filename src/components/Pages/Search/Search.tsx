@@ -6,7 +6,7 @@ import { useIntl } from 'react-intl';
 import { Col, Row, Skeleton } from 'antd';
 import { Main, NotFound, ErrorContent, LoadWrapper } from '../../Layout';
 import SearchItemCard from './SearchItemCard';
-import SearchContext, { SearchProvider } from '../../../contexts/SearchContext';
+import { SearchContext, SearchProvider } from '../../../contexts';
 
 interface MatchParams {
   lang?: string;
