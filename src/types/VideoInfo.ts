@@ -1,4 +1,4 @@
-import { SearchItem } from './VideoList';
+import { Video } from './VideoList';
 
 export interface Quality {
   formatCode: string;
@@ -7,7 +7,7 @@ export interface Quality {
   note: string;
 }
 
-export default interface VideoInfo extends SearchItem {
+export default interface VideoInfo extends Video {
   tags: string[];
   qualities: Quality[] | null;
 }

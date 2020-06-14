@@ -9,10 +9,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useHistory } from 'react-router';
 import { useIntl } from 'react-intl';
-import { SearchItem } from '../../../types';
+import { Video } from '../../../types';
 
 interface SearchItemCardProps {
-  data: SearchItem;
+  data: Video;
 }
 
 const SearchItemCard: React.FC<SearchItemCardProps> = (props) => {

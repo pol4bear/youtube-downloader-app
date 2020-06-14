@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react';
 import { AxiosError } from 'axios';
-import { FailResult, SearchItem, VideoList, ServerResponse } from '../types';
+import { FailResult, Video, VideoList, ServerResponse } from '../types';
 import requestData from '../utils/requestData';
 import Dictionary from '../types/Dictionary';
 import config from '../common/config';
@@ -24,7 +24,7 @@ interface SearchState {
   loading: boolean;
   more: boolean;
   error: number;
-  data: SearchItem[];
+  data: Video[];
   token: string | null;
   setQuery: ((query: string | null) => void) | undefined;
   load: (() => void) | undefined;
@@ -45,7 +45,7 @@ function searchReducer(state: SearchState, action: SearchAction): SearchState {
       return { ...state, loading: true };
     case LOADED: {
       const result = action.response.result as VideoList;
-      const newData: SearchItem[] = result.items ? result.items : [];
+      const newData: Video[] = result.items ? result.items : [];
       const token =
         result.nextPageToken !== undefined ? result.nextPageToken : null;
       return {

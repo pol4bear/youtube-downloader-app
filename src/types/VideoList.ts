@@ -1,6 +1,6 @@
 import { Statistics, ThumbnailInfo } from './index';
 
-export interface SearchItem {
+export interface Video {
   id: string;
   channelId: string;
   channelTitle: string;
@@ -22,5 +22,5 @@ export default interface VideoList {
     resultsPerPage: number;
     totalResults: number;
   };
-  items: [SearchItem];
+  items: [Video];
 }
