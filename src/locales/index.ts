@@ -52,15 +52,17 @@ export const getLocaleInfo = (locale: string | undefined): LocaleInfo => {
  * @return LocaleName object
  */
 export const getLocaleName = (locale: string): LocaleName => {
-  let localeCode = locale;
-  if (localeCode !== undefined) localeCode = localeCode.substr(0, 2);
-
-  const localeInfo = localeNames[locale];
-
+  const localeCode = locale.substr(0, 2);
+  const localeInfo = localeNames[localeCode];
   return {
-    code: locale,
+    code: localeCode,
     name: localeInfo
       ? localeInfo.nativeName.split(',')[0].split(' (')[0]
       : null,
   };
+};
+
+export const isLocaleSupported = (locale: string): boolean => {
+  const localeCode = locale.substr(0, 2);
+  return config.locales.includes(localeCode);
 };
