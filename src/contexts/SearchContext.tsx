@@ -95,10 +95,8 @@ export const SearchProvider = (props: SearchProviderProps) => {
       .catch((e: AxiosError<ServerResponse>) => {
         let error = -1;
         if (e.response) {
-          if (!e.response.data.success) {
-            const result = e.response.data.result as FailResult;
-            error = result.code;
-          }
+          const result = e.response.data.result as FailResult;
+          error = result.code;
         }
         dispatch(stop(error));
       });
