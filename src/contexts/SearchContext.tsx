@@ -9,12 +9,12 @@ const START = 'START' as const;
 const LOADED = 'LOADED' as const;
 const STOP = 'STOP' as const;
 
-export const start = () => ({ type: START });
-export const loaded = (response: ServerResponse) => ({
+const start = () => ({ type: START });
+const loaded = (response: ServerResponse) => ({
   type: LOADED,
   response,
 });
-export const stop = (error: number) => ({ type: STOP, error });
+const stop = (error: number) => ({ type: STOP, error });
 type SearchAction =
   | ReturnType<typeof start>
   | ReturnType<typeof loaded>
@@ -95,7 +95,7 @@ export const SearchProvider = (props: SearchProviderProps) => {
       .catch((e: AxiosError<ServerResponse>) => {
         let error = -1;
         if (e.response) {
-          if (e.response.data.success) {
+          if (!e.response.data.success) {
             const result = e.response.data.result as FailResult;
             error = result.code;
           }
