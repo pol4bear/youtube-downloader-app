@@ -71,6 +71,35 @@ function addApiHeader()
 }
 
 /**
+ * Make success/error result.
+ * Return success/error result.
+ *
+ * @param bool $success
+ * @param $result
+ * @return false|string
+ */
+function makeResult(bool $success, $result)
+{
+  $result = [
+    'success' => $success,
+    'result' => $result,
+  ];
+  return json_encode($result, JSON_UNESCAPED_UNICODE);
+}
+
+/**
+ * Print bad request result and exit.
+ */
+function badRequest()
+{
+  header('Content-Type: application/json; charset=UTF-8');
+  $error = getError(1);
+  http_response_code($error[0]);
+  echo $error[1];
+  exit(1);
+}
+
+/**
  * Get location info via ip.
  *
  * @param null $ip
