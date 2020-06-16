@@ -8,3 +8,19 @@ region_code ='KR'
 quality = 'best'
 # YouTube video url prefix except video id
 url = 'https://youtube.com/watch?v='
+# MySQL DB host
+db_host = 'localhost'
+# MySQL DB username
+db_username = 'test'
+# MySQL DB password
+db_password = '123456'
+# MySQL DB name
+db_name = 'test'
+# SMTP server
+smtp_server = "smtp.gmail.com"
+# SMTP port
+smtp_port = 587
+# Email ID
+email_id = "test@gmail.com"
+# Email PW
+email_pw = "123456"

@@ -54,6 +54,22 @@ function getError(int $code)
       $responseCode = 404;
       $error['message'] = 'Requested item(s) not found';
       break;
+    case 4:
+      $responseCode = 503;
+      $error['message'] = 'Cannot connect to database server.';
+      break;
+    case 5:
+      $responseCode = 200;
+      $error['message'] = 'Email is already in use.';
+      break;
+    case 6:
+      $responseCode = 503;
+      $error['message'] = "Error while sending email.";
+      break;
+    case 7:
+      $responseCode = 200;
+      $error['message'] = 'Verification failed.';
+      break;
     default:
       return null;
   }
@@ -66,8 +82,13 @@ function getError(int $code)
  */
 function addApiHeader()
 {
+  $url = parse_url($_SERVER['HTTP_REFERER']);
   header('Content-Type: application/json; charset=UTF-8');
-  header('Access-Control-Allow-Origin: *');
+  if (count($url))
+    header('Access-Control-Allow-Origin: '.$url['scheme'].'://'.$url['host'].':'.$url['port']);
+  else
+    header('Access-Control-Allow-Origin: *');
+  header('Access-Control-Allow-Credentials: true');
 }
 
 /**
@@ -191,5 +212,20 @@ function getIpInfo($ip = null, $purpose = 'location', $deep_detect = true)
     }
   }
   return $output;
+}
+
+function getDBConnector() {
+  global $config;
+  $conn = new mysqli(
+      $config['db_host'],
+      $config['db_username'],
+      $config['db_password'],
+      $config['db_name']
+  );
+
+  if ($conn->connect_error)
+    return null;
+
+  return $conn;
 }
 ?>

@@ -4,11 +4,12 @@ import { IntlProvider } from 'react-intl';
 import styled, { DefaultTheme, ThemeProvider } from 'styled-components';
 import { Layout } from 'antd';
 import history from '../utils/history';
-import { Home, Search, Watch, Intl } from './Pages';
+import {Home, Search, Watch, Intl, Login, Register} from './Pages';
 import { AppHeader, AppFooter, Main, NotFound } from './Layout';
 import { getLocaleInfo, LocaleInfo } from '../locales';
 import config from '../common/config';
 import { getOppositeTheme, getTheme } from '../themes';
+import {LoginProvider} from "../contexts/LoginContext";
 
 const App: React.FC = () => {
   let initialTheme: DefaultTheme;
@@ -52,6 +53,7 @@ const App: React.FC = () => {
         messages={currentLocale.messages}
       >
         <ThemeProvider theme={currentTheme}>
+          <LoginProvider>
           <Wrapper className="layout">
             <AppHeader changeTheme={changeTheme} />
             <Switch>
@@ -63,6 +65,8 @@ const App: React.FC = () => {
               <Route path={`${config.baseUrl}/search`} component={Search} />
               <Route path={`${config.baseUrl}/watch/:id`} component={Watch} />
               <Route path={`${config.baseUrl}/watch`} component={Watch} />
+              <Route path={`${config.baseUrl}/login`} component={Login} />
+              <Route path={`${config.baseUrl}/register`} component={Register} />
               <Route
                 path={`${config.baseUrl}/intl/:lang`}
                 component={() => <Intl changeLocale={changeLocale} />}
@@ -76,7 +80,7 @@ const App: React.FC = () => {
               />
             </Switch>
             <AppFooter />
-          </Wrapper>
+          </Wrapper></LoginProvider>
         </ThemeProvider>
       </IntlProvider>
     </Router>

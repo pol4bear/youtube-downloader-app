@@ -13,6 +13,7 @@ const instance = axios.create({
   adapter: cacheAdapterEnhancer(axios.defaults.adapter!, {
     enabledByDefault: false,
   }),
+  withCredentials: true
 });
 
 const historyPopCache = (axiosConfig: AxiosRequestConfig) => ({
@@ -34,7 +35,7 @@ const requestData = async <DataType = never>(
   params?: Dictionary<string>,
   useCache = true
 ): Promise<AxiosResponse<DataType>> => {
-  let axiosConfig: AxiosRequestConfig = { params };
+  let axiosConfig: AxiosRequestConfig = { params, withCredentials: true };
   if (useCache) axiosConfig = historyPopCache(axiosConfig);
   const response = await instance.get(path, axiosConfig);
   return response;

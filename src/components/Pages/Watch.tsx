@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
+import history from '../../utils/history';
 import { Helmet } from 'react-helmet';
 import { useIntl } from 'react-intl';
 import { useLocation, useRouteMatch } from 'react-router';
@@ -16,6 +17,7 @@ import { Main, ErrorContent, LoadWrapper } from '../Layout';
 import { VideoInfo, ServerResponse, FailResult } from '../../types';
 import requestData from '../../utils/requestData';
 import config from '../../common/config';
+import LoginContext from "../../contexts/LoginContext";
 
 interface MatchParams {
   lang?: string;
@@ -28,6 +30,7 @@ const Watch: React.FC = () => {
   const intl = useIntl();
   const match = useRouteMatch<MatchParams>();
   const location = useLocation();
+  let home: string;
 
   /**
    * URL parameters.
@@ -37,9 +40,16 @@ const Watch: React.FC = () => {
   /**
    * Video id.
    */
-  const id: string | null = match.params.id
-    ? match.params.id
-    : urlParams.get('v');
+  let id: string | null;
+
+  if (match.params.id) {
+    id = match.params.id;
+    home = '../';
+  }
+  else {
+    id = urlParams.get('v');
+    home = '';
+  }
 
   /**
    * Make loading wrapper visible.
@@ -61,6 +71,7 @@ const Watch: React.FC = () => {
    * Video quality to download.
    */
   const [quality, setQuality] = useState<string>('');
+  const { isLoggedIn} = useContext(LoginContext);
 
   /**
    * Handle quality select change.
@@ -70,6 +81,10 @@ const Watch: React.FC = () => {
   const onQualityChange = (value: string) => {
     setQuality(value);
   };
+
+  useEffect(() => {
+     if (!isLoggedIn) history.push(`${home}login`);
+  });
 
   // If is loading return loading wrapper.
   if (loading) {

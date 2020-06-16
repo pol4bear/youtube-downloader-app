@@ -1,5 +1,5 @@
 {
-  "homepage": "/app",
+  "homepage": "/~120140261/app/",
   "name": "youtube-downloader",
   "version": "0.1.0",
   "private": true,
@@ -51,6 +51,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "@types/pbkdf2": "^3.0.0",
     "@types/query-string": "^6.3.0",
     "@types/react": "^16.9.34",
     "@types/react-helmet": "^5.0.15",
@@ -70,6 +71,7 @@
     "intersection-observer": "^0.10.0",
     "mdbreact": "^4.26.0",
     "node-sass": "^4.14.0",
+    "pbkdf2": "^3.1.1",
     "popper.js": "^1.16.1",
     "react": "^16.13.1",
     "react-app-rewired": "^2.1.6",

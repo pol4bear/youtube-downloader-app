@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { useLocation, useRouteMatch } from 'react-router-dom';
+import history from '../../../utils/history';
 import 'intersection-observer';
 import { Helmet } from 'react-helmet';
 import { useIntl } from 'react-intl';
@@ -7,6 +8,7 @@ import { Col, Row, Skeleton } from 'antd';
 import { Main, NotFound, ErrorContent, LoadWrapper } from '../../Layout';
 import SearchItemCard from './SearchItemCard';
 import { SearchContext, SearchProvider } from '../../../contexts';
+import LoginContext from "../../../contexts/LoginContext";
 
 interface MatchParams {
   lang?: string;
@@ -18,9 +20,17 @@ const Search: React.FC = () => {
   const match = useRouteMatch<MatchParams>();
   const location = useLocation();
   const urlParams = new URLSearchParams(location.search);
-  const query: string | null = match.params.query
-    ? match.params.query
-    : urlParams.get('q');
+  let home: string;
+  let query: string | null;
+  if (match.params.query) {
+    query = match.params.query;
+    home = '../';
+  }
+  else {
+    query = urlParams.get('q');
+    home = '';
+  }
+
   const { data, loading, more, error, setQuery, load } = React.useContext(
     SearchContext
   );
@@ -39,8 +49,12 @@ const Search: React.FC = () => {
     /* eslint-enable no-unused-expressions */
   );
   const [element, setElement] = useState<Element | null>(null);
+  const { isLoggedIn } = useContext(LoginContext);
 
-  if (setQuery) setQuery(query);
+  useEffect(() => {
+    if (!isLoggedIn) history.push(`${home}login`);
+    if (setQuery) setQuery(query);
+  })
 
   useEffect(() => {
     loader.current = load;
