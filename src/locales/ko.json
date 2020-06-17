@@ -22,6 +22,7 @@
   "authRequired": "인증코드를 입력해 주세요!",
   "usernameRequired": "사용자 이름을 입력해 주세요!",
   "emailType": "이메일을 확인해 주세요!",
+  "usernameType": "사용자 이름에는 문자, 숫자, -, _만 사용할 수 있습니다.",
   "sendAuth": "인증코드 보내기",
   "authorize": "인증하기",
   "rememberMe": "자동 로그인",
@@ -34,5 +35,9 @@
   "findPassword": "비밀번호 찾기",
   "emailInUse": "이메일이 이미 사용중 입니다.",
   "cancel": "취소",
-  "verificationFail": "인증코드를 확인해 주세요!"
+  "verificationFail": "인증코드를 확인해 주세요!",
+  "registerSuccessTitle": "회원가입 성공",
+  "registerSuccessContent": "가입한 이메일과 비밀번호로 로그인하세요!",
+  "registerFailTitle": "회원가입 실패",
+  "registerFailContent": "사용하실 수 없는 이메일입니다. 다른 이메일로 시도 해보세요."
 }

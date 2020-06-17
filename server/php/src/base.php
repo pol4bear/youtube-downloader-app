@@ -70,6 +70,14 @@ function getError(int $code)
       $responseCode = 200;
       $error['message'] = 'Verification failed.';
       break;
+    case 8:
+      $responseCode = 404;
+      $error['message'] = 'Email or password is not valid.';
+      break;
+    case 9:
+      $responseCode = 403;
+      $error['message'] = 'You are not logged in.';
+      break;
     default:
       return null;
   }

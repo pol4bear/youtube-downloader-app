@@ -9,3 +9,4 @@ export type { default as VideoList } from './VideoList';
 export type { default as Statistics } from './Statistics';
 export type { default as ThumbnailInfo } from './ThumbnailInfo';
 export type { default as User } from './User';
+export type {Salt} from './User';

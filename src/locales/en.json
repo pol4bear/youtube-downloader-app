@@ -22,6 +22,7 @@
   "authRequired": "Please insert authorization code!",
   "usernameRequired": "Please insert your username!",
   "emailType": "Your email must be a valid email address!",
+  "usernameType": "You can only use characters, numbers, -, _ in username",
   "sendAuth": "Send auth code",
   "authorize": "Authorize!",
   "rememberMe": "Remember me",
@@ -34,5 +35,9 @@
   "findPassword": "Find password",
   "emailInUse": "Email is already in use.",
   "cancel": "Cancel",
-  "verificationFail": "Auth code is not valid!"
+  "verificationFail": "Auth code is not valid!",
+  "registerSuccessTitle": "Register complete",
+  "registerSuccessContent": "Login with your account that you just created!",
+  "registerFailTitle": "Register failed",
+  "registerFailContent": "Email is already taken by someone. Try with other email."
 }

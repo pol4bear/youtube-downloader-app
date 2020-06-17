@@ -49,16 +49,16 @@ const Search: React.FC = () => {
     /* eslint-enable no-unused-expressions */
   );
   const [element, setElement] = useState<Element | null>(null);
-  const { isLoggedIn } = useContext(LoginContext);
+  const { state } = useContext(LoginContext);
 
   useEffect(() => {
-    if (!isLoggedIn) history.push(`${home}login`);
+    if (!state.loading && !state.isLoggedIn) {
+      const pathname = history.location.pathname;
+      const slash = pathname[pathname.length-1] === '/' ? '' : '/';
+      history.push(`${history.location.pathname}${slash}login`);
+    }
     if (setQuery) setQuery(query);
-  })
-
-  useEffect(() => {
-    loader.current = load;
-  }, [load]);
+  }, [state]);
 
   useEffect(() => {
     const currentElement = element;

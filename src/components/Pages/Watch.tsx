@@ -71,7 +71,7 @@ const Watch: React.FC = () => {
    * Video quality to download.
    */
   const [quality, setQuality] = useState<string>('');
-  const { isLoggedIn} = useContext(LoginContext);
+  const { state } = useContext(LoginContext);
 
   /**
    * Handle quality select change.
@@ -83,8 +83,12 @@ const Watch: React.FC = () => {
   };
 
   useEffect(() => {
-     if (!isLoggedIn) history.push(`${home}login`);
-  });
+    if (!state.loading && !state.isLoggedIn) {
+      const pathname = history.location.pathname;
+      const slash = pathname[pathname.length-1] === '/' ? '' : '/';
+      history.push(`${history.location.pathname}${slash}login`);
+    }
+  }, [state]);
 
   // If is loading return loading wrapper.
   if (loading) {

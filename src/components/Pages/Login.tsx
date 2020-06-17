@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { Helmet } from 'react-helmet';
 import {CenterAligner} from "../Layout";
 import {Button, Checkbox, Form, Input} from "antd";
@@ -8,20 +8,17 @@ import styled from "styled-components";
 import {CheckboxChangeEvent} from "antd/es/checkbox";
 import { Store } from 'antd/lib/form/interface';
 import {ValidateErrorEntity} from "rc-field-form/lib/interface";
+import history from "../../utils/history";
 
 const Login: React.FC = () => {
     const intl = useIntl();
-    const {login} = useContext(LoginContext);
+    const {state, login} = useContext(LoginContext);
     const [email, setEmail] = useState<string>('');
     const [pw, setPw] = useState<string>('');
     const [remember, setRemember] = useState<boolean>(true);
 
     const onFinish = (values: Store) => {
-        console.log('Success:', values);
-    };
-
-    const onFinishFailed = (errorInfo: ValidateErrorEntity) => {
-        console.log('Failed:', errorInfo);
+        login(values.email, values.pw, remember);
     };
 
     // @ts-ignore
@@ -44,6 +41,14 @@ const Login: React.FC = () => {
         setRemember(event.target.checked);
     }
 
+    useEffect(() => {
+        if (!state.loading && state.isLoggedIn) {
+            const pathname = history.location.pathname;
+            const slash = pathname[pathname.length-1] === '/' ? '' : '/';
+            history.push(`${history.location.pathname}${slash}..`);
+        }
+    }, [state]);
+
     return (
 
         <CenterAligner>
@@ -54,10 +59,9 @@ const Login: React.FC = () => {
                 <h1>{intl.messages.login}</h1>
                 <Form
                     {...layout}
-                    name="basic"
+                    name="login"
                     size="large"
                     onFinish={onFinish}
-                    onFinishFailed={onFinishFailed}
                     onFieldsChange={handleChange}
                 >
                     <Form.Item

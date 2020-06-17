@@ -37,11 +37,26 @@ function isEmailAvailable(string $email) {
 
 function emailVerification(string $auth) {
     session_start();
-    if (!isset($_SESSION['auth']))
+
+    if (!isset($_SESSION['authTime'])) {
+        unset($_SESSION['authEmail']);
+        unset($_SESSION['authTime']);
         badRequest();
+    }
+
+    if (time() - $_SESSION['authTime'] > 300) {
+        unset($_SESSION['authEmail']);
+        unset($_SESSION['authTime']);
+        badRequest();
+    }
+
+    if (!isset($_SESSION['auth'])) {
+        unset($_SESSION['authEmail']);
+        unset($_SESSION['authTime']);
+        badRequest();
+    }
 
     if ($auth === $_SESSION['auth']) {
-        session_cache_expire(0);
         unset($_SESSION['auth']);
         return [200, makeResult(true, ['email' => $_SESSION['email']])];
     }
@@ -53,11 +68,11 @@ function sendAuthEmail(string $email) {
     global $config;
 
     session_start();
-    session_cache_expire(60 * 5);
     $random = rand(0, 9999);
     $auth = str_pad($random, 4, '0', STR_PAD_LEFT);
     $_SESSION['auth'] = $auth;
-    $_SESSION['email'] = $email;
+    $_SESSION['authEmail'] = $email;
+    $_SESSION['authTime'] = time();
 
     $mail = new PHPMailer(true);
 
@@ -82,4 +97,92 @@ function sendAuthEmail(string $email) {
         return [200, makeResult(true, ['email' => $email])];
     }
     catch(Exception $e) {return getError(6);}
+}
+
+function register(string $username, string $password, string $salt) {
+    session_start();
+    $email = $_SESSION['authEmail'];
+    if ($email == null)
+        badRequest();
+
+    $conn = getDBConnector();
+
+    if (!$conn)
+        return getError(4);
+
+    $stmt = $conn->prepare("INSERT INTO users (email, username, password, salt) VALUES(?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $email, $username, $password, $salt);
+    if (!$stmt->execute())
+        return getError(5);
+
+    session_unset();
+    session_destroy();
+
+    return [200, makeResult(true, ['email' => $email])];
+}
+
+function getSalt(string $email) {
+    $conn = getDBConnector();
+
+    if (!$conn)
+        return getError(4);
+
+    $stmt = $conn->prepare("SELECT salt FROM users WHERE email=?");
+    $stmt->bind_param("s", $email);
+    if (!$stmt->execute())
+        return getError(4);
+
+    $result = $stmt->get_result();
+
+    if ($result === false)
+        return getError(4);
+
+    $row = $result->fetch_array();
+    if (count($row) == 0)
+        return getError(8);
+
+    return [200, makeResult(true, array('salt' => $row[0]))];
+}
+
+function login(string $email, string $password, bool $remember) {
+    $conn = getDBConnector();
+
+    if (!$conn)
+        return getError(4);
+
+    $stmt = $conn->prepare("SELECT no, email, username, password, rank FROM users WHERE email=?");
+    $stmt->bind_param("s", $email);
+
+    if (!$stmt->execute())
+        return getError(4);
+
+    $result = $stmt->get_result();
+
+    $row = $result->fetch_array();
+    if (count($row) == 0) {
+        return getError(8);
+    }
+    else if ($row[3] != $password) {
+        return getError(8);
+    }
+
+    if ($remember) {
+        ini_set('session.cookie_lifetime', 60 * 60 * 24 * 365);
+        ini_set('session.gc_maxlifetime', 60 * 60 * 24 * 365);
+    }
+    session_start();
+    $_SESSION['no'] = $row[0];
+    $_SESSION['email'] = $row[1];
+    $_SESSION['username'] = $row[2];
+    $_SESSION['rank'] = $row[4];
+
+    return [200, makeResult(true, ['email' => $row[1], 'username' => $row[2], 'rank' => $row[4]])];
+}
+
+function isLoggedIn() {
+    session_start();
+    if (!isset($_SESSION['email']))
+        return getError(9);
+
+    return [200, makeResult(true, ['email' => $_SESSION['email'], 'username' => $_SESSION['username'], 'rank' => $_SESSION['rank']])];
 }

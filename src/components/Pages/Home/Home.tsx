@@ -9,15 +9,15 @@ import LoginContext from '../../../contexts/LoginContext';
 const Home: React.FC = () => {
   const intl = useIntl();
   const title = intl.formatMessage({ id: 'title' });
-  const { isLoggedIn } = useContext(LoginContext);
+  const { state } = useContext(LoginContext);
 
   useEffect(() => {
-      if (!isLoggedIn) {
-          const pathname = history.location.pathname;
-          const slash = pathname[pathname.length-1] === '/' ? '' : '/';
-          history.push(`${history.location.pathname}${slash}login`);
+    if (!state.loading && !state.isLoggedIn) {
+           const pathname = history.location.pathname;
+           const slash = pathname[pathname.length-1] === '/' ? '' : '/';
+           history.push(`${history.location.pathname}${slash}login`);
       }
-  });
+  }, [state]);
 
   return (
     <Main>

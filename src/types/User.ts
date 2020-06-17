@@ -3,3 +3,7 @@ export default interface User {
     username: string;
     rank: number;
 }
+
+export interface Salt {
+    salt: string;
+}
