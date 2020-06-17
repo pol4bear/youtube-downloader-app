@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import config from '../../common/config';
-import {Home, Login, Register, Search, Watch} from './index';
+import {Account, FindPassword, Home, Login, Register, Search, Watch} from './index';
 import { Main, NotFound } from '../Layout';
 
 interface IntlProp {
@@ -44,6 +44,8 @@ const Intl: React.FC<IntlProp> = (props) => {
           <Route path={`${match.url}/watch`} component={Watch} />
           <Route exact path={`${match.url}/login`} component={Login} />
           <Route exact path={`${match.url}/register`} component={Register} />
+          <Route exact path={`${match.url}/find-password`} component={FindPassword} />
+          <Route exact path={`${match.url}/account`} component={Account} />
           <Route
             component={() => (
               <Main>

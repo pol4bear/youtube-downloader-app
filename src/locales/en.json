@@ -39,5 +39,22 @@
   "registerSuccessTitle": "Register complete",
   "registerSuccessContent": "Login with your account that you just created!",
   "registerFailTitle": "Register failed",
-  "registerFailContent": "Email is already taken by someone. Try with other email."
+  "registerFailContent": "Email is already taken by someone. Try with other email.",
+  "emailNotFound": "Account with that email not found!",
+  "changePasswordSuccessTitle": "Password change complete",
+  "changePasswordSuccessContent": "You can now login with changed password!",
+  "changePasswordFailTitle": "Password change failed",
+  "changePasswordFailContent": "Try again later",
+  "logout": "Logout",
+  "account": "Account",
+  "newPw": "New password",
+  "newPwPlaceholder": "Insert new password",
+  "apply": "Apply",
+  "unregister": "Unregister",
+  "currentPw": "Current password",
+  "loginFailTitle": "Login failed",
+  "loginFailContent": "Check your email or password.",
+  "changeFailTitle": "Change failed",
+  "changeFailContent": "Check your password.",
+  "nothingChanged": "Nothing changed."
 }

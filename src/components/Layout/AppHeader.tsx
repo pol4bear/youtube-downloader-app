@@ -8,6 +8,7 @@ import { faYoutube } from '@fortawesome/free-brands-svg-icons';
 import { faAdjust, faBars } from '@fortawesome/free-solid-svg-icons';
 import { getLocaleName } from '../../locales';
 import config from '../../common/config';
+import LoginContext from "../../contexts/LoginContext";
 
 const { Header } = Layout;
 const { SubMenu } = Menu;
@@ -80,51 +81,79 @@ const AppHeader: React.FC<AppHeaderProp> = (props) => {
   const localeLinks = getLocaleLinks();
 
   return (
-    <>
-      <MyHeader>
-        <Logo>
-          <Link to={home}>
-            <FontAwesomeIcon icon={faYoutube} /> {intl.messages.title}
-          </Link>
-        </Logo>
-        <div className="rightMenu">
-          <PcMenu mode="horizontal" selectable={false}>
-            <Menu.Item key="home">
-              <Link to={home}>{intl.messages.home}</Link>
-            </Menu.Item>
-            <SubMenu title={getLocaleName(intl.locale).name}>
-              {localeLinks}
-            </SubMenu>
-            <Menu.Item key="theme" onClick={changeTheme}>
+    <LoginContext.Consumer>
+      {({state, logout}) => (
+        <>
+          <MyHeader>
+            <Logo>
+              <Link to={home}>
+                <FontAwesomeIcon icon={faYoutube} /> {intl.messages.title}
+              </Link>
+            </Logo>
+            <div className="rightMenu">
+              <PcMenu mode="horizontal" selectable={false}>
+                <Menu.Item key="home">
+                  <Link to={home}>{intl.messages.home}</Link>
+                </Menu.Item>
+                {
+                  state.isLoggedIn &&
+                  <Menu.Item key="account">
+                      <Link to={`${home}/account`}>{intl.messages.account}</Link>
+                  </Menu.Item>
+                }
+                {
+                state.isLoggedIn &&
+                <Menu.Item key="logout" onClick={logout}>
+                  {intl.messages.logout}
+                </Menu.Item>
+                }
+                <SubMenu title={getLocaleName(intl.locale).name}>
+                  {localeLinks}
+                </SubMenu>
+                <Menu.Item key="theme" onClick={changeTheme}>
               <span>
                 <FontAwesomeIcon icon={faAdjust} rotation={180} fixedWidth />
               </span>
-            </Menu.Item>
-          </PcMenu>
-        </div>
-        <BarButton onClick={showDrawer}>
-          <FontAwesomeIcon icon={faBars} size="lg" />
-        </BarButton>
-      </MyHeader>
-      <MyDrawer
-        placement="right"
-        closable={false}
-        onClose={onClose}
-        visible={visible}
-        getContainer={false}
-      >
-        <MobileMenu mode="inline" selectable={false}>
-          <SubMenu key="locale" title={getLocaleName(intl.locale).name}>
-            {localeLinks}
-          </SubMenu>
-          <Menu.Item key="theme" onClick={changeTheme}>
+                </Menu.Item>
+              </PcMenu>
+            </div>
+            <BarButton onClick={showDrawer}>
+              <FontAwesomeIcon icon={faBars} size="lg" />
+            </BarButton>
+          </MyHeader>
+          <MyDrawer
+            placement="right"
+            closable={false}
+            onClose={onClose}
+            visible={visible}
+            getContainer={false}
+          >
+            <MobileMenu mode="inline" selectable={false}>
+              {
+                state.isLoggedIn &&
+                <Menu.Item key="account">
+                    <Link to={`${home}/account`}>{intl.messages.account}</Link>
+                </Menu.Item>
+              }
+              {
+                state.isLoggedIn &&
+                <Menu.Item key="logout" onClick={logout}>
+                  {intl.messages.logout}
+                </Menu.Item>
+              }
+              <SubMenu key="locale" title={getLocaleName(intl.locale).name}>
+                {localeLinks}
+              </SubMenu>
+              <Menu.Item key="theme" onClick={changeTheme}>
             <span>
               <FontAwesomeIcon icon={faAdjust} rotation={180} />
             </span>
-          </Menu.Item>
-        </MobileMenu>
-      </MyDrawer>
-    </>
+              </Menu.Item>
+            </MobileMenu>
+          </MyDrawer>
+        </>
+      )}
+    </LoginContext.Consumer>
   );
 };
 

@@ -102,7 +102,7 @@ export const LoginProvider: React.FC<LoginProviderProps> = ({children}) => {
                 }).catch(e => {
                     let error = -1;
                     if (e.response) {
-                        error = (e.response.result as FailResult).code;
+                        error = (e.response.data.result as FailResult).code;
                     }
                     dispatch(loginFail(error));
                 });
@@ -110,13 +110,14 @@ export const LoginProvider: React.FC<LoginProviderProps> = ({children}) => {
         }).catch(e => {
             let error = -1;
             if (e.response) {
-                error = (e.response.result as FailResult).code;
+                error = (e.response.data.result as FailResult).code;
             }
             dispatch(loginFail(error));
         });
     }
 
     const doLogout = () => {
+        requestData(`logout${config.serverSuffix}`, {}, false);
         dispatch(logout());
     }
 

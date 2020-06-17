@@ -39,5 +39,22 @@
   "registerSuccessTitle": "회원가입 성공",
   "registerSuccessContent": "가입한 이메일과 비밀번호로 로그인하세요!",
   "registerFailTitle": "회원가입 실패",
-  "registerFailContent": "사용하실 수 없는 이메일입니다. 다른 이메일로 시도 해보세요."
+  "registerFailContent": "사용하실 수 없는 이메일입니다. 다른 이메일로 시도 해보세요.",
+  "emailNotFound": "가입되지 않은 이메일입니다!",
+  "changePasswordSuccessTitle": "비밀변호 변경 성공",
+  "changePasswordSuccessContent": "이제부터 변경된 비밀번호로 로그인하실 수 있습니다.",
+  "changePasswordFailTitle": "비밀번호 변경 실패",
+  "changePasswordFailContent": "나중에 다시 시도해보세요.",
+  "logout": "로그아웃",
+  "account": "내 계정",
+  "newPw": "새 비밀번호",
+  "newPwPlaceholder": "새 비밀번호를 입력해 주세요",
+  "apply": "적용하기",
+  "unregister": "회원탈퇴",
+  "currentPw": "현재 비밀번호",
+  "loginFailTitle": "로그인 실패",
+  "loginFailContent": "이메일이나 비밀번호를 확인하세요.",
+  "changeFailTitle": "변경 실패",
+  "changeFailContent": "비밀번호를 확인하세요.",
+  "nothingChanged": "변경된 정보가 없습니다."
 }

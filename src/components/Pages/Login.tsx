@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import { Helmet } from 'react-helmet';
 import {CenterAligner} from "../Layout";
-import {Button, Checkbox, Form, Input} from "antd";
+import {Button, Checkbox, Form, Input, notification} from "antd";
 import {useIntl} from "react-intl";
 import LoginContext from "../../contexts/LoginContext";
 import styled from "styled-components";
@@ -46,6 +46,13 @@ const Login: React.FC = () => {
             const pathname = history.location.pathname;
             const slash = pathname[pathname.length-1] === '/' ? '' : '/';
             history.push(`${history.location.pathname}${slash}..`);
+            history.go(0);
+        }
+        if (state.error != 0) {
+            notification['error']({
+                message: `${intl.messages.loginFailTitle}`,
+                description: `${intl.messages.loginFailContent}`,
+            });
         }
     }, [state]);
 
@@ -89,7 +96,7 @@ const Login: React.FC = () => {
                             {intl.messages.login}
                         </Button>
                         <Button type="link" href="register" style={{float: "right"}}>{intl.messages.register}</Button>
-                        <Button type="link" href="register" style={{float: "right"}}>{intl.messages.findPassword}</Button>
+                        <Button type="link" href="find-password" style={{float: "right"}}>{intl.messages.findPassword}</Button>
                     </Form.Item>
                 </Form>
             </Wrapper>

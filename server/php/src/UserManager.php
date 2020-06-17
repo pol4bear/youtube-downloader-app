@@ -121,6 +121,73 @@ function register(string $username, string $password, string $salt) {
     return [200, makeResult(true, ['email' => $email])];
 }
 
+function changePassword(string $password, string $salt) {
+    session_start();
+    $email = $_SESSION['authEmail'];
+    if ($email == null)
+        badRequest();
+
+    $conn = getDBConnector();
+
+    if (!$conn)
+        return getError(4);
+
+    $stmt = $conn->prepare("UPDATE users SET password=?, salt=? WHERE email=?");
+    $stmt->bind_param("sss", $password, $salt, $email);
+    if (!$stmt->execute())
+        return getError(5);
+
+    session_unset();
+    session_destroy();
+
+    return [200, makeResult(true, ['email' => $email])];
+}
+
+function changeInfo($username, $password, $newPassword, $salt)
+{
+    session_start();
+    $email = $_SESSION['email'];
+    if ($email == null)
+        badRequest();
+
+    $conn = getDBConnector();
+
+    if (!$conn)
+        return getError(4);
+
+    $stmt = $conn->prepare("SELECT no, email, username, password, rank FROM users WHERE email=?");
+    $stmt->bind_param("s", $email);
+
+    if (!$stmt->execute())
+        return getError(4);
+
+    $result = $stmt->get_result();
+
+    $row = $result->fetch_array();
+    if (count($row) == 0) {
+        return getError(8);
+    } else if ($row[3] != $password) {
+        return getError(8);
+    }
+
+    if (isset($newPassword) && isset($salt)) {
+    $stmt = $conn->prepare("UPDATE users SET password=?, salt=? WHERE email=?");
+    $stmt->bind_param("sss", $newPassword, $salt, $email);
+    if (!$stmt->execute())
+        return getError(5);
+    }
+
+    if (isset($username)) {
+        $_SESSION['username'] = $username;
+        $stmt = $conn->prepare("UPDATE users SET username=? WHERE email=?");
+        $stmt->bind_param("ss", $username, $email);
+        if (!$stmt->execute())
+            return getError(5);
+    }
+
+    return [200, makeResult(true, ['email' => $email])];
+}
+
 function getSalt(string $email) {
     $conn = getDBConnector();
 
