@@ -89,7 +89,7 @@ export const LoginProvider: React.FC<LoginProviderProps> = ({children}) => {
 
         requestData<ServerResponse>(`getSalt${config.serverSuffix}`, {email}, false).then(response => {
             const result = response.data.result as Salt;
-            crypto.pbkdf2(password, result.salt, 10000, 256, 'sha-512', (err, key) => {
+            crypto.pbkdf2(password, result.salt, 10000, 256, 'sha512', (err, key) => {
                 const params: Dictionary<string> = {
                     email,
                     password: key.toString('base64'),
