@@ -298,8 +298,8 @@ function sendMessage($receiver, $title, $content) {
     if (!isset($_SESSION['email']))
         return getError(9);
 
-    $email_validate = json_decode(isEmailAvailable($receiver)[1]);
-    if ($email_validate['success'])
+    $email_validate = json_decode(isEmailAvailable($receiver)[1], true);
+    if ($email_validate['success'] || $email_validate['result']['code'] != 5)
         return getError(8);
 
     $conn = getDBConnector();
