@@ -56,5 +56,20 @@
   "loginFailContent": "Check your email or password.",
   "changeFailTitle": "Change failed",
   "changeFailContent": "Check your password.",
-  "nothingChanged": "Nothing changed."
+  "nothingChanged": "Nothing changed.",
+  "message": "Message",
+  "messageTitle": "Title",
+  "messageSender": "Sender",
+  "messageTime": "Sent time",
+  "messageReceived": "Received messages",
+  "messageSend": "Send message",
+  "messageContent": "Content",
+  "messageReceiver": "Receiver",
+  "messageSubmit": "Send message",
+  "messageEmailValidate": " is not valid email!",
+  "messageRequired": " is required!",
+  "messageSuccessTitle": "Success",
+  "messageSuccessContent": "Message has successfully sent.",
+  "messageFailTitle": "Failed",
+  "messageFailContent": "The message was not sent."
 }

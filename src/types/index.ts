@@ -10,3 +10,6 @@ export type { default as Statistics } from './Statistics';
 export type { default as ThumbnailInfo } from './ThumbnailInfo';
 export type { default as User } from './User';
 export type {Salt} from './User';
+export type {default as Message} from './Message';
+export type {default as SendResult} from './SendResult';
+export type {MessageResult} from './Message';

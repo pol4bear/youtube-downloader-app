@@ -26,12 +26,17 @@ function isEmailAvailable(string $email) {
 
     $result = $stmt->get_result();
 
-    if ($result === false)
+    if ($result === false) {
+        $stmt->close();
         return getError(4);
+    }
 
-    if (count($result->fetch_array()) == 0)
+    if ($result->num_rows == 0) {
+        $stmt->close();
         return [200, makeResult(true, array('email' => $email))];
+    }
 
+    $stmt->close();
     return getError(5);
 }
 
@@ -112,11 +117,14 @@ function register(string $username, string $password, string $salt) {
 
     $stmt = $conn->prepare("INSERT INTO users (email, username, password, salt) VALUES(?, ?, ?, ?)");
     $stmt->bind_param("ssss", $email, $username, $password, $salt);
-    if (!$stmt->execute())
+    if (!$stmt->execute()) {
+        $stmt->close();
         return getError(5);
+    }
 
     session_unset();
     session_destroy();
+    $stmt->close();
 
     return [200, makeResult(true, ['email' => $email])];
 }
@@ -163,10 +171,11 @@ function changeInfo($username, $password, $newPassword, $salt)
 
     $result = $stmt->get_result();
 
-    $row = $result->fetch_array();
-    if (count($row) == 0) {
+    if ($result->num_rows == 0) {
         return getError(8);
-    } else if ($row[3] != $password) {
+    }
+    $row = $result->fetch_array();
+    if ($row[3] != $password) {
         return getError(8);
     }
 
@@ -204,9 +213,9 @@ function getSalt(string $email) {
     if ($result === false)
         return getError(4);
 
-    $row = $result->fetch_array();
-    if (count($row) == 0)
+    if ($result->num_rows == 0)
         return getError(8);
+    $row = $result->fetch_array();
 
     return [200, makeResult(true, array('salt' => $row[0]))];
 }
@@ -225,11 +234,11 @@ function login(string $email, string $password, bool $remember) {
 
     $result = $stmt->get_result();
 
-    $row = $result->fetch_array();
-    if (count($row) == 0) {
+    if ($result->num_rows == 0) {
         return getError(8);
     }
-    else if ($row[3] != $password) {
+    $row = $result->fetch_array();
+    if ($row[3] != $password) {
         return getError(8);
     }
 
@@ -252,4 +261,61 @@ function isLoggedIn() {
         return getError(9);
 
     return [200, makeResult(true, ['email' => $_SESSION['email'], 'username' => $_SESSION['username'], 'rank' => $_SESSION['rank']])];
+}
+
+function getMessages($page) {
+    session_start();
+    if (!isset($_SESSION['email']))
+        return getError(9);
+
+    $conn = getDBConnector();
+
+    if (!$conn)
+        return getError(4);
+
+    $start = ($page - 1) * 10;
+    $stmt = $conn->prepare("SELECT SQL_CALC_FOUND_ROWS sender, title, content, time FROM messages WHERE receiver=? ORDER BY id DESC LIMIT ?, 10");
+    $stmt->bind_param("si", $_SESSION['email'], $start);
+
+    if (!$stmt->execute()) {
+        $stmt->close();
+        return getError(4);
+    }
+    $result = $stmt->get_result();
+    $messages = array();
+    while ($row = $result->fetch_array()) {
+        $message = array('sender' => $row['sender'], 'time' => $row['time'], 'title' => $row['title'], 'content' => $row['content']);
+        array_push($messages, $message);
+    }
+    $count = $conn->query("SELECT FOUND_ROWS() as count")->fetch_array()['count'];
+
+    $stmt->close();
+    return [200, makeResult(true, ['count' => (int)$count, 'messages' => $messages])];
+}
+
+function sendMessage($receiver, $title, $content) {
+    session_start();
+    if (!isset($_SESSION['email']))
+        return getError(9);
+
+    $email_validate = json_decode(isEmailAvailable($receiver)[1]);
+    if ($email_validate['success'])
+        return getError(8);
+
+    $conn = getDBConnector();
+
+    if (!$conn)
+        return getError(4);
+
+    $stmt = $conn->prepare("INSERT INTO messages (sender, receiver, title, content, time) VALUES(?, ?, ?, ?, UTC_TIMESTAMP())");
+    $stmt->bind_param("ssss", $_SESSION['email'], $receiver, $title, $content);
+
+    if (!$stmt->execute()) {
+        $stmt->close();
+        return getError(4);
+    }
+
+    $stmt->close();
+
+    return [200, makeResult(true, ['receiver' => $receiver, 'title' => $title])];
 }

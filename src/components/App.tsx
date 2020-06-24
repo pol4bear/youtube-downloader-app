@@ -4,7 +4,7 @@ import { IntlProvider } from 'react-intl';
 import styled, { DefaultTheme, ThemeProvider } from 'styled-components';
 import { Layout } from 'antd';
 import history from '../utils/history';
-import {Home, Search, Watch, Intl, Login, Register, FindPassword, Account} from './Pages';
+import {Home, Search, Watch, Intl, Login, Register, FindPassword, Account, Message} from './Pages';
 import { AppHeader, AppFooter, Main, NotFound } from './Layout';
 import { getLocaleInfo, LocaleInfo } from '../locales';
 import config from '../common/config';
@@ -69,6 +69,8 @@ const App: React.FC = () => {
               <Route path={`${config.baseUrl}/register`} component={Register} />
               <Route path={`${config.baseUrl}/find-password`} component={FindPassword} />
               <Route path={`${config.baseUrl}/account`} component={Account} />
+              <Route path={`${config.baseUrl}/message/:page`} component={Message} />
+              <Route path={`${config.baseUrl}/message`} component={Message} />
               <Route
                 path={`${config.baseUrl}/intl/:lang`}
                 component={() => <Intl changeLocale={changeLocale} />}
