@@ -40,8 +40,11 @@ const Messages: React.FC<MessageProps> = ({mode}) => {
   const { state } = useContext(LoginContext);
 
   let pathname = history.location.pathname;
-  if (match.params.page)
+  let login = './login';
+  if (match.params.page) {
     pathname = pathname.slice(0, history.location.pathname.lastIndexOf('/'))
+    login = '../login';
+  }
 
   let title, columnTitle, column, messageButtonContent, otherMessages: string;
   if (mode == 'Received') {
@@ -81,9 +84,7 @@ const Messages: React.FC<MessageProps> = ({mode}) => {
 
   useEffect(() => {
     if (!state.loading && !state.isLoggedIn) {
-      const pathname = history.location.pathname;
-      const slash = pathname[pathname.length-1] === '/' ? '' : '/';
-      history.push(`${history.location.pathname}${slash}login`);
+      history.push(login);
     }
   }, [state]);
 

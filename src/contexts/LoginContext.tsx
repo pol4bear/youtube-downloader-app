@@ -1,4 +1,4 @@
-import React, {createContext, Dispatch, useEffect, useReducer, useState} from 'react';
+import React, {createContext, useEffect, useReducer} from 'react';
 import {Dictionary, FailResult, Salt, ServerResponse, User} from "../types";
 import requestData from "../utils/requestData";
 import config from "../common/config";

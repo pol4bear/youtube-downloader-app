@@ -37,6 +37,7 @@ const Watch: React.FC = () => {
    */
   const urlParams = new URLSearchParams(location.search);
 
+  let login = '';
   /**
    * Video id.
    */
@@ -45,10 +46,12 @@ const Watch: React.FC = () => {
   if (match.params.id) {
     id = match.params.id;
     home = '../';
+    login = '../login';
   }
   else {
     id = urlParams.get('v');
     home = '';
+    login = './login';
   }
 
   /**
@@ -84,9 +87,7 @@ const Watch: React.FC = () => {
 
   useEffect(() => {
     if (!state.loading && !state.isLoggedIn) {
-      const pathname = history.location.pathname;
-      const slash = pathname[pathname.length-1] === '/' ? '' : '/';
-      history.push(`${history.location.pathname}${slash}login`);
+      history.push(login);
     }
   }, [state]);
 

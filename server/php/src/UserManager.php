@@ -179,7 +179,7 @@ function changeInfo($username, $password, $newPassword, $salt)
         return getError(8);
     }
 
-    if (isset($newPassword) && isset($salt)) {
+    if (isset($newPassword) && isset($salt) && $newPassword != "" && $salt != "") {
     $stmt = $conn->prepare("UPDATE users SET password=?, salt=? WHERE email=?");
     $stmt->bind_param("sss", $newPassword, $salt, $email);
     if (!$stmt->execute())

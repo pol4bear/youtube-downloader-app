@@ -22,13 +22,16 @@ const Search: React.FC = () => {
   const urlParams = new URLSearchParams(location.search);
   let home: string;
   let query: string | null;
+  let login = '';
   if (match.params.query) {
     query = match.params.query;
     home = '../';
+    login = '../login'
   }
   else {
     query = urlParams.get('q');
     home = '';
+    login = './login'
   }
 
   const { data, loading, more, error, setQuery, load } = React.useContext(
@@ -53,9 +56,7 @@ const Search: React.FC = () => {
 
   useEffect(() => {
     if (!state.loading && !state.isLoggedIn) {
-      const pathname = history.location.pathname;
-      const slash = pathname[pathname.length-1] === '/' ? '' : '/';
-      history.push(`${history.location.pathname}${slash}login`);
+      history.push(login);
     }
     if (setQuery) setQuery(query);
   }, [state]);

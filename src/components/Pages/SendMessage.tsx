@@ -17,9 +17,7 @@ const SendMessage: React.FC = () => {
 
   useEffect(() => {
     if (!state.loading && !state.isLoggedIn) {
-      const pathname = history.location.pathname;
-      const slash = pathname[pathname.length-1] === '/' ? '' : '/';
-      history.push(`${history.location.pathname}${slash}login`);
+      history.push('./login');
     }
   }, [state]);
 
