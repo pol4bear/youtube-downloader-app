@@ -23,7 +23,6 @@ const Account: React.FC = () => {
   const [form] = Form.useForm();
 
   const onFinish = (values: Store) => {
-    console.log(values);
     if (values.username == state.userInfo.username && (!values.newPw || values.newPw == '')) {
       notification['error']({
         message: `${intl.messages.changeFailTitle}`,
@@ -33,7 +32,7 @@ const Account: React.FC = () => {
     }
     requestData<ServerResponse>(`getSalt${config.serverSuffix}`, {email: state.userInfo.email}, false).then(response => {
       const result = response.data.result as Salt;
-      crypto.pbkdf2(values.pw, result.salt, 10000, 256, 'sha-512', (err, key) => {
+      crypto.pbkdf2(values.pw, result.salt, 10000, 256, 'sha512', (err, key) => {
         const params: Dictionary<string> = {
           password: key.toString('base64'),
         }
@@ -41,9 +40,7 @@ const Account: React.FC = () => {
         if (newPw != '') {
           crypto.randomBytes(128, (err, buf) => {
             const salt = buf.toString('base64');
-            console.log(salt);
             crypto.pbkdf2(values.newPw, salt, 10000, 256, 'sha512', (erro, newKey) => {
-              console.log(newKey.toString('base64'));
               params['salt'] = salt;
               params['newPassword'] = newKey.toString('base64');
 
@@ -102,10 +99,7 @@ const handleChange = (changedFields: FieldData[], allFields: FieldData[]) => {
 
   useEffect(() => {
     if (!state.loading && !state.isLoggedIn) {
-      const pathname = history.location.pathname;
-      const slash = pathname[pathname.length-1] === '/' ? '' : '/';
-      history.push(`${history.location.pathname}${slash}../login`);
-      history.go(0);
+      history.push('./login');
     }
     else {
       if (state.userInfo.username != '' && username == '') {
