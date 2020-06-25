@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import config from '../../common/config';
-import {Account, FindPassword, Home, Login, Register, Search, Watch, Message} from './index';
+import {Account, FindPassword, Home, Login, Register, Search, Watch, Message, SendMessage} from './index';
 import { Main, NotFound } from '../Layout';
 
 interface IntlProp {
@@ -46,8 +46,11 @@ const Intl: React.FC<IntlProp> = (props) => {
           <Route exact path={`${match.url}/register`} component={Register} />
           <Route exact path={`${match.url}/find-password`} component={FindPassword} />
           <Route exact path={`${match.url}/account`} component={Account} />
-          <Route exact path={`${match.url}/message/:page`} component={Message} />
-          <Route exact path={`${match.url}/message`} component={Message} />
+          <Route path={`${match.url}/received-messages/:page`} component={() => <Message mode="Received" />} />
+          <Route path={`${match.url}/received-messages`} component={() => <Message mode="Received" />} />
+          <Route path={`${match.url}/sent-messages/:page`} component={() => <Message mode="Sent" />} />
+          <Route path={`${match.url}/sent-messages`} component={() => <Message mode="Sent" />} />
+          <Route path={`${match.url}/send-message`} component={SendMessage} />
           <Route
             component={() => (
               <Main>

@@ -78,6 +78,10 @@ function getError(int $code)
       $responseCode = 403;
       $error['message'] = 'You are not logged in.';
       break;
+    case 10:
+      $responseCode = 400;
+      $error['message'] = "You cannot message yourself.";
+      break;
     default:
       return null;
   }

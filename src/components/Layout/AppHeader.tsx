@@ -104,13 +104,13 @@ const AppHeader: React.FC<AppHeaderProp> = (props) => {
                 {
                   state.isLoggedIn &&
                   <Menu.Item key="message">
-                      <Link to={`${home}/message`}>{intl.messages.message}</Link>
+                      <Link to={`${home}/received-messages`}>{intl.messages.message}</Link>
                   </Menu.Item>
                 }
                 {
                 state.isLoggedIn &&
                 <Menu.Item key="logout" onClick={logout}>
-                  {intl.messages.logout}
+                    <span>{intl.messages.logout}</span>
                 </Menu.Item>
                 }
                 <SubMenu title={getLocaleName(intl.locale).name}>
@@ -144,7 +144,7 @@ const AppHeader: React.FC<AppHeaderProp> = (props) => {
               {
                 state.isLoggedIn &&
                 <Menu.Item key="message">
-                    <Link to={`${home}/message`}>{intl.messages.message}</Link>
+                    <Link to={`${home}/received-messages`}>{intl.messages.message}</Link>
                 </Menu.Item>
               }
               {

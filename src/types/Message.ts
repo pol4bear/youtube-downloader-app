@@ -1,4 +1,5 @@
 interface Message {
+  no: number;
   sender: string;
   time: Date;
   title: string;

@@ -7,3 +7,4 @@ export { default as Register } from './Register';
 export { default as FindPassword } from './FindPassword';
 export { default as Account } from './Account';
 export { default as Message } from './Message';
+export { default as SendMessage } from './SendMessage';

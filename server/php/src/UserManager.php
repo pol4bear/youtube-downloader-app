@@ -263,10 +263,25 @@ function isLoggedIn() {
     return [200, makeResult(true, ['email' => $_SESSION['email'], 'username' => $_SESSION['username'], 'rank' => $_SESSION['rank']])];
 }
 
-function getMessages($page) {
+function getMessages($page, $mode) {
     session_start();
     if (!isset($_SESSION['email']))
         return getError(9);
+
+    $column = null;
+    $query = null;
+    switch($mode) {
+    case 'Received':
+        $column = 'sender';
+        $query = "SELECT SQL_CALC_FOUND_ROWS no, sender, title, content, time FROM messages WHERE receiver=? AND deleted_by_receiver=FALSE ORDER BY no DESC LIMIT ?, 10";
+        break;
+    case 'Sent':
+        $column = 'receiver';
+        $query = "SELECT SQL_CALC_FOUND_ROWS no, receiver, title, content, time FROM messages WHERE sender=? AND deleted_by_sender=FALSE ORDER BY no DESC LIMIT ?, 10";
+        break;
+    default:
+        badRequest();
+    }
 
     $conn = getDBConnector();
 
@@ -274,7 +289,7 @@ function getMessages($page) {
         return getError(4);
 
     $start = ($page - 1) * 10;
-    $stmt = $conn->prepare("SELECT SQL_CALC_FOUND_ROWS sender, title, content, time FROM messages WHERE receiver=? ORDER BY id DESC LIMIT ?, 10");
+    $stmt = $conn->prepare($query);
     $stmt->bind_param("si", $_SESSION['email'], $start);
 
     if (!$stmt->execute()) {
@@ -284,7 +299,7 @@ function getMessages($page) {
     $result = $stmt->get_result();
     $messages = array();
     while ($row = $result->fetch_array()) {
-        $message = array('sender' => $row['sender'], 'time' => $row['time'], 'title' => $row['title'], 'content' => $row['content']);
+        $message = array('no' => $row['no'], $column => $row[$column], 'time' => $row['time'], 'title' => $row['title'], 'content' => $row['content']);
         array_push($messages, $message);
     }
     $count = $conn->query("SELECT FOUND_ROWS() as count")->fetch_array()['count'];
@@ -298,6 +313,9 @@ function sendMessage($receiver, $title, $content) {
     if (!isset($_SESSION['email']))
         return getError(9);
 
+    if ($receiver == $_SESSION['email'])
+        return getError(10);
+
     $email_validate = json_decode(isEmailAvailable($receiver)[1], true);
     if ($email_validate['success'] || $email_validate['result']['code'] != 5)
         return getError(8);
@@ -306,6 +324,9 @@ function sendMessage($receiver, $title, $content) {
 
     if (!$conn)
         return getError(4);
+
+    $title = htmlspecialchars($title);
+    $content = htmlspecialchars($content);
 
     $stmt = $conn->prepare("INSERT INTO messages (sender, receiver, title, content, time) VALUES(?, ?, ?, ?, UTC_TIMESTAMP())");
     $stmt->bind_param("ssss", $_SESSION['email'], $receiver, $title, $content);
@@ -319,3 +340,50 @@ function sendMessage($receiver, $title, $content) {
 
     return [200, makeResult(true, ['receiver' => $receiver, 'title' => $title])];
 }
+
+function deleteMessage($no) {
+    session_start();
+    if (!isset($_SESSION['email']))
+        return getError(9);
+
+    $conn = getDBConnector();
+
+    if (!$conn)
+        return getError(4);
+
+    $stmt = $conn->prepare("SELECT sender, receiver FROM messages WHERE no=?");
+    $stmt->bind_param("i", $no);
+
+    if (!$stmt->execute()) {
+        $stmt->close();
+        return getError(4);
+    }
+
+    $result = $stmt->get_result();
+    if ($result->num_rows == 0)
+        badRequest();
+
+    $row = $result->fetch_array();
+
+    $query = null;
+    if ($row['sender'] == $_SESSION['email']) {
+        $query = "UPDATE messages SET deleted_by_sender=TRUE WHERE no=?";
+    }
+    else if ($row['receiver'] == $_SESSION['email']) {
+        $query = "UPDATE messages SET deleted_by_receiver=TRUE WHERE no=?";
+    }
+    else {
+        badRequest();
+    }
+
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $no);
+
+    if (!$stmt->execute()) {
+        $stmt->close();
+        return getError(4);
+    }
+
+    return [200, makeResult(true, ['no' => $no])];
+}
+
