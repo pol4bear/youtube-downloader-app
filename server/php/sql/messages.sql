@@ -23,14 +23,16 @@ DROP TABLE IF EXISTS `messages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `messages` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `no` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `sender` char(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `receiver` char(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `time` datetime DEFAULT NULL,
   `title` tinytext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `content` tinytext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `deleted_by_sender` tinyint(1) NOT NULL DEFAULT 0,
+  `deleted_by_receiver` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`no`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -42,4 +44,4 @@ CREATE TABLE `messages` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-24 12:00:36
+-- Dump completed on 2020-06-25 23:19:06
