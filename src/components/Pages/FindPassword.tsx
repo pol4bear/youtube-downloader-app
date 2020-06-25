@@ -156,10 +156,10 @@ const FindPassword: React.FC = () => {
   return (
     <CenterAligner>
       <Helmet>
-        <title>{intl.messages.changePassword}</title>
+        <title>{intl.messages.findPassword}</title>
       </Helmet>
       <Wrapper>
-        <h1>{intl.messages.changePassword}</h1>
+        <h1>{intl.messages.findPassword}</h1>
         <Form
           {...layout}
           name="register"

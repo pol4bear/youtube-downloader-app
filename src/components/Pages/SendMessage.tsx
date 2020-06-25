@@ -47,7 +47,8 @@ const SendMessage: React.FC = () => {
         description: `${intl.messages.messageSuccessContent}`,
         onClose: () => {
           setSending(false);
-          window.location.reload();
+          history.push(`${history.location.pathname}/../sent-messages`);
+          history.go(0);
         }
       });
     }).catch(() => {

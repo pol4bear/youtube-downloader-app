@@ -26,7 +26,7 @@ interface TableData extends MessageItem {
   formattedTime: string;
 }
 
-const Message: React.FC<MessageProps> = ({mode}) => {
+const Messages: React.FC<MessageProps> = ({mode}) => {
   const match = useRouteMatch<MatchParams>();
   const intl = useIntl();
   const page = match.params.page ? Number(match.params.page) : 1;
@@ -35,7 +35,7 @@ const Message: React.FC<MessageProps> = ({mode}) => {
   const [messages, setMessages] = useState<MessageItem[]>([]);
   const [tableData, setTableData] = useState<TableData[]>([]);
   const [visible, setVisible] = useState<boolean>(false);
-  const [currentMessage, setCurrentMessage] = useState<MessageItem>({no: 0, title: '', sender: '', content: '', time: new Date()});
+  const [currentMessage, setCurrentMessage] = useState<TableData>({key: "", formattedTime: "", no: 0, title: '', content: '', time: new Date()});
   const [deleting, setDeleting] = useState<boolean>(false);
   const { state } = useContext(LoginContext);
 
@@ -192,8 +192,8 @@ return (
                 </Button>
               ]}
               >
-              {`${intl.messages.messageSender}: ${currentMessage!.sender}`}<br />
-              {`${intl.messages.messageTime}: ${currentMessage!.time}`}<br />
+              {mode == 'Received' ? `${intl.messages.messageSender}: ${currentMessage!.sender}` : `${intl.messages.messageReceiver}: ${currentMessage!.receiver}`}<br />
+              {`${intl.messages.messageTime}: ${currentMessage!.formattedTime}`}<br />
               {`${intl.messages.messageContent}: ${currentMessage!.content}`}
             </Modal>
       </CenterAligner>
@@ -206,4 +206,4 @@ const Wrapper = styled.div`
     label { color: ${(props) => props.theme.fontColor}!important };
 `;
 
-export default Message;
+export default Messages;

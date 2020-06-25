@@ -1,6 +1,7 @@
 interface Message {
   no: number;
-  sender: string;
+  sender?: string;
+  receiver?: string;
   time: Date;
   title: string;
   content: string;

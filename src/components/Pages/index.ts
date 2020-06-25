@@ -6,5 +6,5 @@ export { default as Login } from './Login';
 export { default as Register } from './Register';
 export { default as FindPassword } from './FindPassword';
 export { default as Account } from './Account';
-export { default as Message } from './Message';
+export { default as Message } from './Messages';
 export { default as SendMessage } from './SendMessage';
