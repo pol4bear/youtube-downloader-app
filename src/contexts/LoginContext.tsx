@@ -136,7 +136,7 @@ export const LoginProvider: React.FC<LoginProviderProps> = ({children}) => {
 
     return (
       <LoginContext.Provider value={{state: loginState, login: doLogin, logout: doLogout}}>
-            {children}
+          {!loginState.loading && children}
       </LoginContext.Provider>
     )
 }

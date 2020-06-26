@@ -5,7 +5,7 @@ import styled, { DefaultTheme, ThemeProvider } from 'styled-components';
 import { Layout } from 'antd';
 import history from '../utils/history';
 import {Home, Search, Watch, Intl, Login, Register, FindPassword, Account, Message, SendMessage} from './Pages';
-import {AppHeader, AppFooter, Main, NotFound, LoadWrapper} from './Layout';
+import {AppHeader, AppFooter, Main, NotFound} from './Layout';
 import { getLocaleInfo, LocaleInfo } from '../locales';
 import config from '../common/config';
 import { getOppositeTheme, getTheme } from '../themes';
@@ -27,7 +27,6 @@ const App: React.FC = () => {
   const initialLocale = getLocaleInfo(config.currentLocale);
 
   const [currentLocale, setCurrentLocale] = useState<LocaleInfo>(initialLocale);
-  const {state} = useContext(LoginContext);
 
   /**
    * Switch theme light/dark.
@@ -57,9 +56,6 @@ const App: React.FC = () => {
           <LoginProvider>
           <Wrapper className="layout">
             <AppHeader changeTheme={changeTheme} />
-            {state.loading ?
-            <LoadWrapper />
-            :
                 <Switch>
                   <Route exact path={config.baseUrl} component={Home} />
                   <Route
@@ -91,7 +87,6 @@ const App: React.FC = () => {
                     )}
                   />
                 </Switch>
-            }
             <AppFooter />
           </Wrapper></LoginProvider>
         </ThemeProvider>
