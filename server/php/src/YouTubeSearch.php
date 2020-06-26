@@ -9,6 +9,11 @@ require_once 'base.php';
  */
 function getYouTubeClient()
 {
+  session_start();
+  if (!isset($_SESSION['email'])) {
+    badRequest();
+  }
+
   global $config;
   $token = $config['token'];
   if (!isset($token)) {
