@@ -89,12 +89,14 @@ const Watch: React.FC = () => {
           setLoading(false);
         })
         .catch((e: AxiosError<ServerResponse>) => {
+          let errno = -1;
           if (e.response) {
             if (e.response.data.success) {
               const result = e.response.data.result as FailResult;
-              setError(result.code);
-            } else setError(-1);
+              if (result.code) errno = result.code;
+            }
           }
+          setError(errno);
           setLoading(false);
         });
     }
