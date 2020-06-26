@@ -89,35 +89,41 @@ const Watch: React.FC = () => {
     if (!state.loading && !state.isLoggedIn) {
       history.push(login);
     }
+    else if(loading) {
+      // If id not set stop loading.
+      if (id === null) setLoading(false);
+      // If is request not started start request.
+      else if (!requested) {
+        setRequested(true);
+        requestData<ServerResponse>(`video${config.serverSuffix}`, { v: id })
+          .then((response) => {
+            const result = response.data.result as VideoInfo;
+            setData(result);
+            if (result.qualities)
+              setQuality(
+                result.qualities[result.qualities.length - 1].formatCode
+              );
+            setLoading(false);
+          })
+          .catch((e: AxiosError<ServerResponse>) => {
+            if (e.response) {
+              if (e.response.data.success) {
+                const result = e.response.data.result as FailResult;
+                if (result.code) {
+                  setError(result.code);
+                  return;
+                }
+              }
+              setError(-1);
+            }
+            setLoading(false);
+          });
+      }
+    }
   }, [state]);
 
   // If is loading return loading wrapper.
   if (loading) {
-    // If id not set stop loading.
-    if (id === null) setLoading(false);
-    // If is request not started start request.
-    else if (!requested) {
-      setRequested(true);
-      requestData<ServerResponse>(`video${config.serverSuffix}`, { v: id })
-        .then((response) => {
-          const result = response.data.result as VideoInfo;
-          setData(result);
-          if (result.qualities)
-            setQuality(
-              result.qualities[result.qualities.length - 1].formatCode
-            );
-          setLoading(false);
-        })
-        .catch((e: AxiosError<ServerResponse>) => {
-          if (e.response) {
-            if (e.response.data.success) {
-              const result = e.response.data.result as FailResult;
-              setError(result.code);
-            } else setError(-1);
-          }
-          setLoading(false);
-        });
-    }
     return (
       <Main>
         <Helmet>

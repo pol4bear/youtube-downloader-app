@@ -7,7 +7,6 @@ import LoginContext from "../../contexts/LoginContext";
 import styled from "styled-components";
 import {CheckboxChangeEvent} from "antd/es/checkbox";
 import { Store } from 'antd/lib/form/interface';
-import {ValidateErrorEntity} from "rc-field-form/lib/interface";
 import history from "../../utils/history";
 
 const Login: React.FC = () => {
@@ -57,7 +56,6 @@ const Login: React.FC = () => {
     }, [state]);
 
     return (
-
         <CenterAligner>
             <Helmet>
                 <title>{intl.messages.login}</title>

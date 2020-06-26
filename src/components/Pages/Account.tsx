@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import { Helmet } from 'react-helmet';
-import {CenterAligner} from "../Layout";
+import {CenterAligner, LoadWrapper} from "../Layout";
 import {Button, Checkbox, Form, Input, notification} from "antd";
 import {useIntl} from "react-intl";
 import LoginContext from "../../contexts/LoginContext";

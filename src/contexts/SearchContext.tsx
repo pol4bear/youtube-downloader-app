@@ -96,7 +96,8 @@ export const SearchProvider = (props: SearchProviderProps) => {
         let error = -1;
         if (e.response) {
           const result = e.response.data.result as FailResult;
-          error = result.code;
+          if (result.code)
+            error = result.code;
         }
         dispatch(stop(error));
       });

@@ -63,15 +63,6 @@ const Messages: React.FC<MessageProps> = ({mode}) => {
   }
 
   useEffect(() => {
-    requestData<ServerResponse>(`getMessages${config.serverSuffix}`, {page: `${page}`, mode}, false).then(response => {
-      const result = response.data.result as MessageResult;
-      setTotal(result.count);
-      setMessages(result.messages);
-      setLoading(false);
-    });
-  }, []);
-
-  useEffect(() => {
     const messageTableItems: TableData[] = [];
     for (let i = 0; i< messages!.length; i++) {
       const message = messages![i];
@@ -85,6 +76,17 @@ const Messages: React.FC<MessageProps> = ({mode}) => {
   useEffect(() => {
     if (!state.loading && !state.isLoggedIn) {
       history.push(login);
+    }
+    else {
+      requestData<ServerResponse>(`getMessages${config.serverSuffix}`, {
+        page: `${page}`,
+        mode
+      }, false).then(response => {
+        const result = response.data.result as MessageResult;
+        setTotal(result.count);
+        setMessages(result.messages);
+        setLoading(false);
+      });
     }
   }, [state]);
 

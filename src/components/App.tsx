@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, {useContext, useState} from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import { IntlProvider } from 'react-intl';
 import styled, { DefaultTheme, ThemeProvider } from 'styled-components';
 import { Layout } from 'antd';
 import history from '../utils/history';
 import {Home, Search, Watch, Intl, Login, Register, FindPassword, Account, Message, SendMessage} from './Pages';
-import { AppHeader, AppFooter, Main, NotFound } from './Layout';
+import {AppHeader, AppFooter, Main, NotFound, LoadWrapper} from './Layout';
 import { getLocaleInfo, LocaleInfo } from '../locales';
 import config from '../common/config';
 import { getOppositeTheme, getTheme } from '../themes';
-import {LoginProvider} from "../contexts/LoginContext";
+import LoginContext, {LoginProvider} from "../contexts/LoginContext";
 
 const App: React.FC = () => {
   let initialTheme: DefaultTheme;
@@ -27,6 +27,7 @@ const App: React.FC = () => {
   const initialLocale = getLocaleInfo(config.currentLocale);
 
   const [currentLocale, setCurrentLocale] = useState<LocaleInfo>(initialLocale);
+  const {state} = useContext(LoginContext);
 
   /**
    * Switch theme light/dark.
@@ -56,37 +57,41 @@ const App: React.FC = () => {
           <LoginProvider>
           <Wrapper className="layout">
             <AppHeader changeTheme={changeTheme} />
-            <Switch>
-              <Route exact path={config.baseUrl} component={Home} />
-              <Route
-                path={`${config.baseUrl}/search/:query`}
-                component={Search}
-              />
-              <Route path={`${config.baseUrl}/search`} component={Search} />
-              <Route path={`${config.baseUrl}/watch/:id`} component={Watch} />
-              <Route path={`${config.baseUrl}/watch`} component={Watch} />
-              <Route path={`${config.baseUrl}/login`} component={Login} />
-              <Route path={`${config.baseUrl}/register`} component={Register} />
-              <Route path={`${config.baseUrl}/find-password`} component={FindPassword} />
-              <Route path={`${config.baseUrl}/account`} component={Account} />
-              <Route path={`${config.baseUrl}/received-messages/:page`} component={() => <Message mode="Received" />} />
-              <Route path={`${config.baseUrl}/received-messages`} component={() => <Message mode="Received" />} />
-              <Route path={`${config.baseUrl}/sent-messages/:page`} component={() => <Message mode="Sent" />} />
-              <Route path={`${config.baseUrl}/sent-messages`} component={() => <Message mode="Sent" />} />
-              <Route path={`${config.baseUrl}/send-message`} component={SendMessage} />
+            {state.loading ?
+            <LoadWrapper />
+            :
+                <Switch>
+                  <Route exact path={config.baseUrl} component={Home} />
+                  <Route
+                    path={`${config.baseUrl}/search/:query`}
+                    component={Search}
+                  />
+                  <Route path={`${config.baseUrl}/search`} component={Search} />
+                  <Route path={`${config.baseUrl}/watch/:id`} component={Watch} />
+                  <Route path={`${config.baseUrl}/watch`} component={Watch} />
+                  <Route path={`${config.baseUrl}/login`} component={Login} />
+                  <Route path={`${config.baseUrl}/register`} component={Register} />
+                  <Route path={`${config.baseUrl}/find-password`} component={FindPassword} />
+                  <Route path={`${config.baseUrl}/account`} component={Account} />
+                  <Route path={`${config.baseUrl}/received-messages/:page`} component={() => <Message mode="Received" />} />
+                  <Route path={`${config.baseUrl}/received-messages`} component={() => <Message mode="Received" />} />
+                  <Route path={`${config.baseUrl}/sent-messages/:page`} component={() => <Message mode="Sent" />} />
+                  <Route path={`${config.baseUrl}/sent-messages`} component={() => <Message mode="Sent" />} />
+                  <Route path={`${config.baseUrl}/send-message`} component={SendMessage} />
 
-              <Route
-                path={`${config.baseUrl}/intl/:lang`}
-                component={() => <Intl changeLocale={changeLocale} />}
-              />
-              <Route
-                component={() => (
-                  <Main>
-                    <NotFound />
-                  </Main>
-                )}
-              />
-            </Switch>
+                  <Route
+                    path={`${config.baseUrl}/intl/:lang`}
+                    component={() => <Intl changeLocale={changeLocale} />}
+                  />
+                  <Route
+                    component={() => (
+                      <Main>
+                        <NotFound />
+                      </Main>
+                    )}
+                  />
+                </Switch>
+            }
             <AppFooter />
           </Wrapper></LoginProvider>
         </ThemeProvider>

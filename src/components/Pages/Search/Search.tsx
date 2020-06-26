@@ -58,7 +58,7 @@ const Search: React.FC = () => {
     if (!state.loading && !state.isLoggedIn) {
       history.push(login);
     }
-    if (setQuery) setQuery(query);
+    else if (setQuery) setQuery(query);
   }, [state]);
 
   useEffect(() => {
@@ -82,13 +82,13 @@ const Search: React.FC = () => {
         <NotFound />
       </Main>
     );
-  if (error !== 0)
+  else if (error !== 0)
     return (
       <Main>
         <ErrorContent error={error} />
       </Main>
     );
-  if (loading && data.length < 1) return <LoadWrapper />;
+  else if (loading && data.length < 1) return <LoadWrapper />;
   return (
     <Main>
       <Helmet>

@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import history from '../../utils/history';
 import { Helmet } from 'react-helmet';
-import {CenterAligner} from "../Layout";
+import {CenterAligner, LoadWrapper} from "../Layout";
 import {Button, Form, Input, notification, Row} from "antd";
 import {useIntl} from "react-intl";
 import styled from "styled-components";
