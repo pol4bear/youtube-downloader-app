@@ -3,6 +3,7 @@ import {Dictionary, FailResult, Salt, ServerResponse, User} from "../types";
 import requestData from "../utils/requestData";
 import config from "../common/config";
 import crypto from 'crypto';
+import {AxiosError} from "axios";
 
 export interface LoginState {
     loading: boolean;
@@ -83,6 +84,16 @@ interface LoginProviderProps {
 export const LoginProvider: React.FC<LoginProviderProps> = ({children}) => {
     const [loginState, dispatch] = useReducer(loginReducer, { ...initialState, loading: true });
 
+    const handleError = (errorResponse: AxiosError<ServerResponse>) => {
+        let error = -1;
+        if (errorResponse.response) {
+            const result = errorResponse.response.data.result as FailResult;
+            if (result.code)
+                error = result.code;
+        }
+        dispatch(loginFail(error));
+    }
+
     const doLogin = (email: string, password: string, remember: boolean) => {
         if (loginState.isLoggedIn)
             return;
@@ -99,25 +110,9 @@ export const LoginProvider: React.FC<LoginProviderProps> = ({children}) => {
                     const serverResponse = response.data;
                     const result = serverResponse.result as User;
                     dispatch(loginSuccess(result));
-                }).catch(e => {
-                    let error = -1;
-                    if (e.response) {
-                        const result = e.response.data.result as FailResult;
-                        if (result.code)
-                            error = result.code;
-                    }
-                    dispatch(loginFail(error));
-                });
+                }).catch(handleError);
             })
-        }).catch(e => {
-            let error = -1;
-            if (e.response) {
-                const result = e.response.data.result as FailResult;
-                if (result.code)
-                    error = result.code;
-            }
-            dispatch(loginFail(error));
-        });
+        }).catch(handleError);
     }
 
     const doLogout = () => {
