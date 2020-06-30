@@ -197,7 +197,9 @@ return (
               >
               {mode == 'Received' ? `${intl.messages.messageSender}: ${currentMessage!.sender}` : `${intl.messages.messageReceiver}: ${currentMessage!.receiver}`}<br />
               {`${intl.messages.messageTime}: ${currentMessage!.formattedTime}`}<br />
-              {`${intl.messages.messageContent}: ${currentMessage!.content}`}
+              <pre>
+               {`${intl.messages.messageContent}: ${currentMessage!.content}`}
+              </pre>
             </Modal>
       </CenterAligner>
   );
