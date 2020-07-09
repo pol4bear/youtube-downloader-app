@@ -20,7 +20,7 @@ $quality = isset($_GET['quality'])
   ? $_GET['quality']
   : (isset($_POST['quality'])
     ? $_POST['quality']
-    : getConfig('quality'));
+    : $config['quality']);
 
 // Response error if video id or quality is not valid.
 if ($videoId == null) {

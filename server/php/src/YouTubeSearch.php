@@ -20,79 +20,6 @@ function getYouTubeClient()
 }
 
 /**
- * Get YouTube video array searched.
- * Return success/error result.
- *
- * @param string $query
- * @param string|null $maxResults
- * @param string|null $pageToken
- * @return array|null
- */
-function getVideoList(
-  string $query,
-  string $maxResults = null,
-  string $pageToken = null
-) {
-  global $config;
-
-  $youtubeClient = getYouTubeClient();
-  $regionCode = getIpInfo($_SERVER['REMOTE_ADDR'], 'countrycode');
-
-  // Make GraphQL query to request.
-  $apiQuery = [
-    'type' => 'video',
-    'q' => $query,
-    'maxResults' =>
-      is_numeric($maxResults) && ($maxResults >= 0 && $maxResults <= 50)
-        ? (int) $maxResults
-        : $config['max_results'],
-    'regionCode' => isset($regionCode) ? $regionCode : $config['region_code'],
-  ];
-  if (isset($pageToken)) {
-    $apiQuery['pageToken'] = $pageToken;
-  }
-
-  try {
-    // Get list of YouTube videos.
-    $searchResponse = $youtubeClient->search->listSearch('snippet', $apiQuery);
-    if ($searchResponse['pageInfo']['totalResults'] == 0) {
-      throw new InvalidArgumentException();
-    }
-
-    // Get statistics of YouTube videos searched above.
-    $statResponse = $youtubeClient->videos->listVideos('statistics', [
-      'id' => array_column(
-        array_column($searchResponse['items'], 'id'),
-        'videoId'
-      ),
-    ]);
-
-    // Format results prettier.
-    $items = formatVideoListItems($searchResponse['items'], $statResponse);
-    if ($items == null) {
-      throw new InvalidArgumentException();
-    }
-
-    // Make result to response.
-    $result = [
-      'nextPageToken' => $searchResponse['nextPageToken'],
-      'prevPageToken' => $searchResponse['prevPageToken'],
-      'pageInfo' => $searchResponse['pageInfo'],
-      'items' => $items,
-    ];
-
-    // Return success result.
-    return [200, makeResult(true, $result)];
-  } catch (Google_Service_Exception $exception) {
-    // Return error result on API daily limit.
-    return getError(2);
-  } catch (InvalidArgumentException $exception) {
-    // Return error result on invalid user input.
-    return getError(3);
-  }
-}
-
-/**
  * Format video and statistics array prettier.
  * Return formatted list of videos.
  *
@@ -124,59 +51,6 @@ function formatVideoListItems($items, $statResponse)
   }
 
   return $result;
-}
-
-/**
- * Get video info including available qualities.
- * Return success/error result.
- *
- * @param string $videoId
- * @return array|null
- */
-function getVideoInfo(string $videoId)
-{
-  global $config;
-  $youtubeClient = getYouTubeClient();
-  $regionCode = getIpInfo($_SERVER['REMOTE_ADDR'], 'countrycode');
-
-  try {
-    // Get YouTube video snippet and statistics.
-    $searchResponse = $youtubeClient->videos->listVideos('snippet,statistics', [
-      'id' => $videoId,
-      'regionCode' => isset($regionCode) ? $regionCode : $config['region_code'],
-    ]);
-
-    $video = $searchResponse['items'][0];
-
-    // If video info not found throw invalid argument exception.
-    if (!isset($video)) {
-      throw new InvalidArgumentException();
-    }
-
-    // Make video info response.
-    $videoSnippet = $video['snippet'];
-    $result = [
-      'id' => $video['id'],
-      'channelId' => $videoSnippet['channelId'],
-      'chanelTitle' => $videoSnippet['channelTitle'],
-      'description' => $videoSnippet['description'],
-      'publishedAt' => $videoSnippet['publishedAt'],
-      'tags' => $videoSnippet['tags'],
-      'title' => $videoSnippet['title'],
-      'thumbnails' => $videoSnippet['thumbnails'],
-      'statistics' => $video['statistics'],
-      'qualities' => getVideoQuality($videoId),
-    ];
-
-    // Return success result.
-    return [200, makeResult(true, $result)];
-  } catch (Google_Service_Exception $exception) {
-    // Return error result on API daily limit.
-    return getError(2);
-  } catch (InvalidArgumentException $exception) {
-    // Return error result on invalid user input.
-    return getError(3);
-  }
 }
 
 /**
