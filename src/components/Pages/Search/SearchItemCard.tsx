@@ -16,7 +16,6 @@ interface SearchItemCardProps {
 }
 
 const SearchItemCard: React.FC<SearchItemCardProps> = (props) => {
-  /* eslint-disable react/no-danger */
   const intl = useIntl();
   const { data } = props;
   const history = useHistory();
@@ -76,7 +75,6 @@ const SearchItemCard: React.FC<SearchItemCardProps> = (props) => {
       </Row>
     </Card>
   );
-  /* eslint-enable react/no-danger */
 };
 
 export default SearchItemCard;

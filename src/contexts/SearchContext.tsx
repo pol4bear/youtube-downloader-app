@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react';
 import { AxiosError } from 'axios';
-import { FailResult, Video, VideoList, ServerResponse } from '../types';
+import { Video, VideoList, ServerResponse } from '../types';
 import requestData from '../utils/requestData';
 import Dictionary from '../types/Dictionary';
 import config from '../common/config';
@@ -10,7 +10,7 @@ const LOADED = 'LOADED' as const;
 const STOP = 'STOP' as const;
 
 const start = () => ({ type: START });
-const loaded = (response: ServerResponse) => ({
+const loaded = (response: ServerResponse<VideoList>) => ({
   type: LOADED,
   response,
 });
@@ -44,10 +44,11 @@ function searchReducer(state: SearchState, action: SearchAction): SearchState {
     case START:
       return { ...state, loading: true };
     case LOADED: {
-      const result = action.response.result as VideoList;
-      const newData: Video[] = result.items ? result.items : [];
+      const videoList = action.response.data;
+      if (!videoList) return { ...state };
+      const newData: Video[] = videoList.items ? videoList.items : [];
       const token =
-        result.nextPageToken !== undefined ? result.nextPageToken : null;
+        videoList.nextPageToken !== undefined ? videoList.nextPageToken : null;
       return {
         ...state,
         loading: false,
@@ -88,15 +89,18 @@ export const SearchProvider = (props: SearchProviderProps) => {
     };
     if (searchState.token !== null) params.token = searchState.token;
 
-    requestData<ServerResponse>(`search${config.serverSuffix}`, params)
+    requestData<ServerResponse<VideoList>>(
+      `search${config.serverSuffix}`,
+      params
+    )
       .then((response) => {
         dispatch(loaded(response.data));
       })
-      .catch((e: AxiosError<ServerResponse>) => {
+      .catch((e: AxiosError<ServerResponse<VideoList>>) => {
         let error = -1;
         if (e.response) {
-          const result = e.response.data.result as FailResult;
-          if (result.code) error = result.code;
+          const errorInfo = e.response.data.error;
+          error = errorInfo ? errorInfo.code : error;
         }
         dispatch(stop(error));
       });

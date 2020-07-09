@@ -13,7 +13,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import { Main, ErrorContent, LoadWrapper } from '../Layout';
-import { VideoInfo, ServerResponse, FailResult } from '../../types';
+import { VideoInfo, ServerResponse } from '../../types';
 import requestData from '../../utils/requestData';
 import config from '../../common/config';
 
@@ -78,9 +78,11 @@ const Watch: React.FC = () => {
     // If is request not started start request.
     else if (!requested) {
       setRequested(true);
-      requestData<ServerResponse>(`video${config.serverSuffix}`, { v: id })
+      requestData<ServerResponse<VideoInfo>>(`video${config.serverSuffix}`, {
+        v: id,
+      })
         .then((response) => {
-          const result = response.data.result as VideoInfo;
+          const result = response.data.data as VideoInfo;
           setData(result);
           if (result.qualities)
             setQuality(
@@ -88,12 +90,12 @@ const Watch: React.FC = () => {
             );
           setLoading(false);
         })
-        .catch((e: AxiosError<ServerResponse>) => {
+        .catch((e: AxiosError<ServerResponse<VideoInfo>>) => {
           let errno = -1;
           if (e.response) {
             if (e.response.data.success) {
-              const result = e.response.data.result as FailResult;
-              if (result.code) errno = result.code;
+              const errorInfo = e.response.data.error;
+              errno = errorInfo ? errorInfo.code : errno;
             }
           }
           setError(errno);
