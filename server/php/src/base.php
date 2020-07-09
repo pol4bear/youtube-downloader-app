@@ -20,6 +20,7 @@ function initializeConfig()
     'region_code' => 'KR',
     'quality' => 'best',
     'youtube_url' => 'https://youtube.com/watch?v=',
+    'cors_url' => '*',
   ];
 
   $keys = array_keys($defaults);
