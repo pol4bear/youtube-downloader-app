@@ -7,4 +7,6 @@ region_code ='KR'
 # Default quality for download
 quality = 'best'
 # YouTube video url prefix except video id
-url = 'https://youtube.com/watch?v='
+youtube_url = 'https://youtube.com/watch?v='
+# CORS URL
+cors_url = '*'

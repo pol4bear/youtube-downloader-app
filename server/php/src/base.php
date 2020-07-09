@@ -5,7 +5,7 @@ use Yosymfony\Toml\Toml;
 // Parse config from config.toml
 $config = Toml::ParseFile(__DIR__ . '/config.toml');
 initializeConfig();
-$url = $config['url'];
+$youtube_url = $config['youtube_url'];
 
 /**
  * Initialize configs that are not exist as default
@@ -19,7 +19,7 @@ function initializeConfig()
     'max_results' => 10,
     'region_code' => 'KR',
     'quality' => 'best',
-    'url' => 'https://youtube.com/watch?v=',
+    'youtube_url' => 'https://youtube.com/watch?v=',
   ];
 
   $keys = array_keys($defaults);
@@ -57,8 +57,13 @@ function getError(int $code)
     default:
       return null;
   }
-
-  return [$responseCode, makeResult(false, $error)];
+  return [
+    $responseCode,
+    [
+      'success' => false,
+      'error' => json_encode($error, JSON_UNESCAPED_UNICODE),
+    ],
+  ];
 }
 
 /**
@@ -66,25 +71,9 @@ function getError(int $code)
  */
 function addApiHeader()
 {
+  global $config;
   header('Content-Type: application/json; charset=UTF-8');
-  header('Access-Control-Allow-Origin: *');
-}
-
-/**
- * Make success/error result.
- * Return success/error result.
- *
- * @param bool $success
- * @param $result
- * @return false|string
- */
-function makeResult(bool $success, $result)
-{
-  $result = [
-    'success' => $success,
-    'result' => $result,
-  ];
-  return json_encode($result, JSON_UNESCAPED_UNICODE);
+  header('Access-Control-Allow-Origin: ' . $config['cors_url']);
 }
 
 /**
@@ -175,10 +164,8 @@ function getIpInfo($ip = null, $purpose = 'location', $deep_detect = true)
         case 'city':
           $output = @$ipdat->geoplugin_city;
           break;
-        case 'state':
-          $output = @$ipdat->geoplugin_regionName;
-          break;
         case 'region':
+        case 'state':
           $output = @$ipdat->geoplugin_regionName;
           break;
         case 'country':
@@ -192,4 +179,3 @@ function getIpInfo($ip = null, $purpose = 'location', $deep_detect = true)
   }
   return $output;
 }
-?>
