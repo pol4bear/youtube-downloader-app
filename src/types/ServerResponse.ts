@@ -1,13 +1,7 @@
-import { VideoInfo, VideoList } from './index';
+import { ServerErrorInfo, VideoInfo, VideoList } from './index';
 
-export interface FailResult {
-  code: number;
-  message: string;
-}
-
-export type ResponseResult = VideoList | VideoInfo | FailResult;
-
-export default interface ServerResponse {
+export default interface ServerResponse<T extends VideoList | VideoInfo> {
   success: boolean;
-  result: ResponseResult;
+  error?: ServerErrorInfo;
+  data?: T;
 }
