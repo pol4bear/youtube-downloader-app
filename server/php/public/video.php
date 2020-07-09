@@ -36,7 +36,7 @@ try {
 
   // Make video info response.
   $videoSnippet = $video['snippet'];
-  $result = [
+  $data = [
     'id' => $video['id'],
     'channelId' => $videoSnippet['channelId'],
     'chanelTitle' => $videoSnippet['channelTitle'],
@@ -52,7 +52,7 @@ try {
   // Set success result
   $result = [
     200,
-    json_encode(['success' => true, 'data' => $result], JSON_UNESCAPED_UNICODE),
+    json_encode(['success' => true, 'data' => $data], JSON_UNESCAPED_UNICODE),
   ];
 } catch (Google_Service_Exception $exception) {
   // Set API daily limit error result

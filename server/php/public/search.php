@@ -75,7 +75,7 @@ try {
   }
 
   // Make result to response.
-  $result = [
+  $data = [
     'nextPageToken' => $searchResponse['nextPageToken'],
     'prevPageToken' => $searchResponse['prevPageToken'],
     'pageInfo' => $searchResponse['pageInfo'],
@@ -85,7 +85,7 @@ try {
   // Set success result
   $result = [
     200,
-    json_encode(['success' => true, 'data' => $result], JSON_UNESCAPED_UNICODE),
+    json_encode(['success' => true, 'data' => $data], JSON_UNESCAPED_UNICODE),
   ];
 } catch (Google_Service_Exception $exception) {
   // Set API daily limit error result

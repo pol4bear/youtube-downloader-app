@@ -84,8 +84,11 @@ function getFileName($videoId, $formatCode)
  */
 function getVideoQuality(string $videoId)
 {
-  global $url;
-  exec("youtube-dl -F \"$url$videoId\"", $output, $return);
+  exec(
+    "youtube-dl -F \"https://youtube.com/watch?v=$videoId\"",
+    $output,
+    $return
+  );
   if ($return != 0) {
     return null;
   }

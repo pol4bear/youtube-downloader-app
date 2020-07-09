@@ -5,7 +5,6 @@ use Yosymfony\Toml\Toml;
 // Parse config from config.toml
 $config = Toml::ParseFile(__DIR__ . '/config.toml');
 initializeConfig();
-$youtube_url = $config['youtube_url'];
 
 /**
  * Initialize configs that are not exist as default
@@ -15,11 +14,10 @@ function initializeConfig()
   global $config;
 
   $defaults = [
-    'token' => null,
+    'api_key' => null,
     'max_results' => 10,
     'region_code' => 'KR',
     'quality' => 'best',
-    'youtube_url' => 'https://youtube.com/watch?v=',
     'cors_url' => '*',
   ];
 
