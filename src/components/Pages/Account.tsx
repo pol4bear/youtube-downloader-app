@@ -93,8 +93,9 @@ const handleChange = (changedFields: FieldData[], allFields: FieldData[]) => {
   }
 
   const unregister = () => {
-    requestData(`unregister${config.serverSuffix}`);
-    logout();
+    requestData(`unregister${config.serverSuffix}`, {}, false).then(() => {
+      logout();
+    });
   }
 
   useEffect(() => {
