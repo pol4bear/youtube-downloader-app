@@ -83,7 +83,10 @@ try {
   ];
 
   // Set success result
-  $result = [200, makeResult(true, $result)];
+  $result = [
+    200,
+    json_encode(['success' => true, 'data' => $result], JSON_UNESCAPED_UNICODE),
+  ];
 } catch (Google_Service_Exception $exception) {
   // Set API daily limit error result
   return getError(2);
