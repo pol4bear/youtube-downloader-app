@@ -56,10 +56,10 @@ try {
   ];
 } catch (Google_Service_Exception $exception) {
   // Set API daily limit error result
-  $result = getError(2);
+  $result = getErrorMessage(2);
 } catch (InvalidArgumentException $exception) {
   // Set invalid input error
-  $result = getError(3);
+  $result = getErrorMessage(3);
 }
 
 // Make client detect data as json

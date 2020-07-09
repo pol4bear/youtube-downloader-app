@@ -38,7 +38,7 @@ function initializeConfig()
  * @param int $code
  * @return array|null
  */
-function getError(int $code)
+function getErrorMessage(int $code)
 {
   $responseCode = 500;
   $error = ['code' => $code];
@@ -60,10 +60,10 @@ function getError(int $code)
   }
   return [
     $responseCode,
-    [
-      'success' => false,
-      'error' => json_encode($error, JSON_UNESCAPED_UNICODE),
-    ],
+    json_encode(
+      ['success' => false, 'error' => $error],
+      JSON_UNESCAPED_UNICODE
+    ),
   ];
 }
 
@@ -83,7 +83,7 @@ function addApiHeader()
 function badRequest()
 {
   header('Content-Type: application/json; charset=UTF-8');
-  $error = getError(1);
+  $error = getErrorMessage(1);
   http_response_code($error[0]);
   echo $error[1];
   exit(1);
