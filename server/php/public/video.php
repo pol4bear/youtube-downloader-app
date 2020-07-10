@@ -24,7 +24,9 @@ try {
   // Get YouTube video snippet and statistics.
   $searchResponse = $youtubeClient->videos->listVideos('snippet,statistics', [
     'id' => $videoId,
-    'regionCode' => isset($regionCode) ? $regionCode : $config['region_code'],
+    'regionCode' => isset($regionCode)
+      ? $regionCode
+      : $config['default_region'],
   ]);
 
   $videoInfo = $searchResponse['items'][0];

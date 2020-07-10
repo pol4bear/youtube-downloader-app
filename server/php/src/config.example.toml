@@ -3,7 +3,7 @@ api_key = "Token"
 # Default result count per request. Valid value is 0 to 50.
 max_results = 10
 # Default region code
-region_code ='KR'
+default_region ='KR'
 # Default quality for download
 quality = 'best'
 # CORS URL

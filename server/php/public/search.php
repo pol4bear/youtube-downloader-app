@@ -47,7 +47,7 @@ $apiQuery = [
     is_numeric($maxResults) && ($maxResults >= 0 && $maxResults <= 50)
       ? (int) $maxResults
       : $config['max_results'],
-  'regionCode' => isset($regionCode) ? $regionCode : $config['region_code'],
+  'regionCode' => isset($regionCode) ? $regionCode : $config['default_region'],
 ];
 if (isset($pageToken)) {
   $apiQuery['pageToken'] = $pageToken;

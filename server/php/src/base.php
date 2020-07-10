@@ -16,7 +16,7 @@ function initializeConfig()
   $defaults = [
     'api_key' => null,
     'max_results' => 10,
-    'region_code' => 'KR',
+    'default_region' => 'KR',
     'quality' => 'best',
     'cors_url' => '*',
   ];
