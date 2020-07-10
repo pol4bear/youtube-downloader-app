@@ -14,13 +14,20 @@ For detail information check [here](https://developers.google.com/youtube/v3/doc
 
 ## About deploy.sh
 
-> **How it works**
->
-> > You need permission of related directories.  
-> > Warn that existing file with same name could be overwritten.
->
-> 1. Move src directory under [Document root].
-> 2. Move files in public directory to [Document root]/[Sub directory]
+### Note
 
-- Document root: Document root of the web server. Required.
-- Sub directory: Sub directory for files in public directory. Optional.
+- You need permission of directories to deploy.
+
+- Warn that existing file with same name could be overwritten.
+
+### How it works
+
+1. Move src directory under [Document root].
+
+2. Move files in public directory to [Document root]/[Sub directory]
+
+### Arguments
+
+- Document root: Document root of the web server. Required
+
+- Sub directory: Sub directory for files in public directory. Optional
