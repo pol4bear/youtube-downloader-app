@@ -1,10 +1,15 @@
 # YouTube Downloader App
 
 Simple YouTube downloader app developed using React.
-![light en](https://user-images.githubusercontent.com/17893401/87107422-acea2680-c29a-11ea-9a72-4f5dd608b334.png)
-![dark en](https://user-images.githubusercontent.com/17893401/87107429-b4113480-c29a-11ea-9e81-5837180c8bf3.png)
-![list en](https://user-images.githubusercontent.com/17893401/87107433-b7a4bb80-c29a-11ea-8752-ffa123b830c4.png)
-![info en](https://user-images.githubusercontent.com/17893401/87107437-ba9fac00-c29a-11ea-9ec2-1c4625e0748d.png)
+
+- Light theme
+  ![light en](https://user-images.githubusercontent.com/17893401/87107422-acea2680-c29a-11ea-9a72-4f5dd608b334.png)
+- Dark theme
+  ![dark en](https://user-images.githubusercontent.com/17893401/87107429-b4113480-c29a-11ea-9e81-5837180c8bf3.png)
+- Video list
+  ![list en](https://user-images.githubusercontent.com/17893401/87109474-c5a90b00-c29f-11ea-9951-df0f3084de88.png)
+- Video info
+  ![info en](https://user-images.githubusercontent.com/17893401/87107437-ba9fac00-c29a-11ea-9ec2-1c4625e0748d.png)
 
 # Features
 
