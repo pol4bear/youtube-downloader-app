@@ -6,14 +6,14 @@ require_once '../src/YouTubeSearch.php';
  * Video id to search info.
  * Search won't work without video id.
  */
-$video = isset($_GET['v'])
+$videoId = isset($_GET['v'])
   ? $_GET['v']
   : (isset($_POST['v'])
     ? $_POST['v']
     : null);
 
 // Response error if no video id.
-if ($video == null) {
+if (!isset($videoId)) {
   badRequest();
 }
 
