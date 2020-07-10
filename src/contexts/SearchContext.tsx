@@ -24,6 +24,7 @@ interface SearchState {
   loading: boolean;
   more: boolean;
   error: number;
+  totalResults: number;
   data: Video[];
   token: string | null;
   setQuery: ((query: string | null) => void) | undefined;
@@ -33,6 +34,7 @@ const initialState: SearchState = {
   loading: false,
   more: true,
   error: 0,
+  totalResults: 0,
   data: [],
   token: null,
   setQuery: undefined,
@@ -47,11 +49,13 @@ function searchReducer(state: SearchState, action: SearchAction): SearchState {
       const videoList = action.response.data;
       if (!videoList) return { ...state };
       const newData: Video[] = videoList.items ? videoList.items : [];
+      const { totalResults } = videoList.pageInfo;
       const token =
         videoList.nextPageToken !== undefined ? videoList.nextPageToken : null;
       return {
         ...state,
         loading: false,
+        totalResults,
         data: [...state.data, ...newData],
         token,
         more: token !== null,

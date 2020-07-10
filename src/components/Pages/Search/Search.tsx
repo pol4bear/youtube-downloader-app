@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useRouteMatch } from 'react-router-dom';
 import 'intersection-observer';
 import { Helmet } from 'react-helmet';
-import { useIntl } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { Col, Row, Skeleton } from 'antd';
 import { Main, NotFound, ErrorContent, LoadWrapper } from '../../Layout';
 import SearchItemCard from './SearchItemCard';
@@ -21,9 +21,15 @@ const Search: React.FC = () => {
   const query: string | null = match.params.query
     ? match.params.query
     : urlParams.get('q');
-  const { data, loading, more, error, setQuery, load } = React.useContext(
-    SearchContext
-  );
+  const {
+    data,
+    loading,
+    more,
+    error,
+    setQuery,
+    load,
+    totalResults,
+  } = React.useContext(SearchContext);
   const loader = React.useRef(load);
   const observer = React.useRef(
     /* eslint-disable no-unused-expressions */
@@ -86,6 +92,10 @@ const Search: React.FC = () => {
       </Helmet>
       <Row justify="center">
         <Col xs={24} sm={24} md={24} lg={16}>
+          <h1>
+            <FormattedMessage id="searchResult" values={{ query }} /> -{' '}
+            {totalResults.toLocaleString()}
+          </h1>
           {data.map((item) => (
             <SearchItemCard data={item} />
           ))}
