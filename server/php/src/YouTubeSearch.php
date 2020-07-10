@@ -10,12 +10,12 @@ require_once 'base.php';
 function getYouTubeClient()
 {
   global $config;
-  $token = $config['token'];
-  if (!isset($token)) {
+  $apiKey = $config['api_key'];
+  if (!isset($apiKey)) {
     return null;
   }
 
-  $apiClient = new Google_Client(['developer_key' => $token]);
+  $apiClient = new Google_Client(['developer_key' => $apiKey]);
   return new Google_Service_YouTube($apiClient);
 }
 
