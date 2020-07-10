@@ -46,7 +46,7 @@ $apiQuery = [
   'maxResults' =>
     $maxResults >= 0 && $maxResults <= 50
       ? (int) $maxResults
-      : $config['max_results'],
+      : $config['default_max_results'],
   'regionCode' => isset($regionCode) ? $regionCode : $config['default_region'],
 ];
 if (isset($pageToken)) {

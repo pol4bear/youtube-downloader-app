@@ -1,7 +1,7 @@
 # Google YouTube Data API v3 API key. You can get it from https://console.cloud.google.com/apis/credentials.
 api_key = "Token"
 # Default result count per request. Valid value is 0 to 50.
-max_results = 10
+default_max_results = 10
 # Default region code
 default_region ='KR'
 # Default quality for download
