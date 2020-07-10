@@ -27,17 +27,17 @@ try {
     'regionCode' => isset($regionCode) ? $regionCode : $config['region_code'],
   ]);
 
-  $video = $searchResponse['items'][0];
+  $videoInfo = $searchResponse['items'][0];
 
   // If video info not found throw invalid argument exception.
-  if (!isset($video)) {
+  if (!isset($videoInfo)) {
     throw new InvalidArgumentException();
   }
 
   // Make video info response.
-  $videoSnippet = $video['snippet'];
+  $videoSnippet = $videoInfo['snippet'];
   $data = [
-    'id' => $video['id'],
+    'id' => $videoInfo['id'],
     'channelId' => $videoSnippet['channelId'],
     'chanelTitle' => $videoSnippet['channelTitle'],
     'description' => $videoSnippet['description'],
@@ -45,7 +45,7 @@ try {
     'tags' => $videoSnippet['tags'],
     'title' => $videoSnippet['title'],
     'thumbnails' => $videoSnippet['thumbnails'],
-    'statistics' => $video['statistics'],
+    'statistics' => $videoInfo['statistics'],
     'qualities' => getVideoQuality($videoId),
   ];
 
