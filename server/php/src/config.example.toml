@@ -5,6 +5,6 @@ max_results = 10
 # Default region code
 default_region ='KR'
 # Default quality for download
-quality = 'best'
+default_quality = 'best'
 # CORS URL
 cors_url = '*'
