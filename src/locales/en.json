@@ -13,5 +13,5 @@
   "dislikeCount": "Dislikes",
   "commentCount": "Comments",
   "download": "Download",
-  "searchResult": "Search result of {query}"
+  "searchResult": "Search result of \"{query}\""
 }

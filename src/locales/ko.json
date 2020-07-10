@@ -13,5 +13,5 @@
   "dislikeCount": "싫어요",
   "commentCount": "댓글 수",
   "download": "다운로드",
-  "searchResult": "{query} 검색결과"
+  "searchResult": "\"{query}\" 검색결과"
 }
