@@ -1,43 +1,81 @@
-// Read environment from .env file
+// Read environment from .env file.
 const dotenv = require('dotenv');
 dotenv.config();
 
-// Check YouTube Data API key was set
+// Check YouTube Data API key was set.
 if (!process.env.API_KEY) {
     console.log("ERROR: API key was not set");
-    process.exit(1);
+    process.exit(-1);
 }
 
-// Load modules
+// Load modules.
 const youtubeApi = require('./youtube-api');
 const { getRegion } = require('./util');
 
-// Initialize server
+// Initialize server.
 const express = require('express');
 const app = express();
 const address = process.env.ADDR || '0.0.0.0';
 const port = process.env.PORT || 3000;
 
-// Initialize configs
+// Initialize configs.
 const corsUrl = process.env.CORS_URL || '*';
 const maxResults = process.env.MAX_RESULTS || 10;
 const defaultRegion = process.env.DEFAULT_REGION || 'KR';
 const defaultQuality = process.env.DEFAULT_QUALITY || 'best';
 
 /**
- * Region code of client
+ * Region code of client.
  */
 let regionCode;
 
 /**
- * Route YouTube video download
+ * Route YouTube video download.
  */
-app.get('/download', (req, res) => {
-    res.send('Download');
+app.get('/download', async (req, res) => {
+    if (!req.query.v) return sendBadRequest(res);
+
+    console.log(`Download for [${req.query.v}] requested from ${req.connection.remoteAddress}.`)
+
+    let quality = defaultQuality;
+    if (req.query.quality) {
+        if (req.query.quality === 'best') {
+            quality = req.query.quality;
+        }
+        else {
+            const qualities = await youtubeApi.getVideoQuality(req.query.v);
+            if (!qualities) {
+                return sendBadRequest(res);
+            }
+            else if (!qualities.some(({ formatCode }) => formatCode === req.query.quality))
+                return sendBadRequest(res);
+            quality = req.query.quality;
+        }
+    }
+
+    const { convertFilename } = require('./util');
+    const filename = await youtubeApi.getFileName(req.query.v, quality);
+    if (!filename) {
+        return sendBadRequest(res);
+    }
+
+    const spawn = require('child_process').spawn,
+        download = spawn('youtube-dl', ['-f', quality, '-o', '-', `https://youtube.com/watch?v=${req.query.v}.`]);
+
+    res.setHeader('Content-Type', 'application/octet-stream');
+    res.setHeader('Content-Disposition', `attachment; filename=${encodeURIComponent(filename)}`);
+
+    download.stdout.on('data', data => {
+        res.write(data);
+    });
+
+    download.on('close', () => {
+        return res.end();
+    })
 });
 
 /**
- * Add get region code of client and add response headers
+ * Add get region code of client and add response headers.
  */
 app.get('/*', (req, res, next) => {
     setDefaultHeader(res);
@@ -46,10 +84,12 @@ app.get('/*', (req, res, next) => {
 });
 
 /**
- * Route YouTube video list search
+ * Route YouTube video list search.
  */
-app.get('/search', async (req, res, next) => {
-    if (!req.query.q) return sendBadRequest(res, next);
+app.get('/search', async (req, res) => {
+    if (!req.query.q) return sendBadRequest(res);
+
+    console.log(`Search for [${req.query.q}] requested from ${req.connection.remoteAddress}.`)
 
     const youtube = youtubeApi.getYouTubeApi();
     const query = {
@@ -62,7 +102,6 @@ app.get('/search', async (req, res, next) => {
     if (req.query.token)
         query.pageToken = req.query.token;
 
-    let youtubeError;
     try {
         const searchResponse = await youtube.search.list(query);
         const ids = [];
@@ -93,21 +132,65 @@ app.get('/search', async (req, res, next) => {
 });
 
 /**
- * Route YouTube video info search
+ * Route YouTube video info search.
  */
-app.get('/watch', (req, res) => {
-    res.send('Watch');
+app.get('/video', async (req, res) => {
+    if (!req.query.v) return sendBadRequest(res);
+
+    console.log(`Video info for [${req.query.v}] requested from ${req.connection.remoteAddress}.`)
+
+    const youtube = youtubeApi.getYouTubeApi();
+
+    try {
+        const searchResponse = await youtube.videos.list({
+            'part': 'snippet,statistics',
+            'id': req.query.v,
+            'regionCode': regionCode,
+        });
+
+        const videoInfo = searchResponse.data.items[0];
+        if (!videoInfo) return sendError(res, 3);
+
+        const videoSnippet = videoInfo.snippet;
+        const qualities = await youtubeApi.getVideoQuality(videoInfo.id);
+        if (!qualities) {
+            return sendBadRequest(res);
+        }
+
+        const data = {
+            'id': videoInfo.id,
+            'channelId': videoSnippet.channelId,
+            'channelTitle': videoSnippet.channelTitle,
+            'description': videoSnippet.description,
+            'publishedAt': videoSnippet.publishedAt,
+            'tags': videoSnippet.tags,
+            'title': videoSnippet.title,
+            'thumbnails': videoSnippet.thumbnails,
+            'statistics': videoInfo.statistics,
+            'qualities': qualities,
+        };
+
+        const result = {
+            'success': true,
+            'data': data,
+        };
+
+        res.send(JSON.stringify(result));
+    }
+    catch(e) {
+       handleYouTubeError(e);
+    }
 });
 
 app.get('/*', (req, res) => {
     sendBadRequest(res);
 });
 
-// Run server
+// Run server.
 app.listen(port, address, () => console.log(`YouTube Downloader backend listening at http://${address}:${port}`));
 
 /**
- * Get response code and error info by error code
+ * Get response code and error info by error code.
  * @param code
  * @returns {null|(number|{code: *})[]}
  */
@@ -146,7 +229,7 @@ function getErrorInfo(code) {
 }
 
 /**
- * Set default response header
+ * Set default response header.
  * @param res
  */
 function setDefaultHeader(res) {
@@ -158,7 +241,7 @@ function setDefaultHeader(res) {
 }
 
 /**
- * Send bad request to client
+ * Send bad request to client.
  * @param res
  */
 function sendBadRequest(res) {
@@ -169,6 +252,11 @@ function sendBadRequest(res) {
     res.send(JSON.stringify(errorInfo[1]));
 }
 
+/**
+ * Handle errors occurred by YouTube API.
+ * @param e
+ * @param res
+ */
 function handleYouTubeError(e, res) {
     const youtubeErrorInfo = e.response.data.error;
     let errorInfo = getErrorInfo(4);
@@ -184,4 +272,16 @@ function handleYouTubeError(e, res) {
 
     res.status = errorInfo[0];
     res.send(JSON.stringify(errorInfo[1]));
+}
+
+/**
+ * Send error info to client.
+ * @param res
+ * @param code
+ */
+function sendError(res, code) {
+   const errorInfo = getErrorInfo(code);
+
+   res.status = errorInfo[0];
+   res.send(JSON.stringify(errorInfo[1]));
 }

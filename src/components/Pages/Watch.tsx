@@ -201,7 +201,7 @@ const Watch: React.FC = () => {
             </Row>
             <Row>
               <DownloadButton
-                href={`${config.serverUrl}/download.php?v=${data.id}&quality=${quality}`}
+                href={`${config.serverUrl}/download${config.serverSuffix}?v=${data.id}&quality=${quality}`}
                 target="_blank"
                 size="large"
                 block
