@@ -13,5 +13,8 @@
   "dislikeCount": "싫어요",
   "commentCount": "댓글 수",
   "download": "다운로드",
-  "searchResult": "\"{query}\" 검색결과"
+  "searchResult": "\"{query}\" 검색결과",
+  "downloading": "다운로드 중...",
+  "downloadSuccess": "다운로드가 완료되었습니다.",
+  "downloadFailed": "다운로드에 실패했습니다."
 }

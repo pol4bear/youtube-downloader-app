@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useIntl } from 'react-intl';
 import { useLocation, useRouteMatch } from 'react-router';
-import { AxiosError } from 'axios';
-import { Button, Card, Col, Row, Statistic, Select } from 'antd';
+import axios, { AxiosError } from 'axios';
+import { Button, Card, Col, Row, Statistic, Select, message } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faComment,
@@ -13,7 +13,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import styled from 'styled-components';
 import { Main, ErrorContent, LoadWrapper } from '../Layout';
-import { VideoInfo, ServerResponse } from '../../types';
+import { VideoInfo, ServerResponse, Dictionary } from '../../types';
 import requestData from '../../utils/requestData';
 import config from '../../common/config';
 
@@ -61,6 +61,10 @@ const Watch: React.FC = () => {
    * Video quality to download.
    */
   const [quality, setQuality] = useState<string>('');
+  /**
+   * Download state.
+   */
+  const [downloading, setDownloading] = useState<boolean>(false);
 
   /**
    * Handle quality select change.
@@ -69,6 +73,74 @@ const Watch: React.FC = () => {
    */
   const onQualityChange = (value: string) => {
     setQuality(value);
+  };
+
+  /**
+   * Make download of selected video.
+   */
+  const makeDownload = () => {
+    const key = 'updatable';
+    setDownloading(true);
+    message
+      .loading({ content: intl.messages.downloading, key, duration: 0 })
+      .then(
+        () => {
+          return null;
+        },
+        () => {
+          return null;
+        }
+      );
+
+    axios({
+      url: `${config.serverUrl}/download${config.serverSuffix}?v=${
+        data!.id
+      }&quality=${quality}`,
+      method: 'GET',
+      responseType: 'blob',
+    })
+      .then((response) => {
+        const headers = response.headers as Dictionary<string>;
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        let filename = 'unnamed';
+
+        if (headers['content-disposition']) {
+          const contentDisposition = headers['content-disposition'].split(
+            'filename='
+          );
+          if (contentDisposition.length === 2)
+            filename = decodeURIComponent(contentDisposition[1]);
+        }
+        const link = document.createElement('a');
+        link.href = url;
+        console.log(response.headers);
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        message
+          .success({ content: intl.messages.downloadSuccess, key, duration: 2 })
+          .then(
+            () => {
+              return null;
+            },
+            () => {
+              return null;
+            }
+          );
+        setDownloading(false);
+      })
+      .catch(() => {
+        message
+          .error({ content: intl.messages.downloadFailed, key, duration: 2 })
+          .then(
+            () => {
+              return null;
+            },
+            () => {
+              return null;
+            }
+          );
+      });
   };
 
   // If is loading return loading wrapper.
@@ -201,8 +273,8 @@ const Watch: React.FC = () => {
             </Row>
             <Row>
               <DownloadButton
-                href={`${config.serverUrl}/download${config.serverSuffix}?v=${data.id}&quality=${quality}`}
-                target="_blank"
+                disabled={downloading}
+                onClick={makeDownload}
                 size="large"
                 block
               >

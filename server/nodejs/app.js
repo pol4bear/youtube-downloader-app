@@ -30,6 +30,14 @@ const defaultQuality = process.env.DEFAULT_QUALITY || 'best';
 let regionCode;
 
 /**
+ * Add CORS header.
+ */
+app.get('/*', (req, res, next) => {
+   res.setHeader('Access-Control-Allow-Origin', corsUrl);
+   next();
+});
+
+/**
  * Route YouTube video download.
  */
 app.get('/download', async (req, res) => {
@@ -54,7 +62,7 @@ app.get('/download', async (req, res) => {
     }
 
     const { convertFilename } = require('./util');
-    const filename = await youtubeApi.getFileName(req.query.v, quality);
+    const filename = encodeURIComponent(await youtubeApi.getFileName(req.query.v, quality));
     if (!filename) {
         return sendBadRequest(res);
     }
@@ -63,7 +71,8 @@ app.get('/download', async (req, res) => {
         download = spawn('youtube-dl', ['-f', quality, '-o', '-', `https://youtube.com/watch?v=${req.query.v}.`]);
 
     res.setHeader('Content-Type', 'application/octet-stream');
-    res.setHeader('Content-Disposition', `attachment; filename=${encodeURIComponent(filename)}`);
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition');
+    res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
 
     download.stdout.on('data', data => {
         res.write(data);
@@ -78,7 +87,7 @@ app.get('/download', async (req, res) => {
  * Add get region code of client and add response headers.
  */
 app.get('/*', (req, res, next) => {
-    setDefaultHeader(res);
+     setJsonHeader(res);
     regionCode = getRegion(req.connection.remoteAddress) || defaultRegion;
     next();
 });
@@ -229,15 +238,12 @@ function getErrorInfo(code) {
 }
 
 /**
- * Set default response header.
+ * Set json response header.
  * @param res
  */
-function setDefaultHeader(res) {
-    res.set({
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': corsUrl
-    })
-    res.charset = 'UTF-8'
+function setJsonHeader(res) {
+    res.setHeader('Content-Type', 'application/json');
+    res.charset = 'UTF-8';
 }
 
 /**
@@ -245,7 +251,7 @@ function setDefaultHeader(res) {
  * @param res
  */
 function sendBadRequest(res) {
-    setDefaultHeader(res)
+     setJsonHeader(res)
 
     const errorInfo = getErrorInfo(1);
     res.status(errorInfo[0])
