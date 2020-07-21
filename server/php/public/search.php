@@ -16,10 +16,13 @@ $query = isset($_GET['q'])
  * Valid value is 0 to 50.
  */
 $maxResults = isset($_GET['cnt'])
-  ? $_GET['cnt']
+  ? (int) $_GET['cnt']
   : (isset($_POST['cnt'])
     ? (int) $_POST['cnt']
-    : $config['default_max_results']);
+    : null);
+if (!is_numeric($maxResults) || $maxResults < 0 || $maxResults > 50) {
+  $maxResults = $config['default_max_results'];
+}
 /**
  * Page token to search.
  * Next/Prev page can be searched via this token.
@@ -43,10 +46,7 @@ $regionCode = getIpInfo($_SERVER['REMOTE_ADDR'], 'countrycode');
 $apiQuery = [
   'type' => 'video',
   'q' => $query,
-  'maxResults' =>
-    $maxResults >= 0 && $maxResults <= 50
-      ? $maxResults
-      : $config['default_max_results'],
+  'maxResults' => $maxResults,
   'regionCode' => isset($regionCode) ? $regionCode : $config['default_region'],
 ];
 if (isset($pageToken)) {
