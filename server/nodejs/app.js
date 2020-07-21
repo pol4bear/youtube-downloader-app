@@ -234,7 +234,7 @@ function getErrorInfo(code) {
         return null;
     }
 
-    return [responseCode, error];
+    return [responseCode, { success: false, error: error }];
 }
 
 /**
@@ -276,7 +276,7 @@ function handleYouTubeError(e, res) {
         }
     }
 
-    res.status = errorInfo[0];
+    res.status(errorInfo[0]);
     res.send(JSON.stringify(errorInfo[1]));
 }
 
@@ -288,6 +288,6 @@ function handleYouTubeError(e, res) {
 function sendError(res, code) {
    const errorInfo = getErrorInfo(code);
 
-   res.status = errorInfo[0];
+   res.status(errorInfo[0]);
    res.send(JSON.stringify(errorInfo[1]));
 }
