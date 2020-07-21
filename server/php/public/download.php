@@ -32,7 +32,11 @@ if ($videoId == null) {
 }
 
 // Make client detect transferred data as file.
-header("Content-Disposition: attachment; filename=\"" . $fileName . "\"");
+header(
+  "Content-Disposition: attachment; filename=\"" .
+    rawurlencode($fileName) .
+    "\""
+);
 header('Content-Type: application/octet-stream');
 
 // Transfer video data downloaded via youtube-dl to client.
