@@ -18,8 +18,8 @@ $query = isset($_GET['q'])
 $maxResults = isset($_GET['cnt'])
   ? $_GET['cnt']
   : (isset($_POST['cnt'])
-    ? $_POST['cnt']
-    : null);
+    ? (int) $_POST['cnt']
+    : $config['default_max_results']);
 /**
  * Page token to search.
  * Next/Prev page can be searched via this token.
@@ -45,7 +45,7 @@ $apiQuery = [
   'q' => $query,
   'maxResults' =>
     $maxResults >= 0 && $maxResults <= 50
-      ? (int) $maxResults
+      ? $maxResults
       : $config['default_max_results'],
   'regionCode' => isset($regionCode) ? $regionCode : $config['default_region'],
 ];
