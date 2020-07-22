@@ -72,7 +72,7 @@ app.get('/download', async (req, res) => {
 
     res.setHeader('Content-Type', 'application/octet-stream');
     res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition');
-    res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
+    res.setHeader('Content-Disposition', `attachment; filename*=UTF-8''${filename}`);
 
     download.stdout.on('data', data => {
         res.write(data);

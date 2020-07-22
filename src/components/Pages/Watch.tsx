@@ -106,14 +106,13 @@ const Watch: React.FC = () => {
 
         if (headers['content-disposition']) {
           const contentDisposition = headers['content-disposition'].split(
-            'filename='
+            "filename*=UTF-8''"
           );
           if (contentDisposition.length === 2)
             filename = decodeURIComponent(contentDisposition[1]);
         }
         const link = document.createElement('a');
         link.href = url;
-        console.log(response.headers);
         link.setAttribute('download', filename);
         document.body.appendChild(link);
         link.click();
@@ -260,6 +259,7 @@ const Watch: React.FC = () => {
             <Row>
               <Select
                 defaultValue={quality}
+                disabled={downloading}
                 onChange={onQualityChange}
                 size="large"
                 style={{ width: '100%' }}

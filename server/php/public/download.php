@@ -32,10 +32,10 @@ if ($videoId == null) {
 }
 
 // Make client detect transferred data as file.
+addCorsHeader();
+header('Access-Control-Expose-Headers: Content-Disposition');
 header(
-  "Content-Disposition: attachment; filename=\"" .
-    rawurlencode($fileName) .
-    "\""
+  "Content-Disposition: attachment; filename*=UTF-8''" . rawurlencode($fileName)
 );
 header('Content-Type: application/octet-stream');
 

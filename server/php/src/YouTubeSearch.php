@@ -72,7 +72,7 @@ function getFileName($videoId, $formatCode)
   if ($return != 0) {
     return null;
   }
-  return $output[0];
+  return trim($output[0], '\n');
 }
 
 /**

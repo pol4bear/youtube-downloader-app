@@ -81,7 +81,7 @@ async function getVideoQuality(videoId) {
 async function getFileName(videoId, formatCode) {
     try {
         const { stdout } = await exec(`youtube-dl -f "${formatCode}" --get-filename "https://youtube.com/watch?v=${videoId}"`);
-        return stdout.toString();
+        return stdout.toString().trim();
     }
     catch(e) {
         handleYouTubeDlError(e.code);

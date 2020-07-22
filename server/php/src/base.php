@@ -70,8 +70,16 @@ function getErrorMessage(int $code)
  */
 function addApiHeader()
 {
-  global $config;
+  addCorsHeader();
   header('Content-Type: application/json; charset=UTF-8');
+}
+
+/**
+ * Add CORS header
+ */
+function addCorsHeader()
+{
+  global $config;
   header('Access-Control-Allow-Origin: ' . $config['cors_url']);
 }
 
